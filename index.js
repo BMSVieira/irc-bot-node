@@ -398,7 +398,147 @@ var quiz = [
     {
       pergunta: "Em que oceano fica Madagascar?",
       resposta: "Oceano Índico"
-    }
+    },
+    {
+      pergunta: "Que país tem mais ilhas no mundo?",
+      resposta: "Suécia"
+    },
+    {
+      pergunta: "Qual é o país mais pequeno do mundo?",
+      resposta: "Vaticano"
+    },
+    {
+      pergunta: "Qual é a capital do Canadá?",
+      resposta: "Otava"
+    },
+    {
+      pergunta: "Qual é a maior (não a mais alta) cordilheira de montanhas no mundo?",
+      resposta: "Andes"
+    },
+    {
+      pergunta: "Qual é o termo na gíria utilizada, quando se referem a Nova Iorque?",
+      resposta: "Gotham"
+    },
+    {
+      pergunta: "Qual o segundo país com maior população?",
+      resposta: "Índia"
+    },
+    {
+      pergunta: "Qual a equipa com mais UEFA Liga dos Campeões?",
+      resposta: "Real Madrid"
+    },
+    {
+      pergunta: "Quem foi campeão do mundo no ano 1998?",
+      resposta: "França"
+    },
+    {
+      pergunta: "Qual é a língua oficial de Espanha?",
+      resposta: "Castelhano"
+    },
+    {
+      pergunta: "Qual o resultado de 3+3:3?",
+      resposta: "4"
+    },
+    {
+      pergunta: "Quantos arestas tem um paralelepípedo?",
+      resposta: "12"
+    },
+    {
+      pergunta: "Quantos vértices tem um cubo? ",
+      resposta: "8"
+    },
+    {
+      pergunta: "Que ator disse: 'Um dia vou fazer 60 e vou dizer: Tenho 60 e sou sexy'?",
+      resposta: "Jim Carrey"
+    },
+    {
+      pergunta: "Qual o nome da personagem da série 'Vis a Vis' que foi colocada dentro da máquina de lavar roupa, na tentativa de a matar?",
+      resposta: "Macarena"
+    },
+    {
+      pergunta: "Em que série ficou conhecido Will Smith?",
+      resposta: "Príncipe de Bel-air"
+    },
+    {
+      pergunta: "Qual o apresentador televisivo que treinou o FC de Arouca?",
+      resposta: "Jorge Gabriel"
+    },
+    {
+      pergunta: "Porque é popularmente conhecido o coloreto de sódio (NaCl)?",
+      resposta: "Sal"
+    },
+    {
+      pergunta: "Qual o símbolo química do fósforo?",
+      resposta: "P"
+    },
+    {
+      pergunta: "Qual foi o segundo artista, que passou mais músicas na rádios a nível mundial, no ano 2021?",
+      resposta: "Dua Lipa"
+    },
+    {
+      pergunta: "Em que ano nasceu o cantor brasileiro Roberto Carlos?",
+      resposta: "1941"
+    },
+    {
+      pergunta: "Em que ano terminou a Segunda Guerra Mundial? ",
+      resposta: "1945"
+    },
+    {
+      pergunta: "Como se chama o vocalista da banda Metallica?",
+      resposta: "James Alan Hetfield "
+    },
+    {
+      pergunta: "A que país é atribuído a invenção do esparguete?",
+      resposta: "China"
+    },
+    {
+      pergunta: "Qual é o maior animal do planeta Terra?",
+      resposta: "Baleia Azul"
+    },
+    {
+      pergunta: "Qual o nome do primeiro asteróide descoberto?",
+      resposta: "Ceres"
+    },
+    {
+      pergunta: "Quem foi o apresentador do programa 'Roda da Sorte'?",
+      resposta: "Herman José"
+    },
+    {
+      pergunta: "Como se chamava o apresentador do programa 'Ponto de Encontro'?",
+      resposta: "Henrique Mendes"
+    },
+    {
+      pergunta: "Finaliza a frase imortalizada por Herman José: Eu é que sou o presidente..",
+      resposta: "da junta"
+    },
+    {
+      pergunta: "Qual a segunda língua oficial em Portugal?",
+      resposta: "Mirandês"
+    },
+    {
+      pergunta: "Quantas saias fazem parte do traje tradicional feminino da Nazaré?",
+      resposta: "7"
+    },
+    {
+      pergunta: "Portugal, país dos três F's. Fado, Futebol e ..",
+      resposta: "Fátima"
+    },
+    {
+      pergunta: "Qual foi o primeiro livro impresso na história da humanidade?",
+      resposta: "Bíblia"
+    },
+    {
+      pergunta: "Qual foi a série de livros mais vendida no século XXI? ",
+      resposta: "Harry Potter"
+    },
+    {
+      pergunta: "Quais as cores que vulgarmente são representadas numa paleta e nem são cores?",
+      resposta: "Branco e Preto"
+    },
+    {
+      pergunta: "Que artista pintou o teto da Capela Sistina em Roma?",
+      resposta: "Michelangelo"
+    } 
 ];
 
 /* 
@@ -510,10 +650,10 @@ function startQuiz(_this, channel)
         if(quizCount <= quizLimitRespostas)
         {
 
-            var rndInt = Math.floor(Math.random() * 28) + 1;
+            var rndInt = Math.floor(Math.random() * 60) + 1;
             while(quizPerguntadas.includes(rndInt))
             {
-                rndInt = Math.floor(Math.random() * 28) + 1;
+                rndInt = Math.floor(Math.random() * 60) + 1;
             }
                     
             quizBlockedQuestion = 0;
