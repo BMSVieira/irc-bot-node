@@ -1,3 +1,11 @@
+// ###########################################
+/*
+    IMPORTANTE:
+    Modificar a linguagem de Ingles para PT
+    node_modules > irc-connect > nick.js
+*/
+// ###########################################
+
 var irc = require("irc-connect");
 var channels = require('irc-channels');
 // var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -5,8 +13,8 @@ var channels = require('irc-channels');
 /* 
     Minhas credenciais
 */
-var myNick = "Tartaruga";
-var myPassword = "";
+var myNick = "EpiC";
+var myPassword = "botportugal";
 
 /* 
     Irc Options
@@ -14,13 +22,13 @@ var myPassword = "";
 var ircOptions = {
     port: 6697,
     secure: true,
-    nick: 'Tartaruga',
-    realname: 'Brazink Bot',
-    ident: 'ircbotbrazink'
+    nick: 'Unknown',
+    realname: 'Bot Portugal',
+    ident: 'botportugal'
 }
 
 /*
- Global
+ Variaveis Global
 */
 
 var interval_shout;
@@ -29,11 +37,13 @@ var ultimoShout;
 var ultimaResposta;
 var quizPergunta = 0;
 var quizPerguntadas = [];
-var quizCount = 0;
+var quizCount = 1;
 var quizBlockedQuestion = 0;
+var quizVencedor = {};
 
 var shoutTime = 60000; // 60 Segundos
-var quizTime = 45000; // 20 Segundos
+var quizTime = 45000; // 45 Segundos
+var quizLimitRespostas = 10 // Limite de respostas do quiz
 
 /* 
     Utilizadores Permitidos
@@ -42,11 +52,12 @@ var owner = ['AsuZ', '_Clandestina_', 'Monte'];
 
 /*
     Estado em que está, depende se faz o jogo, shout, parado.
-    0 - Parado
+    0 - Default
     1 - Shout
     2 - Quiz
+    3 - Não responde ao identificar
 */
-var modoAtual = 0;
+var modoAtual = 3;
 
 /* 
     Shout - Vai falar estas frases de tempos em tempos
@@ -69,6 +80,9 @@ var shout = [
     },
     {
       frase: "Tem coisas nesta vida que eu apenas visualizo e não respondo."
+    },
+    {
+      frase: "Todos falam, mas nenhum diz nada!"
     }
 ];
 
@@ -96,6 +110,54 @@ var frases = [
     },
     {
       frase: "{nick} podes por favor ir ver se está a chover? obrigado!"
+    },
+    {
+      frase: "{nick} 'Nóis' era trouxa mas, o tempo passou e a vida ensinou... E hoje, 'nóis' é trouxa com experiência."
+    },
+    {
+      frase: "Quem não valoriza o nosso lado bom {nick}, tem de conhecer o lado ruim."
+    },
+    {
+      frase: "Eu até tento ser normal {nick} mas, são os piores momentos da minha vida. "
+    },
+    {
+      frase: "Nasci baixinho para vocês me olharem de cabeça baixa e eu de cabeça erguida, {nick}."
+    },
+    {
+      frase: "Uma vez, Charlie Chaplin inscreveu-se num concurso de sósias de Charlie Chaplin e ficou em 3° lugar. Isso mostra {nick} que, se depender da opinião dos outros, não serves para ser tu mesmo."
+    },
+    {
+      frase: "Entro aqui para fazer novas amizades, {nick}. Digo o que comi, como me sinto, o que estou fazer, o que ainda irei fazer e grito: Like! Com isso tudo, já arranjei três amigos: um gnr, um pj e um psiquiatra."
+    },
+    {
+      frase: "Só vou te dizer {nick} ..que tem pessoal infiltrado nesta sala."
+    },
+    {
+      frase: "Ajuda-me a rezar e a pedir paciência ao Senhor, {nick}. Paciência não há. Beleza tenho de sobra."
+    },
+    {
+      frase: "Um beijo para {nick} que gosta de mim e para quem não gosta dois.."
+    },
+    {
+      frase: "Quando me perguntam {nick} se não tenho vergonha das coisas que escrevo... Ter eu tenho mas, eu sou forte e aguento."
+    },
+    {
+      frase: "Por favor {nick} ! Sem gritos, sem desmaios, sem aplausos, sem empurrar... Eu estou aqui."
+    },
+    {
+      frase: "Podes ser tanta coisa {nick}: evangélico, budista, espírita, ateu, power ranger. Só não sejas chato (a)."
+    },
+    {
+      frase: "Minha felicidade em te ver {nick} tem 15 letras: M-I-N-H-A--F-E-L-I-C-I-D-A-D-E. Que esperava? Não sou romântico."
+    },
+    {
+      frase: "Estás cheio de dedos nessas mãos, {nick}.."
+    },
+    {
+      frase: "{nick} Desde ontem, escrevo 'riso'. O corretor corrige para 'rico'. Se for essa a vontade, eu estou pronto!"
+    },
+    {
+      frase: "{nick} Vou mandar embora todos os que medem menos de 1,60. Isto aqui não é um formigueiro."
     }
 ];
 
@@ -182,20 +244,60 @@ var quiz = [
     {
       pergunta: "Quem pintou 'Guernica'?",
       resposta: "Pablo Picasso"
+    },
+    {
+      pergunta: "Qual o nome da banda portuguesa que integrou o cantor Fernando Melão?",
+      resposta: "Excesso"
+    },
+    {
+      pergunta: "Em qual local da Ásia o português é língua oficial?",
+      resposta: "Macau"
+    },
+    {
+      pergunta: "Qual o nome do filme que foi baseado na obra de Shakespeare?",
+      resposta: "Muito Barulho por Nada"
+    },
+    {
+      pergunta: "Quem foi o primeiro homem a pisar na Lua?",
+      resposta: "Neil Armstrong"
+    },
+    {
+      pergunta: "Em que estado australiano fica situada a cidade de Sydney?",
+      resposta: "Nova Gales do Sul"
+    },
+    {
+      pergunta: "Em que ano Luís Filipe Vieira, iniciou no Sport Lisboa e Benfica como seu dirigente desportivo?",
+      resposta: "2003"
+    },
+    {
+      pergunta: "Qual foi o recurso utilizado inicialmente pelo homem para explicar a origem das coisas?",
+      resposta: "Mitologia"
+    },
+    {
+      pergunta: "Que substância é absorvida pelas plantas e expirada por todos os seres vivos?",
+      resposta: "Artérias"
+    },
+    {
+      pergunta: "Que substância é absorvida pelas plantas e expirada por todos os seres vivos?",
+      resposta: "Dióxido de carbono"
+    },
+    {
+      pergunta: "Em que oceano fica Madagascar?",
+      resposta: "Oceano Índico"
     }
 ];
 
-
 /* 
     Muda o modo atual do bot
+    ####################################################################
 */
 function mudarModo(value)
 {
     modoAtual = value;
 }
-
 /* 
     Vai para todos os modos e todos os intervalos que estão ativos no momento
+    ####################################################################
 */
 function unbindAll()
 {
@@ -208,12 +310,13 @@ function unbindAll()
     // Reset do Quiz
     quizPergunta = 0;
     quizPerguntadas = [];
-    quizCount = 0;
+    quizCount = 1;
     quizBlockedQuestion = 0;
+    quizVencedor = {};
 }
-
 /* 
     Função que muda o tempo das mensagens
+    ####################################################################
 */
 function changeTime(_this, channel, cmd, query)
 {
@@ -224,20 +327,22 @@ function changeTime(_this, channel, cmd, query)
         case "setShoutTime":
             channel.msg("<setShoutTime> A reiniciar, tempo de resposta modificado..."); 
             shoutTime = query;
-            startShout(_this, channel)
         break;  
         case "setQuizTime":
-            channel.msg("<setShoutTime> A reiniciar, tempo de resposta modificado..."); 
-            shoutTime = query;
-            startShout(_this, channel)
-        break;     
+            channel.msg("<setQuizTime> A reiniciar, tempo de resposta modificado..."); 
+            quizTime = query;
+        break;
+        case "setQuizLimit":
+            channel.msg("<setQuizLimit> A reiniciar, limite de respostas modificado..."); 
+            quizLimitRespostas = query;
+        break; 
       default:
         // Nada em Default
     }
 }
-
 /* 
-    Vai buscar a temperatura  
+    Vai buscar a temperatura
+    #################################################################### 
 */
 function startTemperatura(_this, channel, smsCmd, query, fromNick)
 {
@@ -257,9 +362,9 @@ function startTemperatura(_this, channel, smsCmd, query, fromNick)
         xhr.send();
     */
 }
-
 /* 
     Inicia o Shout
+    ####################################################################
 */
 function startShout(_this, channel)
 {
@@ -279,21 +384,21 @@ function startShout(_this, channel)
     // Atualizar Estado
     mudarModo(1);
 }
-
 /* 
     Inicia o Quiz
+    ####################################################################
 */
 function startQuiz(_this, channel)
 {
     interval_quiz = setInterval(function () {
 
-        if(quizCount <= 5)
+        if(quizCount <= quizLimitRespostas)
         {
 
-            var rndInt = Math.floor(Math.random() * 19) + 1;
+            var rndInt = Math.floor(Math.random() * 28) + 1;
             while(quizPerguntadas.includes(rndInt))
             {
-                rndInt = Math.floor(Math.random() * 19) + 1;
+                rndInt = Math.floor(Math.random() * 28) + 1;
             }
                     
             quizBlockedQuestion = 0;
@@ -302,8 +407,23 @@ function startQuiz(_this, channel)
             quizPergunta = rndInt;
 
         } else {
+
+            var Vencedor = 0;
+            var VencedorNome;
+
+            for (var k in quizVencedor) {
+              if (quizVencedor[k] > Vencedor) {
+
+                Vencedor = quizVencedor[k];
+                VencedorNome = k;
+              }
+            }
+
+            // Envia os dados com o vencedor
+            channel.msg("O Vencedor é " + VencedorNome + " com " + Vencedor + " resposta(s) certa(s). Obrigado a todos pela vossa participação!");
+
+            // Reseta tudo
             unbindAll();
-            channel.msg("Quiz terminou, obrigado a todos pela vossa participação.");
         }
 
         // Aumenta o count
@@ -315,9 +435,9 @@ function startQuiz(_this, channel)
     // Atualizar Estado
     mudarModo(2);
 }
-
 /* 
-    Inicia o Shout
+    Verifica a resposta da quiz
+    ####################################################################
 */
 function CheckRespostaQuiz(_this, channel, smsNick, fromNick)
 {
@@ -330,23 +450,33 @@ function CheckRespostaQuiz(_this, channel, smsNick, fromNick)
 
     if(respAtualLower == smsNick && quizBlockedQuestion == 0)
     {
+
+        // Verifica se já existe o registo dele no array
+        var valorPontos = 1;
+        if(quizVencedor[fromNick])
+        {
+          var data = quizVencedor[fromNick];
+          valorPontos = data+1;
+        } 
+
+        quizVencedor[fromNick] = valorPontos;
         quizBlockedQuestion = 1;
         channel.msg("Resposta Certa: "+fromNick); 
     }
 }
-
-
 /* 
     Envia resposta se alguem tocar no nome do bot
+    ####################################################################
 */
 function startResposta(nick, channel)
 {
+
     setTimeout(function () {
 
-        var rndInt = Math.floor(Math.random() * 6) + 1;
+        var rndInt = Math.floor(Math.random() * 20) + 1;
         while(rndInt == ultimaResposta)
         {
-            rndInt = Math.floor(Math.random() * 6) + 1;
+            rndInt = Math.floor(Math.random() * 20) + 1;
         }
 
         var frase = frases[rndInt].frase;
@@ -357,6 +487,9 @@ function startResposta(nick, channel)
 
     }, 2000);
 }
+
+//  ####################################################################
+//  ####################################################################
 
 /*
     Guarda a variavel do scope Join Channel #Portugal
@@ -370,12 +503,9 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
     // Quando o servidor confirma a password
     .on('identified', function (nick) {
-        this.send('JOIN #node.js');
+        this.send('JOIN #Portugal');
     })
-    // Envado quando o nick muda
-    .on('nick', function (nick) {
-        console.log('Your nick is now:', nick);
-    })
+
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
@@ -388,18 +518,19 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
     .on('names', function (cname, names) {
         console.log(cname, names);
     })
-    // Usar o MOTD plugin
-    .on('motd', function (event) {
-        console.log(this.motd);
-        console.log(this.support);
-    });
 
     freenode.on('welcome', function (msg) {
 
-        // Enviado quando se muda o nick, para um registado
-        // this.nick('NickDele', 'password', function(err){
-            //console.log('There was a problem setting your NICK:', err);
-        //}); 
+
+        // Muda o nick e entra com a conta registada
+        this.nick('EpiC', 'botportugal', function(err){
+            console.log('There was a problem setting your NICK:', err);
+        });
+
+         // Envado quando o nick muda
+        this.on('nick', function (nick) {
+            console.log('Your nick is now:', nick);
+        })
 
         // Save Scope do freenode
         _this = this;
@@ -421,7 +552,6 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                 var smsCmd = smsNick.substring(smsNick.indexOf("<") + 1, smsNick.lastIndexOf(">"));
                 // Tratar a string para ir buscar o resto do comando depois de >
                 var query = smsNick.substring(smsNick.indexOf('>') + 1);
-
                 // Verifica se o nome veio de um dos permitidos e se é para o bot
                 // Verifica se é uma ordem ou não.
                 if(owner.includes(fromNick) && toNick == myNick) // Verifica se vai ao PV
@@ -451,8 +581,21 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                         break;  
                         case "setShoutTime":
                             changeTime(_this, channel, "setShoutTime", query);
-                            //channel.msg(query);
-                        break;       
+                        break;  
+                        case "setQuizTime":
+                            changeTime(_this, channel, "setQuizTime", query);
+                        break; 
+                        case "setQuizLimit":
+                            changeTime(_this, channel, "setQuizLimit", query);
+                        break;   
+                        case "setmode":
+                            mudarModo(query);
+                            channel.msg("<setmode> Estado atualizado.");
+                        break;  
+                        case "debug":
+                          console.log(quizVencedor);
+                        break;    
+
                       default:
                         // Nada em Default
                     }
@@ -470,7 +613,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                     } else {
 
                         // Verifica se identificaram o nome do bot em algum lado
-                        if(string.indexOf(substring) !== -1)
+                        if(string.indexOf(substring) !== -1 && modoAtual != 3)
                         {
                             startResposta(fromNick, channel);
 
@@ -496,6 +639,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
                 }
 
+                // Console log das mensagens
                 console.log('message from: '+event.nick, 'to: '+params[0], params[1]);
 
             });
