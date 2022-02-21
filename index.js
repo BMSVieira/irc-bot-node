@@ -435,8 +435,9 @@ function unbindAll()
 function changeTime(_this, channel, cmd, query)
 {
     // Limpa o interval atual
-    clearTimeout(interval_shout);
-
+    clearTimeout(interval_shout); 
+    clearTimeout(interval_quiz);
+    
     switch(cmd) {
         case "setShoutTime":
             channel.msg("<setShoutTime> A reiniciar, tempo de resposta modificado..."); 
@@ -521,13 +522,14 @@ function startQuiz(_this, channel)
             quizPergunta = rndInt;
 
         } else {
-
+    
             var Vencedor = 0;
             var VencedorNome;
 
+            // Faz as contas e verifica o vencedor do quiz
             for (var k in quizVencedor) {
+              // Se o numero atual for maior do que o antigo Vencedor
               if (quizVencedor[k] > Vencedor) {
-
                 Vencedor = quizVencedor[k];
                 VencedorNome = k;
               }
@@ -587,10 +589,10 @@ function startResposta(nick, channel)
 
     setTimeout(function () {
 
-        var rndInt = Math.floor(Math.random() * 20) + 1;
+        var rndInt = Math.floor(Math.random() * 59) + 1;
         while(rndInt == ultimaResposta)
         {
-            rndInt = Math.floor(Math.random() * 20) + 1;
+            rndInt = Math.floor(Math.random() * 59) + 1;
         }
 
         var frase = frases[rndInt].frase;
