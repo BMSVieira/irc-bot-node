@@ -15,6 +15,7 @@ Regras e Condições Gerais
 
 - As respostas do quiz não são sensiveis a letras maiusculas e minusculas
 - Talvez ignorar a pontuação/acentuação das respostas para tornar mais façil (!? caso a rever)
+- Quando está em alguma ativividade (ex: Quiz) não responde aos utilizadores
 
 #######################################
 Funcionalidade Atuais:
