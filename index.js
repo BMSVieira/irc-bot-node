@@ -34,6 +34,7 @@ var ircOptions = {
 var interval_shout;
 var interval_quiz;
 var ultimoShout;
+var ultimaFraseNicksStatus;
 var ultimaResposta;
 var quizPergunta = 0;
 var quizPerguntadas = [];
@@ -42,23 +43,77 @@ var quizBlockedQuestion = 0;
 var quizVencedor = {};
 
 var shoutTime = 60000; // 60 Segundos
-var quizTime = 45000; // 45 Segundos
+var quizTime = 25000; // 45 Segundos
 var quizLimitRespostas = 10 // Limite de respostas do quiz
 
 /* 
     Utilizadores Permitidos
 */
 var owner = ['AsuZ', '_Clandestina_', 'Monte'];
-
+var nicksStatus = ['AsuZ', '_Clandestina_', 'Monte', 'Manuela', 'Sara21', 'QST', 'Adel_07', 'HUGO07', 'Cris58', 'Tony50', 'Magui', 'Sara21', 'soeumesmo', 'Isa'];
 /*
     Estado em que está, depende se faz o jogo, shout, parado.
     0 - Default
     1 - Shout
     2 - Quiz
     3 - Não responde ao identificar
+    4 - Frases para Nicks registados
 */
 var modoAtual = 3;
 
+/* 
+    Frases para nicks registados
+*/
+var frasesNicksStatus = [
+    {
+      frase: "Seja bem-vindo {nick}, a senha para o WI-FI é: a saída é por ali. Tudo junto. "
+    },
+    {
+      frase: "Bem-vindo(a) {nick}. Não era necessário tanto perfume. "
+    },
+    {
+      frase: "Ainda bem, chegaste {nick}! Não repares na bagunça. "
+    },
+    {
+      frase: "Bem-vindo(a) hoje {nick} e restantes 364 dias. "
+    },
+    {
+      frase: "Espero que tenhas trazido algo que se beba {nick}. Ou não serás bem-vindo(a). "
+    },
+    {
+      frase: "Finalmente, vieste ver-me {nick}. Foram saudades?"
+    },
+    {
+      frase: "{nick} Foi difícil pensar que podias não vir me visitar hoje. "
+    },
+    {
+      frase: "{nick} Aqui só tem duas coisas que deixam saudade: eu e o autodj. O autodj não é tão bom. "
+    },
+    {
+      frase: "Se vieste animar a sala, sejas bem-vindo {nick}. Se quiseres atrapalhar, põe-te na fila. "
+    },
+    {
+      frase: "Sentimos a tua falta {nick}. De quem entra a cuspir fogo."
+    },
+    {
+      frase: "Entras sempre de má cara {nick}. Hoje põe uma bonitinha. Vamos tirar foto em grupo. "
+    },
+    {
+      frase: "{nick} Antes de entrar na sala foi à manicure, pedicure, cabeleireira, spa e depilação. Até que enfim, chegaste. "
+    },
+    {
+      frase: "Olá, {nick}. Não recomendo o uso das moitas. Há uma praga de gambuzinos."
+    },
+    {
+      frase: "{nick} As saudades que eu já tinha de te ver nesta salinha, tão modesta quanto eu... "
+    },
+    {
+      frase: "Entra e senta, {nick}. Faz que estás em casa. Não é a tua casa. Não quero graffities nas paredes. "
+    },
+    {
+      frase: "Hello, salut, willkommen, bienvenido, olá, (linguagem gestual) benvenuto e aloha {nick}. Que alegria ver-te por aqui."
+    }
+];
 /* 
     Shout - Vai falar estas frases de tempos em tempos
 */
@@ -601,21 +656,17 @@ function changeTime(_this, channel, cmd, query)
 */
 function startTemperatura(_this, channel, smsCmd, query, fromNick)
 {
-    /*
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", 'http://api.weatherapi.com/v1/current.json?key=f5afd9f9483348d0826161751221902&q='+query+'&aqi=no', true);
+        xhr.open("GET", 'http://api.weatherapi.com/v1/current.json?key=f5afd9f9483348d0826161751221902&q='+query+'&aqi=no', false);
         xhr.onreadystatechange = function() {
             if(xhr.readyState == 4 && xhr.status == 200) {
                 var data = JSON.parse(xhr.responseText);
-                console.log(data);
-                // channel.msg(fromNick+" neste momento estão "+data.current.temp_c+"ºC em "+query);
-            } else {
-                // channel.msg("Desculpa "+fromNick+" mas não consegui encontrar o que me pediste.");
-
+           
+                channel.msg(fromNick+" neste momento estão "+data.current.temp_c+"ºC em "+data.location.name+","+data.location.country);
+           
             }
         }
-        xhr.send();
-    */
+        xhr.send();   
 }
 /* 
     Inicia o Shout
@@ -640,6 +691,61 @@ function startShout(_this, channel)
     mudarModo(1);
 }
 /* 
+    Inicia a resposta a utilizadores que entraram
+    ####################################################################
+*/
+function startRepostaEntrou(_this, channel, nick)
+{
+    setTimeout(function () {
+
+            var rndInt = Math.floor(Math.random() * 14) + 1;
+            while(rndInt == ultimaFraseNicksStatus)
+            {
+                rndInt = Math.floor(Math.random() * 14) + 1;
+            }
+
+            var frase = frasesNicksStatus[rndInt].frase;
+            var result = frase.replace("{nick}", nick);
+
+            channel.msg(result);
+            ultimaFraseNicksStatus = rndInt;
+
+    }, 2000);
+
+    // Atualizar Estado
+    mudarModo(4);
+}
+/* 
+    Faz as contas e anuncia o vencedor do quiz
+    ####################################################################
+*/
+function anunciaVencedorQuiz(_this, channel)
+{
+      var Vencedor = 0;
+      var VencedorNome;
+
+      // Faz as contas e verifica o vencedor do quiz
+      for (var k in quizVencedor) {
+        // Se o numero atual for maior do que o antigo Vencedor
+        if (quizVencedor[k] > Vencedor) {
+          Vencedor = quizVencedor[k];
+          VencedorNome = k;
+        }
+      }
+
+      // Verifica se existem utilizadores ou não
+      if(VencedorNome != undefined)
+      {
+        // Envia os dados com o vencedor
+        channel.msg("O Vencedor é " + VencedorNome + " com " + Vencedor + " resposta(s) certa(s). Obrigado a todos pela vossa participação!");
+      } else {
+        // Envia os dados com o vencedor
+        channel.msg("Não foram encontrados vencedores.");
+      
+      }
+
+}
+/* 
     Inicia o Quiz
     ####################################################################
 */
@@ -662,21 +768,9 @@ function startQuiz(_this, channel)
             quizPergunta = rndInt;
 
         } else {
-    
-            var Vencedor = 0;
-            var VencedorNome;
 
-            // Faz as contas e verifica o vencedor do quiz
-            for (var k in quizVencedor) {
-              // Se o numero atual for maior do que o antigo Vencedor
-              if (quizVencedor[k] > Vencedor) {
-                Vencedor = quizVencedor[k];
-                VencedorNome = k;
-              }
-            }
-
-            // Envia os dados com o vencedor
-            channel.msg("O Vencedor é " + VencedorNome + " com " + Vencedor + " resposta(s) certa(s). Obrigado a todos pela vossa participação!");
+            // Anuncia o vencedor    
+            anunciaVencedorQuiz(_this, channel);
 
             // Reseta tudo
             unbindAll();
@@ -704,8 +798,9 @@ function CheckRespostaQuiz(_this, channel, smsNick, fromNick)
     smsNick = smsNick.toLowerCase();
     respAtualLower = respAtual.toLowerCase();
 
-    if(respAtualLower == smsNick && quizBlockedQuestion == 0)
-    {
+    // Procura se na mensagem completa da pessoa, existe a resposta
+    // Desta forma consegue excluir quais quer código "invisivel" que venha na mensagem
+    if (smsNick.indexOf(respAtualLower) > -1 && quizBlockedQuestion == 0) {
 
         // Verifica se já existe o registo dele no array
         var valorPontos = 1;
@@ -726,7 +821,6 @@ function CheckRespostaQuiz(_this, channel, smsNick, fromNick)
 */
 function startResposta(nick, channel)
 {
-
     setTimeout(function () {
 
         var rndInt = Math.floor(Math.random() * 59) + 1;
@@ -766,10 +860,6 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
     .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
     })
-    // Quando alguem sai da sala
-    .on('JOIN', function (event) {
-        console.log(event.nick, 'joined');
-    })
     // Obter todos os nomes
     .on('names', function (cname, names) {
         console.log(cname, names);
@@ -794,6 +884,14 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         // Join Channel
         this.join('#Portugal', function(channel){
          
+            // Quando alguem entra na sala, se for Nick com status, envia uma mensagem!
+            _this.on('JOIN', function (event) {
+                if(nicksStatus.includes(event.nick)) // Verifica se vai ao PV
+                {
+                    startRepostaEntrou(_this, channel, event.nick);
+                }
+            })
+
             // Recebe comandos
             _this.on('PRIVMSG', function(event){
                 
@@ -815,21 +913,22 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
                     switch(smsCmd) {
                       case "startshout":
-                            channel.msg("<startshout> A iniciar..."); 
+                            channel.msg("Shout a iniciar..."); 
                             unbindAll();
                             startShout(_this, channel);
                         break;
                       case "stopshout":
-                            channel.msg("<stopshout> Parado.");
+                            channel.msg("Shout parado.");
                             unbindAll(); 
                         break;
                        case "startquiz":
-                            channel.msg("<startquiz> Quiz vai iniciar dentro de 45 segundos..."); 
+                            channel.msg("Quiz vai iniciar dentro de segundos..."); 
                             unbindAll();
                             startQuiz(_this, channel);
                        break;
                        case "stopquiz":
-                            channel.msg("<stopquiz> Quiz terminou. Obrigado pela vossa participação.");
+                            // Anuncia o vencedor    
+                            anunciaVencedorQuiz(_this, channel);
                             unbindAll(); 
                         break;  
                         case "say":
@@ -846,7 +945,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                         break;   
                         case "setmode":
                             mudarModo(query);
-                            channel.msg("<setmode> Estado atualizado.");
+                            channel.msg("Estado atualizado.");
                         break;  
                         case "debug":
                           console.log(quizVencedor);
