@@ -51,6 +51,8 @@ var quizLimitRespostas = 10 // Limite de respostas do quiz
 */
 var owner = ['AsuZ', '_Clandestina_', 'Monte'];
 var nicksStatus = ['AsuZ', '_Clandestina_', 'Monte', 'Manuela', 'Sara21', 'QST', 'Adel_07', 'HUGO07', 'Cris58', 'Tony50', 'Magui', 'Sara21', 'soeumesmo', 'Isa'];
+var blackList = ['extra', 'cm','submissa', 'lesb', 'lesbica', '69', 'puta', 'putinha', 'dominador', 'sexo', 'sex', 'dominadora', 'gay', 'homossexual', 'hetero', 'porno', 'porn', 'foda', 'chupa', 'chupadinha', 'tusa', 'grosso', 'duro', 'pau', 'cabra', 'fudedor', 'cona', 'tesao', 'teso', 'tesudo', 'cock', 'orais', 'prostituta', 'tarado', 'dotado', 'buceta', 'xxx', 'chupo', 'chupadinha', 'blica', 'penis'];
+
 /*
     Estado em que está, depende se faz o jogo, shout, parado.
     0 - Default
@@ -206,7 +208,7 @@ var frases = [
       frase: "Minha felicidade em te ver {nick} tem 15 letras: M-I-N-H-A--F-E-L-I-C-I-D-A-D-E. Que esperava? Não sou romântico."
     },
     {
-      frase: "Estás cheio de dedos nessas mãos, {nick}.."
+      frase: "Estás cheio de dedos nessas mãos, {nick} .."
     },
     {
       frase: "{nick} Desde ontem, escrevo 'riso'. O corretor corrige para 'rico'. Se for essa a vontade, eu estou pronto!"
@@ -837,7 +839,30 @@ function startResposta(nick, channel)
 
     }, 2000);
 }
+/* 
+    Verifica se o nick está na blacklist
+    ####################################################################
+*/
+function checkNickBlacklist(nick, _this, channel)
+{
+    
+    var nickPessoa = nick.toLowerCase();
 
+    // Verifica se o nome da pessoa contem aquelas palavras
+    for (const item of blackList) {
+      if (nickPessoa.indexOf(item) > -1) {
+
+        console.log("encontado -> "+item);
+        setTimeout(function () {
+           channel.kick("Kick Teste", nick);
+        }, 2000);
+
+
+       
+      }
+    }
+
+}
 //  ####################################################################
 //  ####################################################################
 
@@ -867,6 +892,10 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
     freenode.on('welcome', function (msg) {
 
+        // Keep alive enviado.
+        this.on('PING', function (evt) {
+            console.log("keep-alive enviado.");
+        })
 
         // Muda o nick e entra com a conta registada
         this.nick('EpiC', 'botportugal', function(err){
@@ -890,6 +919,13 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                 {
                     startRepostaEntrou(_this, channel, event.nick);
                 }
+            })
+
+            // Segurança, sempre que entra um nick faz uma verificação a ver se ele 
+            // consta na blacklist
+            this.on('JOIN', function (event) {
+                // Ao entrar verifica se o nick está na blacklist
+                checkNickBlacklist(event.nick, _this, channel);
             })
 
             // Recebe comandos
@@ -935,7 +971,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                             channel.msg(query);
                         break;  
                         case "setShoutTime":
-                            changeTime(_this, channel, "setShoutTime", query);
+                            changeTime(_this, channel,"setShoutTime", query);
                         break;  
                         case "setQuizTime":
                             changeTime(_this, channel, "setQuizTime", query);
