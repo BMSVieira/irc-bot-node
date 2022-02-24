@@ -8,7 +8,7 @@
 
 var irc = require("irc-connect");
 var channels = require('irc-channels');
-// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const fs = require('fs');
 
 /* 
     Minhas credenciais
@@ -49,9 +49,9 @@ var quizLimitRespostas = 10 // Limite de respostas do quiz
 /* 
     Utilizadores Permitidos
 */
-var owner = ['AsuZ', '_Clandestina_', 'Monte'];
-var nicksStatus = ['AsuZ', '_Clandestina_', 'Monte', 'Manuela', 'Sara21', 'QST', 'Adel_07', 'HUGO07', 'Cris58', 'Tony50', 'Magui', 'Sara21', 'soeumesmo', 'Isa'];
-var blackList = ['extra', 'cm','submissa', 'lesb', 'lesbica', '69', 'puta', 'putinha', 'dominador', 'sexo', 'sex', 'dominadora', 'gay', 'homossexual', 'hetero', 'porno', 'porn', 'foda', 'chupa', 'chupadinha', 'tusa', 'grosso', 'duro', 'pau', 'cabra', 'fudedor', 'cona', 'tesao', 'teso', 'tesudo', 'cock', 'orais', 'prostituta', 'tarado', 'dotado', 'buceta', 'xxx', 'chupo', 'chupadinha', 'blica', 'penis'];
+var owner = fs.readFileSync('db/owner.txt').toString().split("\n");
+var nicksStatus = fs.readFileSync('db/nicksstatus.txt').toString().split("\n");
+var blackList = fs.readFileSync('db/blacklist.txt').toString().split("\n");
 
 /*
     Estado em que está, depende se faz o jogo, shout, parado.
@@ -542,7 +542,7 @@ var quiz = [
     },
     {
       pergunta: "Como se chama o vocalista da banda Metallica?",
-      resposta: "James Alan Hetfield "
+      resposta: "James Alan Hetfield"
     },
     {
       pergunta: "A que país é atribuído a invenção do esparguete?",
@@ -653,22 +653,33 @@ function changeTime(_this, channel, cmd, query)
     }
 }
 /* 
-    Vai buscar a temperatura
+    Grava os objectos para o ficheiro txt
     #################################################################### 
 */
-function startTemperatura(_this, channel, smsCmd, query, fromNick)
+function saveToFile(arrayToFile, pathToFile)
 {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", 'http://api.weatherapi.com/v1/current.json?key=f5afd9f9483348d0826161751221902&q='+query+'&aqi=no', false);
-        xhr.onreadystatechange = function() {
-            if(xhr.readyState == 4 && xhr.status == 200) {
-                var data = JSON.parse(xhr.responseText);
-           
-                channel.msg(fromNick+" neste momento estão "+data.current.temp_c+"ºC em "+data.location.name+","+data.location.country);
-           
-            }
-        }
-        xhr.send();   
+
+  // Remove espaços
+  arrayToFile = arrayToFile.filter(n => n);
+
+  const writeStream = fs.createWriteStream(pathToFile);
+  const pathName = writeStream.path;
+
+  // Vai colocar os valores e vai quebrar a linha com base nas quebras de linha
+  arrayToFile.forEach(value => writeStream.write(`${value}\n`));
+
+  // Escreve todos os eventos para o ficheiro
+  writeStream.on('finish', () => {
+  console.log(`Wrote all the array data to file ${pathName}`);
+  });
+
+  // Eventuais erros
+  writeStream.on('error', (err) => {
+  console.error(`There is an error writing the file ${pathName} => ${err}`)
+  });
+
+  // Fecha a stream depois de tudo concluido
+  writeStream.end();   
 }
 /* 
     Inicia o Shout
@@ -745,7 +756,6 @@ function anunciaVencedorQuiz(_this, channel)
         channel.msg("Não foram encontrados vencedores.");
       
       }
-
 }
 /* 
     Inicia o Quiz
@@ -850,15 +860,14 @@ function checkNickBlacklist(nick, _this, channel)
 
     // Verifica se o nome da pessoa contem aquelas palavras
     for (const item of blackList) {
-      if (nickPessoa.indexOf(item) > -1) {
-
-        console.log("encontado -> "+item);
-        setTimeout(function () {
-           channel.kick("Kick Teste", nick);
-        }, 2000);
-
-
-       
+      if(item != "")
+      {
+        if (nickPessoa.indexOf(item) > -1) {
+          console.log("encontado -> "+item);
+          setTimeout(function () {
+            //  channel.kick("Conteúdo Sexual/Inapropriado encontrado no nick, por favor, mude de nick de sala.", nick);
+          }, 2000);
+        }
       }
     }
 
@@ -942,6 +951,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                 var smsCmd = smsNick.substring(smsNick.indexOf("<") + 1, smsNick.lastIndexOf(">"));
                 // Tratar a string para ir buscar o resto do comando depois de >
                 var query = smsNick.substring(smsNick.indexOf('>') + 1);
+                query = query.substring(1); // Remove espaço entre o comando e o inicio da query
                 // Verifica se o nome veio de um dos permitidos e se é para o bot
                 // Verifica se é uma ordem ou não.
                 if(owner.includes(fromNick) && toNick == myNick) // Verifica se vai ao PV
@@ -949,15 +959,18 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
                     switch(smsCmd) {
                       case "startshout":
+                            // Inicia o Shout
                             channel.msg("Shout a iniciar..."); 
                             unbindAll();
                             startShout(_this, channel);
                         break;
                       case "stopshout":
+                            // Cancela o Shout
                             channel.msg("Shout parado.");
                             unbindAll(); 
                         break;
                        case "startquiz":
+                            // Ativa o quiz 
                             channel.msg("Quiz vai iniciar dentro de segundos..."); 
                             unbindAll();
                             startQuiz(_this, channel);
@@ -968,23 +981,43 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                             unbindAll(); 
                         break;  
                         case "say":
+                            // Envia mensagem para o canal
                             channel.msg(query);
                         break;  
                         case "setShoutTime":
+                            // Muda o tempo do shout
                             changeTime(_this, channel,"setShoutTime", query);
                         break;  
                         case "setQuizTime":
+                            // Muda o tempo entre respostas do quiz
                             changeTime(_this, channel, "setQuizTime", query);
                         break; 
                         case "setQuizLimit":
+                            // Muda o limite do quiz
                             changeTime(_this, channel, "setQuizLimit", query);
                         break;   
                         case "setmode":
+                            // Atualiza o estalo do bot
                             mudarModo(query);
                             channel.msg("Estado atualizado.");
                         break;  
+                        case "addToBlacklist":
+                            // Adiciona uma palavra nova à blacklist
+                            blackList.indexOf(query) === -1 ? blackList.push(query) : console.log("BlackList: Este item já existe - "+query);
+                            saveToFile(blackList, "db/blacklist.txt");
+                            console.log(blackList);
+                        break;     
+                        case "addToOwner":
+                            // Adiciona uma palavra nova ao owner
+                            owner.indexOf(query) === -1 ? owner.push(query) : console.log("Owner: Este item já existe - "+query);
+                            console.log(owner);
+                        break; 
+                        case "addToNicksEntra":
+                            // Adiciona uma palavra nova à blacklist
+                            nicksStatus.indexOf(query) === -1 ? nicksStatus.push(query) : console.log("NickStatus: Este item já existe - "+query);
+                            console.log(nicksStatus);
+                        break; 
                         case "debug":
-                          console.log(quizVencedor);
                         break;    
 
                       default:
