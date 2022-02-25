@@ -142,7 +142,6 @@ var shout = [
       frase: "Todos falam, mas nenhum diz nada!"
     }
 ];
-
 /* 
     Respostas - Sempre que falarem no nome do bot, vai responder aleatoriamente
 */
@@ -331,7 +330,6 @@ var frases = [
       frase: "Vai pastar {nick}.."
     }
 ];
-
 /* 
     Quiz - Vai falar estas frases de tempos em tempos
 */
@@ -682,6 +680,17 @@ function saveToFile(arrayToFile, pathToFile)
   writeStream.end();   
 }
 /* 
+    Faz um print integral do Objecto para o pv do user
+    #################################################################### 
+*/
+function printObject(object, _this, channel, fromNick)
+{    
+    // Loop pelo objecto
+    for (const value of object) {
+      channel.pvt(value, fromNick);
+    }
+}
+/* 
     Inicia o Shout
     ####################################################################
 */
@@ -960,13 +969,13 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                     switch(smsCmd) {
                       case "startshout":
                             // Inicia o Shout
-                            channel.msg("Shout a iniciar..."); 
+                            channel.pvt("Shout a iniciar...", fromNick);
                             unbindAll();
                             startShout(_this, channel);
                         break;
                       case "stopshout":
                             // Cancela o Shout
-                            channel.msg("Shout parado.");
+                            channel.pvt("Shout parado", fromNick);
                             unbindAll(); 
                         break;
                        case "startquiz":
@@ -1003,21 +1012,24 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                         break;  
                         case "addToBlacklist":
                             // Adiciona uma palavra nova à blacklist
-                            blackList.indexOf(query) === -1 ? blackList.push(query) : console.log("BlackList: Este item já existe - "+query);
-                            saveToFile(blackList, "db/blacklist.txt");
-                            console.log(blackList);
+                            if(blackList.indexOf(query) === -1)
+                            { blackList.push(query); saveToFile(blackList, "db/blacklist.txt");  channel.pvt(query+" - Item adicionado", fromNick);
+                            } else { channel.pvt(query+" - Este item já existe", fromNick); }
+
                         break;     
                         case "addToOwner":
                             // Adiciona uma palavra nova ao owner
-                            owner.indexOf(query) === -1 ? owner.push(query) : console.log("Owner: Este item já existe - "+query);
-                            console.log(owner);
+                            if(owner.indexOf(query) === -1)
+                            { owner.push(query); saveToFile(owner, "db/owner.txt"); channel.pvt(query+" - Item adicionado", fromNick); console.log(owner);
+                            } else { channel.pvt(query+" - Este item já existe", fromNick); }
                         break; 
                         case "addToNicksEntra":
                             // Adiciona uma palavra nova à blacklist
-                            nicksStatus.indexOf(query) === -1 ? nicksStatus.push(query) : console.log("NickStatus: Este item já existe - "+query);
+                            nicksStatus.indexOf(query) === -1 ? nicksStatus.push(query) : channel.pvt(query+" -  Este item já existe", fromNick);
                             console.log(nicksStatus);
                         break; 
                         case "debug":
+                        printObject(blackList, _this, channel, fromNick);
                         break;    
 
                       default:
