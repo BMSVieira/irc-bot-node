@@ -683,12 +683,27 @@ function saveToFile(arrayToFile, pathToFile)
     Faz um print integral do Objecto para o pv do user
     #################################################################### 
 */
-function printObject(object, _this, channel, fromNick)
+function printObject(query, _this, channel, fromNick)
 {    
     // Loop pelo objecto
-    for (const value of object) {
+    for (const value of query) {
       channel.pvt(value, fromNick);
     }
+}
+/* 
+    Remove um valor do objecto
+    #################################################################### 
+*/
+function removeObject(object, query, _this, channel, fromNick, pathToFile)
+{    
+    // Loop pelo objecto
+    var index = object.indexOf(query);
+    if (index !== -1) {
+      object.splice(index, 1);
+      saveToFile(object, pathToFile);
+      channel.pvt("Item removido com sucesso.", fromNick);
+    }
+
 }
 /* 
     Inicia o Shout
@@ -1025,9 +1040,39 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                         break; 
                         case "addToNicksEntra":
                             // Adiciona uma palavra nova à blacklist
-                            nicksStatus.indexOf(query) === -1 ? nicksStatus.push(query) : channel.pvt(query+" -  Este item já existe", fromNick);
-                            console.log(nicksStatus);
+                            if(nicksStatus.indexOf(query) === -1)
+                            { nicksStatus.push(query); saveToFile(nicksStatus, "db/nicksstatus.txt");  channel.pvt(query+" - Item adicionado", fromNick);
+                            } else { channel.pvt(query+" - Este item já existe", fromNick); }
                         break; 
+                        case "show":
+                            // Mostra os dados
+                            switch(query) {
+                              case "blackList":
+                                 query = blackList;
+                              break;
+                              case "owner":
+                                 query = owner;
+                              break;
+                              case "nickstatus":
+                                 query = nicksStatus;
+                              break;
+                              default:
+                                query = "";
+                            }
+                            printObject(query, _this, channel, fromNick);
+                        break; 
+                        case "removeBlacklist":
+                            // Remove um item da blacklist
+                            removeObject(blackList, query, _this, channel, fromNick, "db/blacklist.txt");
+                        break; 
+                        case "removeOwner":
+                            // Remove um item da blacklist
+                            removeObject(owner, query,  _this, channel, fromNick, "db/owner.txt");
+                        break; 
+                        case "removeNickstatus":
+                            // Remove um item da blacklist
+                            removeObject(nicksStatus, query, _this, channel, fromNick, "db/nicksstatus.txt");
+                        break;                         
                         case "debug":
                         printObject(blackList, _this, channel, fromNick);
                         break;    
