@@ -9,6 +9,7 @@
 var irc = require("irc-connect");
 var channels = require('irc-channels');
 const fs = require('fs');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 /* 
     Minhas credenciais
@@ -595,7 +596,20 @@ var quiz = [
       resposta: "Michelangelo"
     } 
 ];
-
+/* 
+    Verifica se é admin ou não
+    #################################################################### 
+*/
+function isAdmin(fromNick)
+{    
+    // Verifica se este nick está no array
+    if (owner.includes(fromNick))
+    {
+      return true;
+    } else {
+      return false;
+    }
+}
 /* 
     Muda o modo atual do bot
     ####################################################################
@@ -649,6 +663,26 @@ function changeTime(_this, channel, cmd, query)
       default:
         // Nada em Default
     }
+}
+/* 
+    Vai buscar a temperatura
+    #################################################################### 
+*/
+function startTemperatura(_this, channel, smsCmd, query, fromNick)
+{
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", 'http://api.weatherapi.com/v1/current.json?key=f5afd9f9483348d0826161751221902&q='+query+'&aqi=no', true);
+      xhr.onreadystatechange = function() {
+          if(xhr.readyState == 4 && xhr.status == 200) {
+              var data = JSON.parse(xhr.responseText);
+              channel.pvt("Neste momento estão "+data.current.temp_c+"ºC em "+data.location.name+", "+data.location.country, fromNick);
+              channel.pvt("-- Outras informações: --", fromNick);
+              channel.pvt("Velocidade do Vento: "+data.current.wind_kph+" Kmh", fromNick);
+              channel.pvt("Rajada: "+data.current.gust_kph+" Kmh", fromNick);
+              channel.pvt("Condição Meteorológica: "+data.current.condition.text, fromNick);
+          } 
+      }
+      xhr.send();
 }
 /* 
     Grava os objectos para o ficheiro txt
@@ -889,7 +923,7 @@ function checkNickBlacklist(nick, _this, channel)
         if (nickPessoa.indexOf(item) > -1) {
           console.log("encontado -> "+item);
           setTimeout(function () {
-            //  channel.kick("Conteúdo Sexual/Inapropriado encontrado no nick, por favor, mude de nick de sala.", nick);
+            //  channel.kick("Nick com conteúdo sexual não permitido. Mude de nick ou de sala!", nick);
           }, 2000);
         }
       }
@@ -978,103 +1012,157 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                 query = query.substring(1); // Remove espaço entre o comando e o inicio da query
                 // Verifica se o nome veio de um dos permitidos e se é para o bot
                 // Verifica se é uma ordem ou não.
-                if(owner.includes(fromNick) && toNick == myNick) // Verifica se vai ao PV
+                if(toNick == myNick) // Verifica se vai ao PV
                 {
 
                     switch(smsCmd) {
                       case "startshout":
-                            // Inicia o Shout
-                            channel.pvt("Shout a iniciar...", fromNick);
-                            unbindAll();
-                            startShout(_this, channel);
+                            if(isAdmin(fromNick))
+                            {
+                              // Inicia o Shout
+                              channel.pvt("Shout a iniciar...", fromNick);
+                              unbindAll();
+                              startShout(_this, channel);       
+                            }
                         break;
                       case "stopshout":
-                            // Cancela o Shout
-                            channel.pvt("Shout parado", fromNick);
-                            unbindAll(); 
+                            if(isAdmin(fromNick))
+                            {
+                              // Cancela o Shout
+                              channel.pvt("Shout parado", fromNick);
+                              unbindAll(); 
+                            }
                         break;
                        case "startquiz":
-                            // Ativa o quiz 
-                            channel.msg("Quiz vai iniciar dentro de segundos..."); 
-                            unbindAll();
-                            startQuiz(_this, channel);
+                            if(isAdmin(fromNick))
+                            {
+                              // Ativa o quiz 
+                              channel.msg("Quiz vai iniciar dentro de segundos..."); 
+                              unbindAll();
+                              startQuiz(_this, channel);
+                            }
                        break;
                        case "stopquiz":
-                            // Anuncia o vencedor    
-                            anunciaVencedorQuiz(_this, channel);
-                            unbindAll(); 
+                            if(isAdmin(fromNick))
+                            {
+                              // Anuncia o vencedor    
+                              anunciaVencedorQuiz(_this, channel);
+                              unbindAll(); 
+                            }
                         break;  
                         case "say":
-                            // Envia mensagem para o canal
-                            channel.msg(query);
+                            if(isAdmin(fromNick))
+                            {
+                              // Envia mensagem para o canal
+                              channel.msg(query);
+                            }
                         break;  
                         case "setShoutTime":
-                            // Muda o tempo do shout
-                            changeTime(_this, channel,"setShoutTime", query);
+                            if(isAdmin(fromNick))
+                            {
+                              // Muda o tempo do shout
+                              changeTime(_this, channel,"setShoutTime", query);
+                            }
                         break;  
                         case "setQuizTime":
-                            // Muda o tempo entre respostas do quiz
-                            changeTime(_this, channel, "setQuizTime", query);
+                            if(isAdmin(fromNick))
+                            {
+                              // Muda o tempo entre respostas do quiz
+                              changeTime(_this, channel, "setQuizTime", query);
+                            }
                         break; 
                         case "setQuizLimit":
-                            // Muda o limite do quiz
-                            changeTime(_this, channel, "setQuizLimit", query);
+                            if(isAdmin(fromNick))
+                            {
+                              // Muda o limite do quiz
+                              changeTime(_this, channel, "setQuizLimit", query);
+                            }
                         break;   
                         case "setmode":
-                            // Atualiza o estalo do bot
-                            mudarModo(query);
-                            channel.msg("Estado atualizado.");
+                            if(isAdmin(fromNick))
+                            {
+                              // Atualiza o estalo do bot
+                              mudarModo(query);
+                              channel.msg("Estado atualizado.");
+                            }
                         break;  
                         case "addToBlacklist":
-                            // Adiciona uma palavra nova à blacklist
-                            if(blackList.indexOf(query) === -1)
-                            { blackList.push(query); saveToFile(blackList, "db/blacklist.txt");  channel.pvt(query+" - Item adicionado", fromNick);
-                            } else { channel.pvt(query+" - Este item já existe", fromNick); }
-
+                            if(isAdmin(fromNick))
+                            {
+                              // Adiciona uma palavra nova à blacklist
+                              if(blackList.indexOf(query) === -1)
+                              { blackList.push(query); saveToFile(blackList, "db/blacklist.txt");  channel.pvt(query+" - Item adicionado", fromNick);
+                              } else { channel.pvt(query+" - Este item já existe", fromNick); }
+                            }
                         break;     
                         case "addToOwner":
-                            // Adiciona uma palavra nova ao owner
-                            if(owner.indexOf(query) === -1)
-                            { owner.push(query); saveToFile(owner, "db/owner.txt"); channel.pvt(query+" - Item adicionado", fromNick); console.log(owner);
-                            } else { channel.pvt(query+" - Este item já existe", fromNick); }
+                            if(isAdmin(fromNick))
+                            {
+                              // Adiciona uma palavra nova ao owner
+                              if(owner.indexOf(query) === -1)
+                              { owner.push(query); saveToFile(owner, "db/owner.txt"); channel.pvt(query+" - Item adicionado", fromNick); console.log(owner);
+                              } else { channel.pvt(query+" - Este item já existe", fromNick); }
+                            }
                         break; 
                         case "addToNicksEntra":
-                            // Adiciona uma palavra nova à blacklist
-                            if(nicksStatus.indexOf(query) === -1)
-                            { nicksStatus.push(query); saveToFile(nicksStatus, "db/nicksstatus.txt");  channel.pvt(query+" - Item adicionado", fromNick);
-                            } else { channel.pvt(query+" - Este item já existe", fromNick); }
+                            if(isAdmin(fromNick))
+                            {
+                              // Adiciona uma palavra nova à blacklist
+                              if(nicksStatus.indexOf(query) === -1)
+                              { nicksStatus.push(query); saveToFile(nicksStatus, "db/nicksstatus.txt");  channel.pvt(query+" - Item adicionado", fromNick);
+                              } else { channel.pvt(query+" - Este item já existe", fromNick); }
+                            }
                         break; 
                         case "show":
-                            // Mostra os dados
-                            switch(query) {
-                              case "blackList":
-                                 query = blackList;
-                              break;
-                              case "owner":
-                                 query = owner;
-                              break;
-                              case "nickstatus":
-                                 query = nicksStatus;
-                              break;
-                              default:
-                                query = "";
+                            if(isAdmin(fromNick))
+                            {
+                              // Mostra os dados
+                              switch(query) {
+                                case "blackList":
+                                   query = blackList;
+                                break;
+                                case "owner":
+                                   query = owner;
+                                break;
+                                case "nickstatus":
+                                   query = nicksStatus;
+                                break;
+                                default:
+                                  query = "";
+                              }
+                              printObject(query, _this, channel, fromNick);
                             }
-                            printObject(query, _this, channel, fromNick);
                         break; 
                         case "removeBlacklist":
-                            // Remove um item da blacklist
-                            removeObject(blackList, query, _this, channel, fromNick, "db/blacklist.txt");
+                            if(isAdmin(fromNick))
+                            {
+                              // Remove um item da blacklist
+                              removeObject(blackList, query, _this, channel, fromNick, "db/blacklist.txt");
+                            }
                         break; 
                         case "removeOwner":
-                            // Remove um item da blacklist
-                            removeObject(owner, query,  _this, channel, fromNick, "db/owner.txt");
+                            if(isAdmin(fromNick))
+                            {
+                              // Remove um item da blacklist
+                              removeObject(owner, query,  _this, channel, fromNick, "db/owner.txt");
+                            }
                         break; 
                         case "removeNickstatus":
+                            if(isAdmin(fromNick))
+                            {
                             // Remove um item da blacklist
                             removeObject(nicksStatus, query, _this, channel, fromNick, "db/nicksstatus.txt");
-                        break;                         
+                            }
+                        break; 
+                        case "temperatura":
+                            startTemperatura(_this, channel, smsCmd, query, fromNick);
+                        break;
                         case "debug":
-                        printObject(blackList, _this, channel, fromNick);
+                            if(isAdmin(fromNick))
+                            {
+                              
+
+                            }
                         break;    
 
                       default:
@@ -1102,12 +1190,12 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
                             switch(smsCmd) {
                                 case "temperatura":
-                                    // startTemperatura(_this, channel, smsCmd, query, fromNick);
+                                  startTemperatura(_this, channel, smsCmd, query, fromNick);
                                 break;
-                                case "horoscopo":
+                                case "XXX":
                                     // startTemperatura(_this, channel, smsCmd, query, fromNick);
                                 break;     
-                                case "sendto":
+                                case "XXX":
                                     // startTemperatura(_this, channel, smsCmd, query, fromNick);
                                 break;                       
                               default:
@@ -1126,4 +1214,3 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
             });
         });
     });
-
