@@ -945,15 +945,12 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
-        console.log('NOTICE:', event.params[1]);
+        console.log('NOTICEE:', event.params[1]);
     })
     // Obter todos os nomes
     /*.on('names', function (cname, names) {
         console.log(cname, names);
     })*/
-
-      this.join('#Portugal', function(channel){
- });
 
     freenode.on('welcome', function (msg) {
 
