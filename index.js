@@ -935,7 +935,7 @@ var _this = 0;
 
 var freenode = irc.connect('irc.brazink.net', ircOptions)
     //include some plugins
-    .use(irc.pong, irc.names, irc.motd, channels)
+    // .use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
     .on('identified', function (nick) {
@@ -944,12 +944,13 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
+      this.send('JOIN #Portugal');
         console.log('NOTICE:', event.params[1]);
     })
     // Obter todos os nomes
-    .on('names', function (cname, names) {
+    /*.on('names', function (cname, names) {
         console.log(cname, names);
-    })
+    })*/
 
     freenode.on('welcome', function (msg) {
 
