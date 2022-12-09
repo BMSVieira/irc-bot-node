@@ -1,12 +1,12 @@
 {
-  "name": "bot",
-  "version": "1.0.0",
+  "name": "IRCBot",
+  "version": "2.0.0",
   "description": "irc bot",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "",
+  "author": "Bruno",
   "license": "ISC",
   "dependencies": {
     "irc-channels": "^3.6.2",
