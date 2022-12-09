@@ -941,15 +941,16 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         this.send('JOIN #Portugal');
     })
 
-    // Quando existe algum aviso
-   /* .on('NOTICE', function (event) {
-        console.log('NOTICE:', event.params[1]);
-    }) */
-    /*
     // Obter todos os nomes
     .on('names', function (cname, names) {
         console.log(cname, names);
-    })*/
+    })
+
+
+    // Quando existe algum aviso
+    .on('NOTICE', function (event) {
+        console.log('NOTICE:', event.params[1]);
+    })
 
     freenode.on('welcome', function (msg) {
 
