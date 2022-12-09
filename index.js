@@ -15,7 +15,7 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     Minhas credenciais
 */
 var myNick = "EpiC";
-var myPassword = "botportugal";
+var myPassword = "asuzmeuamor";
 
 /* 
     Irc Options
@@ -62,7 +62,7 @@ var blackList = fs.readFileSync('db/blacklist.txt').toString().split("\n");
     3 - Não responde ao identificar
     4 - Frases para Nicks registados
 */
-var modoAtual = 3;
+var modoAtual = 0;
 
 /* 
     Frases para nicks registados
@@ -154,7 +154,7 @@ var frases = [
       frase: "{nick} o que tu queres... sei eu!"
     },
     {
-      frase: "Tens a certeza que queres jogar esse jogo comigo {nick}? Na escola onde tu andas, já fui professora."
+      frase: "Tens a certeza que queres jogar esse jogo comigo {nick}? Na escola onde tu andas, já fui professor."
     },
     {
       frase: "{nick} adoça mais a tua vida, a tua rotina já é muito amarga..."
@@ -484,7 +484,7 @@ var quiz = [
       resposta: "Real Madrid"
     },
     {
-      pergunta: "Quem foi campeão do mundo no ano 1998?",
+      pergunta: "Quem foi campeão do mundo de futebol no ano 1998?",
       resposta: "França"
     },
     {
@@ -757,9 +757,6 @@ function startShout(_this, channel)
             ultimoShout = rndInt;
         
     }, shoutTime);
-
-    // Atualizar Estado
-    mudarModo(1);
 }
 /* 
     Inicia a resposta a utilizadores que entraram
@@ -782,9 +779,6 @@ function startRepostaEntrou(_this, channel, nick)
             ultimaFraseNicksStatus = rndInt;
 
     }, 2000);
-
-    // Atualizar Estado
-    mudarModo(4);
 }
 /* 
     Faz as contas e anuncia o vencedor do quiz
@@ -812,7 +806,6 @@ function anunciaVencedorQuiz(_this, channel)
       } else {
         // Envia os dados com o vencedor
         channel.msg("Não foram encontrados vencedores.");
-      
       }
 }
 /* 
@@ -923,7 +916,7 @@ function checkNickBlacklist(nick, _this, channel)
         if (nickPessoa.indexOf(item) > -1) {
           console.log("encontado -> "+item);
           setTimeout(function () {
-            //  channel.kick("Nick com conteúdo sexual não permitido. Mude de nick ou de sala!", nick);
+            channel.kick("Nick com conteúdo sexual não permitido. Mude de nick ou de sala!", nick);
           }, 2000);
         }
       }
@@ -952,10 +945,11 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
     .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
     })
+    /*
     // Obter todos os nomes
     .on('names', function (cname, names) {
         console.log(cname, names);
-    })
+    })*/
 
     freenode.on('welcome', function (msg) {
 
@@ -965,7 +959,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         })
 
         // Muda o nick e entra com a conta registada
-        this.nick('EpiC', 'botportugal', function(err){
+        this.nick('EpiC', 'asuzmeuamor', function(err){
             console.log('There was a problem setting your NICK:', err);
         });
 
@@ -1182,7 +1176,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                     } else {
 
                         // Verifica se identificaram o nome do bot em algum lado
-                        if(string.indexOf(substring) !== -1 && modoAtual != 3)
+                        if(string.indexOf(substring) !== -1 && modoAtual != 3 && modoAtual != 2)
                         {
                             startResposta(fromNick, channel);
 
