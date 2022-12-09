@@ -942,9 +942,9 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
     })
 
     // Quando existe algum aviso
-    .on('NOTICE', function (event) {
+   /* .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
-    })
+    }) */
     /*
     // Obter todos os nomes
     .on('names', function (cname, names) {
