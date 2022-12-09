@@ -944,7 +944,6 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
 
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
-      this.send('JOIN #Portugal');
         console.log('NOTICE:', event.params[1]);
     })
     // Obter todos os nomes
