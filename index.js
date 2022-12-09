@@ -22,7 +22,7 @@ var myPassword = "asuzmeuamor";
 */
 var ircOptions = {
     port: 6697,
-    secure: false,
+    secure: true,
     nick: 'Unknown',
     realname: 'Bot Portugal',
     ident: 'botportugal'
@@ -932,6 +932,7 @@ function checkNickBlacklist(nick, _this, channel)
 */
 var _this = 0;
 
+
 var freenode = irc.connect('irc.brazink.net', ircOptions)
     //include some plugins
     .use(irc.pong, irc.names, irc.motd, channels)
@@ -941,15 +942,13 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         this.send('JOIN #Portugal');
     })
 
-    // Obter todos os nomes
-    .on('names', function (cname, names) {
-        console.log(cname, names);
-    })
-
-
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
+    })
+    // Obter todos os nomes
+    .on('names', function (cname, names) {
+        console.log(cname, names);
     })
 
     freenode.on('welcome', function (msg) {
@@ -957,6 +956,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         // Keep alive enviado.
         this.on('PING', function (evt) {
             console.log("keep-alive enviado.");
+             this.send('PONG');
         })
 
         // Muda o nick e entra com a conta registada
@@ -975,6 +975,8 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         // Join Channel
         this.join('#Portugal', function(channel){
          
+
+         /*
             // Quando alguem entra na sala, se for Nick com status, envia uma mensagem!
             _this.on('JOIN', function (event) {
                 if(nicksStatus.includes(event.nick)) // Verifica se vai ao PV
@@ -1207,5 +1209,7 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                 console.log('message from: '+event.nick, 'to: '+params[0], params[1]);
 
             });
+
+            */
         });
     });
