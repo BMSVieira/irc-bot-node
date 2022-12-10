@@ -950,7 +950,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
         console.log(cname, names);
     })
 
-    freenode.on('Welcome to Brazink!', function (msg) {
+    freenode.on('NOTICE', function (msg) {
 
         // Keep alive enviado.
         this.on('PING', function (evt) {
