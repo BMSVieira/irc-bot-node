@@ -932,7 +932,6 @@ function checkNickBlacklist(nick, _this, channel)
 */
 var _this = 0;
 
-
 var freenode = irc.connect('irc.brazink.net', ircOptions)
     //include some plugins
     .use(irc.pong, irc.names, irc.motd, channels)
@@ -940,24 +939,22 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
     // Quando o servidor confirma a password
     .on('identified', function (nick) {
         this.send('JOIN #Portugal');
-        console.log("Identificado");
     })
 
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
-        console.log('NOTICEE:', event.params[1]);
+        console.log('NOTICE:', event.params[1]);
     })
     // Obter todos os nomes
-    /*.on('names', function (cname, names) {
+    .on('names', function (cname, names) {
         console.log(cname, names);
-    })*/
+    })
 
     freenode.on('welcome', function (msg) {
 
         // Keep alive enviado.
         this.on('PING', function (evt) {
             console.log("keep-alive enviado.");
-             this.send('PONG');
         })
 
         // Muda o nick e entra com a conta registada
@@ -976,8 +973,6 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
         // Join Channel
         this.join('#Portugal', function(channel){
          
-
-         /*
             // Quando alguem entra na sala, se for Nick com status, envia uma mensagem!
             _this.on('JOIN', function (event) {
                 if(nicksStatus.includes(event.nick)) // Verifica se vai ao PV
@@ -1210,7 +1205,5 @@ var freenode = irc.connect('irc.brazink.net', ircOptions)
                 console.log('message from: '+event.nick, 'to: '+params[0], params[1]);
 
             });
-
-            */
         });
     });
