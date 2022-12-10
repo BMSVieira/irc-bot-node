@@ -21,7 +21,7 @@ var myPassword = "asuzmeuamor";
     Irc Options
 */
 var ircOptions = {
-   // port: 6697,
+    // port: 6697,
     secure: true,
     nick: 'Unknown',
     realname: 'Bot Portugal',
@@ -932,7 +932,7 @@ function checkNickBlacklist(nick, _this, channel)
 */
 var _this = 0;
 
-var freenode = irc.connect('167.114.210.155', ircOptions)
+var freenode = irc.connect('irc.brazink.net', ircOptions)
     //include some plugins
     .use(irc.pong, irc.names, irc.motd, channels)
 
