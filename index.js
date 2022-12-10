@@ -934,21 +934,21 @@ var _this = 0;
 
 var freenode = irc.connect('167.114.210.155', ircOptions)
     //include some plugins
-    .use(irc.pong, channels)
+    .use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-   /* .on('identified', function (nick) {
+    .on('identified', function (nick) {
         this.send('JOIN #Portugal');
-    }) */
+    })
 
     // Quando existe algum aviso
-    /*.on('NOTICE', function (event) {
+    .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
-    }) */
-    /* // Obter todos os nomes
+    })
+    // Obter todos os nomes
     .on('names', function (cname, names) {
         console.log(cname, names);
-    })*/
+    })
 
     freenode.on('welcome', function (msg) {
 
