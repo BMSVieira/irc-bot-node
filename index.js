@@ -938,10 +938,10 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
     freenode.use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-    /* freenode.on('identified', function (nick) {
+     freenode.on('identified', function (nick) {
       console.log("Identificado")
         this.send('JOIN #Portugal');
-    }) */
+    }) 
 
     // Quando existe algum aviso
     freenode.on('NOTICE', function (event) {
@@ -953,39 +953,38 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
         console.log(cname, names);
     })
 
+    freenode.on('welcome', function (msg) {
+
         // Keep alive enviado.
-        freenode.on('PING', function (evt) {
+        this.on('PING', function (evt) {
             console.log("keep-alive enviado.");
         })
 
         // Keep alive enviado.
-        freenode.on('RPL_WELCOME', function (evt) {
+        this.on('RPL_WELCOME', function (evt) {
             console.log("Welcome");
         })
 
 
         // Muda o nick e entra com a conta registada
-        freenode.nick('EpiC', 'asuzmeuamor', function(err){
+        this.nick('EpiC', 'asuzmeuamor', function(err){
             console.log('There was a problem setting your NICK:', err);
         });
 
          // Envado quando o nick muda
-        freenode.on('nick', function (nick) {
+        this.on('nick', function (nick) {
             console.log('Your nick is now:', nick);
         })
 
-freenode.on('identified', function (nick) {
-      console.log("Identificado")
-        this.send('JOIN #Portugal');
-    }) 
+
 
         // Save Scope do freenode
-        _this = freenode;
+        _this = this;
 
-        freenode.send('JOIN #Portugal');
+        this.send('JOIN #Portugal');
 
         // Join Channel
-        freenode.join('#Portugal', function(channel){
+        this.join('#Portugal', function(channel){
          
             // Quando alguem entra na sala, se for Nick com status, envia uma mensagem!
          /*   _this.on('JOIN', function (event) {
@@ -1220,4 +1219,4 @@ freenode.on('identified', function (nick) {
 
             });
         });
-   
+    });
