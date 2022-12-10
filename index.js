@@ -8,8 +8,8 @@
 
 var irc = require("irc-connect");
 var channels = require('irc-channels');
-const fs = require('fs');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+// const fs = require('fs');
+// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 /* 
     Minhas credenciais
@@ -22,7 +22,7 @@ var myPassword = "asuzmeuamor";
 */
 var ircOptions = {
     port: 6697,
-    secure: false,
+    secure: true,
     nick: 'Unknown',
     realname: 'Bot Portugal',
     ident: 'botportugal'
