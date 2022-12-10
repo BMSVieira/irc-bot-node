@@ -937,7 +937,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
     .use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-    .on('identified', function (nick) {
+    .on('welcome', function (nick) {
         this.send('JOIN #Portugal');
     })
 
@@ -950,7 +950,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
         console.log(cname, names);
     })
 
-    freenode.on('NOTICE', function (msg) {
+    freenode.on('welcome', function (msg) {
 
         // Keep alive enviado.
         this.on('PING', function (evt) {
@@ -958,9 +958,9 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
         })
 
         // Muda o nick e entra com a conta registada
-        /* this.nick('EpiC', 'asuzmeuamor', function(err){
+        this.nick('EpiC', 'asuzmeuamor', function(err){
             console.log('There was a problem setting your NICK:', err);
-        }); */
+        });
 
          // Envado quando o nick muda
         this.on('nick', function (nick) {
