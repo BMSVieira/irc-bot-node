@@ -952,8 +952,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
         console.log(cname, names);
     })
 
-
-    freenode.on('connect', function (msg) {
+    freenode.on('welcome', function (msg) {
 
         // Keep alive enviado.
         this.on('PING', function (evt) {
@@ -969,8 +968,6 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
         this.on('nick', function (nick) {
             console.log('Your nick is now:', nick);
         })
-
-        this.send('JOIN #Portugal');
 
         // Save Scope do freenode
         _this = this;
