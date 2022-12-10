@@ -23,7 +23,7 @@ var myPassword = "asuzmeuamor";
 var ircOptions = {
     // port: 6697,
     secure: true,
-    nick: 'Unknown',
+    nick: 'EpiC',
     realname: 'Bot Portugal',
     ident: 'botportugal'
 }
