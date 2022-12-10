@@ -943,7 +943,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
 
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
-        console.log('NOTICE:', event.params[1]);
+       // console.log('NOTICE:', event.params[1]);
     })
     // Obter todos os nomes
     .on('names', function (cname, names) {
