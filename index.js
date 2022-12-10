@@ -4,8 +4,7 @@ var ircOptions = {
   //[port] if not provided defaults to 6667 (or if secure, 6697)
   port: 6697,
   //[secure] can be true/false or 'semi' for lazy CA checking (self-signed, obscure CA, etc)
-  secure: "semi",
-  //[nick] is the desired nickname, if not provided one will be generated (you can always use nick() later)
+  secure: true  //[nick] is the desired nickname, if not provided one will be generated (you can always use nick() later)
   nick: 'WernerB',
   //[realname] is the "real name" shown in WHOIS results
   realname: 'Werner Brandes',
