@@ -50,10 +50,11 @@ var quizLimitRespostas = 10 // Limite de respostas do quiz
 /* 
     Utilizadores Permitidos
 */
+/*
 var owner = fs.readFileSync('db/owner.txt').toString().split("\n");
 var nicksStatus = fs.readFileSync('db/nicksstatus.txt').toString().split("\n");
 var blackList = fs.readFileSync('db/blacklist.txt').toString().split("\n");
-
+*/
 /*
     Estado em que está, depende se faz o jogo, shout, parado.
     0 - Default
