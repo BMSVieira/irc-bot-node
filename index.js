@@ -938,10 +938,10 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
     freenode.use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-     freenode.on('identified', function (nick) {
+    /* freenode.on('identified', function (nick) {
       console.log("Identificado")
         this.send('JOIN #Portugal');
-    }) 
+    }) */
 
     // Quando existe algum aviso
     freenode.on('NOTICE', function (event) {
@@ -953,7 +953,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
         console.log(cname, names);
     })
 
-    freenode.on('welcome', function (msg) {
+    freenode.on('connect', function (msg) {
 
         // Keep alive enviado.
         this.on('PING', function (evt) {
