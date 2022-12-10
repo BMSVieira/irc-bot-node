@@ -953,13 +953,18 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
         console.log(cname, names);
     })
 
-
-    freenode.on('connect', function (msg) {
+    freenode.on('RPL_WELCOME', function (msg) {
 
         // Keep alive enviado.
         this.on('PING', function (evt) {
             console.log("keep-alive enviado.");
         })
+
+        // Keep alive enviado.
+        this.on('RPL_WELCOME', function (evt) {
+            console.log("Welcome");
+        })
+
 
         // Muda o nick e entra com a conta registada
         this.nick('EpiC', 'asuzmeuamor', function(err){
