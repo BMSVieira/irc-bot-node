@@ -950,6 +950,8 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
         console.log(cname, names);
     })
 
+
+console.log("Entrei");
     freenode.on('welcome', function (msg) {
 
         // Keep alive enviado.
