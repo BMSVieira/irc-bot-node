@@ -970,6 +970,8 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
             console.log('Your nick is now:', nick);
         })
 
+        this.send('JOIN #Portugal');
+
         // Save Scope do freenode
         _this = this;
 
