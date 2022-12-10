@@ -21,7 +21,7 @@ var myPassword = "asuzmeuamor";
     Irc Options
 */
 var ircOptions = {
-    // port: 6697,
+    port: 6697,
     secure: true,
     nick: 'Unknown',
     realname: 'Bot Portugal',
