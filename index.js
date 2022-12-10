@@ -932,7 +932,7 @@ function checkNickBlacklist(nick, _this, channel)
 */
 var _this = 0;
 
-var freenode = irc.connect('irc.brazink.net', ircOptions)
+var freenode = irc.connect('167.114.210.155', ircOptions)
     //include some plugins
     .use(irc.pong, irc.names, irc.motd, channels)
 
