@@ -937,14 +937,15 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
     .use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-    .on('identified', function (nick) {
+   /* .on('NOTICE', function (nick) {
       console.log("identificado");
         this.send('JOIN #Portugal');
     })
-
+*/
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
+           this.send('JOIN #Portugal');
     })
     // Obter todos os nomes
     .on('names', function (cname, names) {
