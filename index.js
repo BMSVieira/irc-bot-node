@@ -958,9 +958,9 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
         })
 
         // Muda o nick e entra com a conta registada
-        this.nick('EpiC', 'asuzmeuamor', function(err){
+        /* this.nick('EpiC', 'asuzmeuamor', function(err){
             console.log('There was a problem setting your NICK:', err);
-        });
+        }); */
 
          // Envado quando o nick muda
         this.on('nick', function (nick) {
