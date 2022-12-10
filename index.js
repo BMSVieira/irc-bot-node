@@ -21,7 +21,7 @@ var myPassword = "asuzmeuamor";
     Irc Options
 */
 var ircOptions = {
-    port: 6697,
+    // port: 6697,
     secure: true,
     nick: 'Unknown',
     realname: 'Bot Portugal',
@@ -937,24 +937,21 @@ var freenode = irc.connect('167.114.210.155', ircOptions)
     .use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-   /* .on('NOTICE', function (nick) {
-      console.log("identificado");
+    .on('identified', function (nick) {
         this.send('JOIN #Portugal');
     })
-*/
+
     // Quando existe algum aviso
     .on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
-           this.send('JOIN #Portugal');
     })
     // Obter todos os nomes
     .on('names', function (cname, names) {
         console.log(cname, names);
     })
 
-
     freenode.on('welcome', function (msg) {
-console.log("ola");
+
         // Keep alive enviado.
         this.on('PING', function (evt) {
             console.log("keep-alive enviado.");
