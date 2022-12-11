@@ -938,14 +938,20 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
     freenode.use(irc.pong, irc.names, irc.motd, channels)
 
     // Quando o servidor confirma a password
-     freenode.on('identified', function (nick) {
+    /*  freenode.on('identified', function (nick) {
       console.log("Identificado")
         this.send('JOIN #Portugal');
-    }) 
+    }) */
 
     // Quando existe algum aviso
     freenode.on('NOTICE', function (event) {
         console.log('NOTICE:', event.params[1]);
+    })
+
+     // Quando existe algum aviso
+    freenode.on('PING', function (event) {
+        this.send('PONG');
+        console.log("keep-alive enviado.");
     })
 
     // Obter todos os nomes
@@ -956,15 +962,14 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
     freenode.on('welcome', function (msg) {
 
         // Keep alive enviado.
-        this.on('PING', function (evt) {
+        /* this.on('PING', function (evt) {
             console.log("keep-alive enviado.");
-        })
+        }) */
 
         // Keep alive enviado.
         this.on('RPL_WELCOME', function (evt) {
             console.log("Welcome");
         })
-
 
         // Muda o nick e entra com a conta registada
         this.nick('EpiC', 'asuzmeuamor', function(err){
@@ -976,12 +981,8 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
             console.log('Your nick is now:', nick);
         })
 
-
-
         // Save Scope do freenode
         _this = this;
-
-        this.send('JOIN #Portugal');
 
         // Join Channel
         this.join('#Portugal', function(channel){
@@ -993,14 +994,15 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
                     startRepostaEntrou(_this, channel, event.nick);
                 }
             })
-*/
+          */
             // Segurança, sempre que entra um nick faz uma verificação a ver se ele 
             // consta na blacklist
-       /*     this.on('JOIN', function (event) {
+          /*     this.on('JOIN', function (event) {
                 // Ao entrar verifica se o nick está na blacklist
                 checkNickBlacklist(event.nick, _this, channel);
             })
-*/
+          */
+
             // Recebe comandos
             _this.on('PRIVMSG', function(event){
                 
@@ -1161,7 +1163,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
                             }
                         break; 
                         case "temperatura":
-                            startTemperatura(_this, channel, smsCmd, query, fromNick);
+                            // startTemperatura(_this, channel, smsCmd, query, fromNick);
                         break;
                         case "debug":
                             if(isAdmin(fromNick))
@@ -1196,7 +1198,7 @@ var freenode = irc.connect('167.114.210.155', ircOptions);
 
                             switch(smsCmd) {
                                 case "temperatura":
-                                  startTemperatura(_this, channel, smsCmd, query, fromNick);
+                                // startTemperatura(_this, channel, smsCmd, query, fromNick);
                                 break;
                                 case "XXX":
                                     // startTemperatura(_this, channel, smsCmd, query, fromNick);
