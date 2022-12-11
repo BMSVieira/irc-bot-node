@@ -25,7 +25,7 @@ var freenode = irc.connect('irc.freenode.net', ircOptions)
   })
   //fires after the server confirms password
   .on('identified', function (nick) {
-    this.send('JOIN #node.js');
+    this.send('JOIN #freenode');
   })
   //fires only when YOUR nick changes
   .on('nick', function (nick) {
