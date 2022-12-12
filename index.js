@@ -2,8 +2,8 @@
     var myadd = 0;
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-   myadd = add;
-})
+
+  myadd = add;
 
 
 
@@ -11,7 +11,7 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
         userName: 'node',
         realName: 'nodeJS IRC client',
         port: 6697,
-        localAddress: "172.31.128.14",
+        localAddress: myadd,
         debug: true,
         showErrors: true,
         autoRejoin: true,
@@ -31,5 +31,9 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
         encoding: ''
     });
 
-
 console.log(bot);
+  
+})
+
+
+
