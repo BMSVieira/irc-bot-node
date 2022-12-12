@@ -1,4 +1,4 @@
-   var irc = require('irc');
+    var irc = require('irc');
 
     var bot = new irc.Client('irc.ptnet.org','MeMario', {
         userName: 'node',
@@ -23,3 +23,8 @@
         messageSplit: 512,
         encoding: ''
     });
+
+bot.addListener('message', function (from, to, message) {
+    console.log(from + ' => ' + to + ': ' + message);
+});
+
