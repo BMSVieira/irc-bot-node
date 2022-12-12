@@ -4,7 +4,7 @@
         userName: 'node',
         realName: 'nodeJS IRC client',
         port: 6697,
-        localAddress: null,
+        localAddress: "176.9.29.68",
         debug: true,
         showErrors: true,
         autoRejoin: true,
