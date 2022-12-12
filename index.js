@@ -9,7 +9,7 @@
 
 var irc = require('irc');
 
-var bot = new irc.Client('irc.brazink.net','MeMario', {
+var bot = new irc.Client('irc.ptnet.org','MeMario', {
     userName: 'node',
     realName: 'nodeJS IRC client',
     port: 6697,
