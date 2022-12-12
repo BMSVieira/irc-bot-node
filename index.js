@@ -20,7 +20,7 @@ var bot = new irc.Client('irc.brazink.net','MeMario', {
     userName: 'node',
     realName: 'nodeJS IRC client',
     port: 6697,
-    localAddress: "149.90.16.179",
+    localAddress: "167.114.210.155",
     debug: true,
     showErrors: true,
     autoRejoin: true,
