@@ -5,7 +5,7 @@
 
     var irc = require('irc');
     var os = require('os');
-    var networkInterfaces = os.networkInterfaces();
+   // var networkInterfaces = os.networkInterfaces();
 
     // Obter Config Files
     var owners = require('./db/owners');
@@ -51,7 +51,7 @@
         userName: global_userName,
         realName: global_realName,
         port: global_port,
-        localAddress: networkInterfaces["Ethernet"][0].address,
+        localAddress: null,
         debug: false,
         showErrors: true,
         autoRejoin: true,
