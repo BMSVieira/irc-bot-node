@@ -27,7 +27,7 @@
     var modoAtual = 3;
 
     // ** Conectar **
-    var global_irc = "irc.ptnet.org"; // irc.brazink.net | irc.ptnet.org
+    var global_irc = "irc.ptnet.org"; // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     var global_port = 6697;
 
     // ** Identificação **
