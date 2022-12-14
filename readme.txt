@@ -1,5 +1,5 @@
 
-Regras e Comandos do EpiC:
+Regras e Comandos do Bot:
 
 #######################################
 Redes IRC Testadas:
@@ -13,27 +13,17 @@ Redes IRC Testadas:
 - irc.librairc.net #lounge
 
 #######################################
-Utilizadores Permitidos:
-#######################################
-
-- AsuZ
-- _Clandestina_
-- Monte
-
-#######################################
 Regras e Condições Gerais
 #######################################
 
 - As respostas do quiz não são sensiveis a letras maiusculas e minusculas
-- Talvez ignorar a pontuação/acentuação das respostas para tornar mais façil (!? caso a rever)
-- Quando está em alguma ativividade (ex: Quiz) não responde aos utilizadores
-
+- Por causa do Flood Channel Protection só pode fazer uma atividade apenas.
 
 #######################################
 Comandos
 #######################################
 
-Abrir PV do Bot (EpiC) e escrever o comando seguido da query, por exemplo:
+Abrir o PV do Bot:
 
 **** Começar o Quiz **** 
 <startquiz>
@@ -42,7 +32,10 @@ Abrir PV do Bot (EpiC) e escrever o comando seguido da query, por exemplo:
 <stopquiz>
 
 **** Enviar mensagens pelo bot ****
-<say> Mensagem para enviar
+<say> {Mensagem para enviar}
 
+**** Começar o Shout **** 
+<startshout>
 
-
+**** Parar o Shout **** 
+<stopshout>
