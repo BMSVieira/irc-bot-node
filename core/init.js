@@ -26,12 +26,12 @@ var config = [
 {
     global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     global_port: 6697,
-    global_nick: "JusTT",
+    global_nick: "MeMario",
     global_password: "epicsalaportugal",
     global_isRegistered: false,
     global_userName: "supermario",
     global_realName: "supermario",
-    global_channel: "#onlyus",
+    global_channel: "#Portugal",
     modoAtual: 0
 }];      
 
