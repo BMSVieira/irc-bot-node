@@ -48,7 +48,7 @@
         if(core.config[0]["global_isRegistered"])
         {
             client.addListener('registered', function (message) {
-              client.send('PRIVMSG NickServ :IDENTIFY ', global_nick, ' ', global_password);
+              client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]);
             }); 
         }
   
@@ -79,7 +79,7 @@
               } else {
                 
                 // Verifica se identificaram o nome do bot em algum lado
-                if(smsNick.indexOf(myNick) !== -1 && core.config[0]["modoAtual"] != 2 && core.config[0]["modoAtual"] != 3 && core.config[0]["modoAtual"] != 4)
+                if(smsNick.indexOf(myNick) !== -1 && core.config[0]["modoAtual"] == 0)
                 {
                     core.startResposta(from, client);
                 } else { }
@@ -161,6 +161,13 @@
                         core.unbindAll(); 
                     }
                 break;
+                case "setQuizLimit":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Muda o limite do quiz
+                        core.changeTime(fromNick, client, "setQuizLimit", query);
+                    }
+                break;                 
                 default:
                 // Nada em Default
             }
