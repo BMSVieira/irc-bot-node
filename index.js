@@ -24,18 +24,18 @@
     var quizCount = 1;
     var quizBlockedQuestion = 0;
     var quizVencedor = {};
-    var modoAtual = 0;
+    var modoAtual = 3;
 
     // ** Conectar **
-    var global_irc = "irc.brazink.net"; // irc.brazink.net | irc.ptnet.org
+    var global_irc = "irc.ptnet.org"; // irc.brazink.net | irc.ptnet.org
     var global_port = 6697;
 
     // ** Identificação **
-    var global_nick = "EpiC";
+    var global_nick = "MeMario";
     var global_password = "epicsalaportugal";
-    var global_isRegistered = true;
-    var global_userName = "epic";
-    var global_realName = "epic";
+    var global_isRegistered = false;
+    var global_userName = "supermario";
+    var global_realName = "supermario";
     var global_channel = "#Portugal";
 
     var shoutTime = 60000; // 60 Segundos
