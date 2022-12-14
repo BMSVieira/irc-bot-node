@@ -5,7 +5,6 @@
 
     var irc = require('irc');
     var os = require('os');
-   // var networkInterfaces = os.networkInterfaces();
 
     // Obter Config Files
     var owners = require('./db/owners');
