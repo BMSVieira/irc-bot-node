@@ -1,5 +1,3 @@
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
     // ****************************************************************
     // IRC BOT
     // ****************************************************************
@@ -30,7 +28,7 @@
         channels: [core.config[0]["global_channel"]],
         secure: true,
         selfSigned: true,
-        certExpired: false,
+        certExpired: true,
         floodProtection: false,
         floodProtectionDelay: 1000,
         sasl: false,
