@@ -24,15 +24,15 @@ var quizLimitRespostas = 10 // Limite de respostas do quiz
 // Config values
 var config = [
 {
-    global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
+    global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     global_port: 6697,
-    global_nick: "EpiC",
+    global_nick: "MeMario",
     global_password: "epicsalaportugal",
-    global_isRegistered: true,
+    global_isRegistered: false,
     global_userName: "supermario",
     global_realName: "supermario",
     global_channel: "#Portugal",
-    modoAtual: 0
+    modoAtual: 4
 }];      
 
 /* 
