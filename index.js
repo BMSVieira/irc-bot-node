@@ -30,7 +30,7 @@
         channels: [core.config[0]["global_channel"]],
         secure: true,
         selfSigned: true,
-        certExpired: true,
+        certExpired: false,
         floodProtection: false,
         floodProtectionDelay: 1000,
         sasl: false,
