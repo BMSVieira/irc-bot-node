@@ -26,7 +26,7 @@
         autoRejoin: true,
         autoConnect: true,
         channels: [core.config[0]["global_channel"]],
-        secure: true,
+        secure: false,
         selfSigned: true,
         certExpired: true,
         floodProtection: false,
