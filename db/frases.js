@@ -183,6 +183,54 @@ const frases = [
     },
     {
       frase: "Vai pastar {nick}.."
+    },
+    {
+      frase: "Dizem que é ofensivo falar de boca cheia {nick}. A mim ofende-me mais que fales de cabeça vazia!"
+    },
+    {
+      frase: "{nick} as pessoas são perfeitas como o vinho! Ficam melhor com a rolha na boca!"
+    },
+    {
+      frase: "{nick} és fish. Pareces um peixe espada: chato e comprido."
+    },
+    {
+      frase: "{nick} as cobras trocam de pele, mas as que conheço trocam de roupa!"
+    },
+    {
+      frase: "Preocupo-me mais com a previsão do tempo, do que com a tua opinião {nick}."
+    },
+    {
+      frase: "Quem ri por último é porque não entendeu a piada! {nick}"
+    },
+    {
+      frase: "O único exercício que faço é correr atrás de dinheiro! {nick}"
+    },
+    {
+      frase: "Desistir é para os fracos {nick}! Faz como eu, nem tentes!"
+    },
+    {
+      frase: "Se a tua vida estiver amarga {nick}, mexe que o açúcar acumula no fundo!"
+    },
+    {
+      frase: "Não me mandes bocas {nick}, manda-me antes dinheiro!"
+    },
+    {
+      frase: "Calma {nick}, tudo passa! Pode passar-te por cima, mas passa!"
+    },
+    {
+      frase: "Fiz um teste mesmo agora! Um teste do stress. E adivinha {nick}? Deu positivo!"
+    },
+    {
+      frase: "Nunca desistas dos teus sonhos {nick}! Continua a dormir!"
+    },
+    {
+      frase: "Podes confiar em mim todos os teus segredos {nick}. É que eu nem os ouço!"
+    },
+    {
+      frase: "Acabei de ver a pessoa mais inteligente do mundo {nick}! Olhei-me ao espelho!"
+    },
+    {
+      frase: "{nick} antigamente era arrogante! Felizmente agora sou perfeita!"
     }
 ];
 

@@ -54,14 +54,47 @@
   
     // Mensagens do dia e bot ativo.
     // ########################################################################################
+        
+        // Recebe a Message of The Day
         client.addListener('motd', function (motd) {
             console.log(motd);
             console.log("** BOT Está ativo. **");
             console.log(" ");
         });
+
+        // Recebe um ping do servidor
+        client.addListener('ping', function (motd) {
+            console.log("Keep-alive enviado");
+        });
+
+        // Quando estiver registado, inicia a procura por mensagens
+        client.addListener('registered', function (argument) {
+
+                // function creation
+                let interval = setInterval(function(){
+                  if(core.fila.length > 0)
+                  {
+                    client.say(core.config[0]["global_channel"], core.fila[0]);
+                    core.fila.shift();
+                  }
+                }, 1500);
+        });
+
     // ########################################################################################
     // Obter mensagens totais
     // ########################################################################################
+        
+        // Escuta por Utilizadores que entrem com status para dar a mensagem de boas vindas
+        client.addListener('+mode', function (channel, by, mode, argument, message) {
+            
+            if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"])
+            {
+               core.nickJoinedChannel(client, argument); 
+            }    
+
+        });
+
+        // Escuta por mensagens
         client.addListener('message', function (from, to, message) {
             
             // Ignorar todas as mensagens direcionadas a mim, isso é tratado no scope abaixo.
@@ -86,7 +119,7 @@
 
               }
 
-            console.log(from + '(' + to + ') : ' + message);
+                console.log(from + '(' + to + ') : ' + message);
 
             }
 
@@ -119,7 +152,7 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Iniciar Quiz
-                        client.say(core.config[0]["global_channel"], "Quiz vai iniciar dentro de segundos...");
+                        core.filaDeMensagens("Quiz vai iniciar dentro de segundos...");
                         client.say(fromNick, "Quiz a iniciar.");
                         core.unbindAll();
                         core.startQuiz(client);
@@ -179,3 +212,4 @@
     client.addListener('error', function(message) {
         console.log('error: ', message);
     });
+

@@ -1,7 +1,7 @@
 // Obter Config Files
 var owners = require('../db/owners');
 var quiz = require('../db/quiz');
-var frasesNickStatus = require('../db/frasesNicksStatus');
+var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
 var shout = require('../db/shout');
 
@@ -16,25 +16,34 @@ var quizPerguntadas = [];
 var quizCount = 1;
 var quizBlockedQuestion = 0;
 var quizVencedor = {};
+var fila = [];
 
 var shoutTime = 60000; // 60 Segundos
-var quizTime = 15000; // 15 Segundos
-var quizLimitRespostas = 10 // Limite de respostas do quiz
+var quizTime = 25000; // 15 Segundos
+var quizLimitRespostas = 7 // Limite de respostas do quiz
 
 // Config values
 var config = [
 {
-    global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
+    global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     global_port: 6697,
-    global_nick: "MeMario",
+    global_nick: "EpiC",
     global_password: "epicsalaportugal",
-    global_isRegistered: false,
-    global_userName: "supermario",
-    global_realName: "supermario",
+    global_isRegistered: true,
+    global_userName: "portugalbot",
+    global_realName: "portugalbot",
     global_channel: "#Portugal",
-    modoAtual: 4
+    modoAtual: 0
 }];      
 
+/* 
+    Adiciona a mensagem a fila de mensagens
+    ####################################################################
+*/
+function filaDeMensagens(mensagem)
+{
+  fila.push(mensagem);
+}
 
 /* 
     Vai para todos os modos e todos os intervalos que estão ativos no momento
@@ -83,10 +92,10 @@ function anunciaVencedorQuiz(client)
       if(VencedorNome != undefined)
       {
         // Envia os dados com o vencedor
-        client.say(config[0]["global_channel"], "O Vencedor é " + VencedorNome + " com " + Vencedor + " resposta(s) certa(s). Obrigado a todos pela vossa participação!");
+        filaDeMensagens("O Vencedor é " + VencedorNome + " com " + Vencedor + " resposta(s) certa(s). Obrigado a todos pela vossa participação!");
       } else {
         // Envia os dados com o vencedor
-        client.say(config[0]["global_channel"], "Não foram encontrados vencedores.");
+        filaDeMensagens("Não foram encontrados vencedores.");
       }
 
       config[0]["modoAtual"] = 0;
@@ -109,7 +118,7 @@ function startQuiz(client)
             }
                     
             quizBlockedQuestion = 0;
-            client.say(config[0]["global_channel"], "Quiz: "+quiz[rndInt].pergunta);
+            filaDeMensagens("Quiz: "+quiz[rndInt].pergunta);
             quizPerguntadas.push(rndInt);
             quizPergunta = rndInt;
 
@@ -157,7 +166,7 @@ function CheckRespostaQuiz(client, smsNick, fromNick)
 
         quizVencedor[fromNick] = valorPontos;
         quizBlockedQuestion = 1;
-        client.say(config[0]["global_channel"], "Resposta Certa: "+fromNick); 
+        filaDeMensagens("Resposta Certa: "+fromNick);
     }
 }
 /* 
@@ -177,12 +186,34 @@ function startResposta(nick, client)
         var frase = frases[rndInt].frase;
         var result = frase.replace("{nick}", nick);
 
-        client.say(config[0]["global_channel"], result);
+        filaDeMensagens(result);
         ultimaResposta = rndInt;
 
     }, 2000);
 }  
 
+/* 
+    Envia resposta se alguem tocar no nome do bot
+    ####################################################################
+*/
+function nickJoinedChannel(client, nick)
+{
+    setTimeout(function () {
+
+            var rndInt = Math.floor(Math.random() * 14) + 1;
+            while(rndInt == ultimaFraseNicksStatus)
+            {
+                rndInt = Math.floor(Math.random() * 14) + 1;
+            }
+
+            var frase = frasesNicksStatus[rndInt].frase;
+            var result = frase.replace("{nick}", nick);
+
+            filaDeMensagens(result);
+            ultimaFraseNicksStatus = rndInt;
+
+    }, 2000);
+}  
 /* 
     Inicia o Shout
     ####################################################################
@@ -197,7 +228,7 @@ function startShout(client)
                 rndInt = Math.floor(Math.random() * 5) + 1;
             }
 
-            client.say(config[0]["global_channel"], shout[rndInt].frase);
+            filaDeMensagens(shout[rndInt].frase);
             ultimoShout = rndInt;
         
     }, shoutTime);
@@ -225,5 +256,5 @@ function changeTime(from, client, cmd, query)
     }
 } 
 
-
-module.exports = { changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+// Faz o export dos modulos
+module.exports = { filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
