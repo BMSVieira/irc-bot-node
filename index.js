@@ -2,7 +2,7 @@
     // IRC BOT
     // ****************************************************************
 
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
     var irc = require('irc');
     var os = require('os');

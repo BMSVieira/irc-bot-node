@@ -26,7 +26,7 @@ var quizLimitRespostas = 7 // Limite de respostas do quiz
 var config = [
 {
     global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
-    global_port: 6667,
+    global_port: 6697,
     global_nick: "EpiC",
     global_password: "epicsalaportugal",
     global_isRegistered: true,
