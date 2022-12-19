@@ -9,7 +9,7 @@
   "author": "Bruno",
   "license": "ISC",
   "dependencies": {
-    "irc": "^0.5.2",
+    //"irc": "^0.5.2",
     "irc-channels": "^3.6.2",
     "irc-connect": "^2.2.0",
     "xmlhttprequest": "^1.8.0"
