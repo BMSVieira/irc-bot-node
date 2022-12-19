@@ -2,11 +2,13 @@
     // IRC BOT
     // ****************************************************************
 
-    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
     var irc = require('irc');
     var os = require('os');
     var core = require("./core/init");
+
+
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
     // 0 - Modo Normal.
     // 2 - Modo Quiz, não responde a nada.
@@ -28,7 +30,7 @@
         autoRejoin: true,
         autoConnect: true,
         channels: [core.config[0]["global_channel"]],
-        secure: false,
+        secure: true,
         selfSigned: true,
         certExpired: true,
         floodProtection: false,
