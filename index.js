@@ -27,7 +27,7 @@
         autoConnect: true,
         channels: [core.config[0]["global_channel"]],
         secure: false,
-        selfSigned: true,
+        selfSigned: false,
         certExpired: true,
         floodProtection: false,
         floodProtectionDelay: 1000,
