@@ -2,13 +2,9 @@
     // IRC BOT
     // ****************************************************************
 
-
     var irc = require('irc');
     var os = require('os');
     var core = require("./core/init");
-
-
-    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
     // 0 - Modo Normal.
     // 2 - Modo Quiz, não responde a nada.
