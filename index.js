@@ -16,7 +16,6 @@
     console.log(" ");
 
     // Criar conexão bot
-    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
     var client = new irc.Client( core.config[0]["global_irc"], core.config[0]["global_nick"], {
         userName: core.config[0]["global_userName"],
         realName: core.config[0]["global_realName"],
@@ -27,7 +26,7 @@
         autoRejoin: true,
         autoConnect: true,
         channels: [core.config[0]["global_channel"]],
-        secure: true,
+        secure: false,
         selfSigned: true,
         certExpired: true,
         floodProtection: false,
