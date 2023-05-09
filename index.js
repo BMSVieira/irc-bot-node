@@ -94,6 +94,41 @@
 
         });
 
+        var canal;
+
+        // Escuta por utilizadores que entrem
+        client.addListener('join', function (channel, nick, message) {
+
+                canal = channel // Canal do user
+
+                // Faz um Whois ao nick que acabou de entrar
+                client.whois(message.nick, function (raw) {
+                
+                        // Retirar todos os espaçamentos da mensagem
+                        var message = raw.realname;
+                        if(message)
+                        {
+                            message = message.replace(/\s/g, '');
+                            // Verifica se está a usar VPN ou não
+                            if(core.getSubstring(message, '*', '-') === "Estáem" || message == 'https://batepapo.brazink.com.br')
+                            {
+
+                                client.say("AsuZ", raw.nick+" - Está a usar VPN");
+                                console.log('\x1b[31m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname); 
+                            
+                            } else {
+                              console.log('\x1b[36m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname);
+                            }     
+                        }
+
+                });
+        });
+
+        // Escuta por utilizadores que saiem
+        client.addListener('quit', function (channel, nick, reason, message) {
+            console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
+        });
+
         // Escuta por mensagens
         client.addListener('message', function (from, to, message) {
             
