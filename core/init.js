@@ -27,9 +27,9 @@ var config = [
 {
     global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     global_port: 6697,
-    global_nick: "ShielD",
-    global_password: ".",
-    global_isRegistered: false,
+    global_nick: "EpiC",
+    global_password: "brazink007",
+    global_isRegistered: true,
     global_userName: "portugalbot",
     global_realName: "portugalbot",
     global_channel: "#Portugal",
@@ -45,6 +45,16 @@ var config = [
         string.indexOf(char1) + 1,
         string.lastIndexOf(char2),
       );
+    }
+
+/*
+    Retorna um valor aleatório
+    ####################################################################
+*/
+    function randomizeBetween(min, max) {
+        var time = new Date().getTime();
+        var randomNum = (time % (max - min + 1)) + min;
+        return randomNum;
     }
 
 /* 
@@ -122,10 +132,10 @@ function startQuiz(client)
         if(quizCount <= quizLimitRespostas)
         {
 
-            var rndInt = Math.floor(Math.random() * 60) + 1;
+            var rndInt = randomizeBetween(1,60);
             while(quizPerguntadas.includes(rndInt))
             {
-                rndInt = Math.floor(Math.random() * 60) + 1;
+                rndInt = randomizeBetween(1,60);
             }
                     
             quizBlockedQuestion = 0;
@@ -188,10 +198,10 @@ function startResposta(nick, client)
 {
     setTimeout(function () {
 
-        var rndInt = Math.floor(Math.random() * 59) + 1;
+        var rndInt = randomizeBetween(1,60);
         while(rndInt == ultimaResposta)
         {
-            rndInt = Math.floor(Math.random() * 59) + 1;
+            rndInt = randomizeBetween(1,60);
         }
 
         var frase = frases[rndInt].frase;
@@ -211,10 +221,10 @@ function nickJoinedChannel(client, nick)
 {
     setTimeout(function () {
 
-            var rndInt = Math.floor(Math.random() * 14) + 1;
+            var rndInt = randomizeBetween(1,14);
             while(rndInt == ultimaFraseNicksStatus)
             {
-                rndInt = Math.floor(Math.random() * 14) + 1;
+                rndInt = randomizeBetween(1,14);
             }
 
             var frase = frasesNicksStatus[rndInt].frase;
@@ -233,10 +243,10 @@ function startShout(client)
 {
     interval_shout = setInterval(function () {
 
-            var rndInt = Math.floor(Math.random() * 5) + 1;
+            var rndInt = randomizeBetween(1,5);
             while(rndInt == ultimoShout)
             {
-                rndInt = Math.floor(Math.random() * 5) + 1;
+                rndInt = randomizeBetween(1,5);
             }
 
             filaDeMensagens(shout[rndInt].frase);
@@ -268,4 +278,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = { getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = { randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };

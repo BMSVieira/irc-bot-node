@@ -4,7 +4,8 @@ const owners = [
     "AsuZ",
     "Monte",
     "_Clandestina_",
-    "TT"
+    "TT",
+    "EsQ"
 ];
 
 module.exports = owners

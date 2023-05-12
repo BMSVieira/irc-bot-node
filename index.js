@@ -25,7 +25,6 @@
         showErrors: true,
         autoRejoin: true,
         autoConnect: true,
-        channels: [core.config[0]["global_channel"]],
         secure: true,
         selfSigned: true,
         certExpired: true,
@@ -39,6 +38,15 @@
         messageSplit: 512,
         encoding: ''
     });
+
+        // Conecta com sucesso.
+        client.addListener('registered', function () {
+            client.join(core.config[0]["global_channel"], function(channel, error) {});
+            // Event listener para verificar se se juntou com sucesso
+            client.on('join', function(channel, nick) {
+            });
+
+        });
 
     // ########################################################################################
     // Verifica se precisa de fazer registo
@@ -112,13 +120,10 @@
                             // Verifica se está a usar VPN ou não
                             if(core.getSubstring(message, '*', '-') === "Estáem" || message == 'https://batepapo.brazink.com.br')
                             {
-
-                                client.say("AsuZ", raw.nick+" - Está a usar VPN");
-                                console.log('\x1b[31m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname); 
-                            
+                              console.log('\x1b[31m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname); 
                             } else {
                               console.log('\x1b[36m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname);
-                            }     
+                            }
                         }
 
                 });
@@ -153,9 +158,7 @@
                 } else { }
 
               }
-
                 console.log(from + '(' + to + ') : ' + message);
-
             }
 
         });
@@ -187,7 +190,7 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Iniciar Quiz
-                        core.filaDeMensagens("Quiz vai iniciar dentro de segundos...");
+                        core.filaDeMensagens("#### Quiz vai iniciar dentro de segundos... ####");
                         client.say(fromNick, "Quiz a iniciar.");
                         core.unbindAll();
                         core.startQuiz(client);
