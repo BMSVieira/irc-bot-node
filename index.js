@@ -25,7 +25,6 @@
         showErrors: true,
         autoRejoin: true,
         autoConnect: true,
-        channels: [core.config[0]["global_channel"]],
         secure: true,
         selfSigned: true,
         certExpired: true,
@@ -39,6 +38,22 @@
         messageSplit: 512,
         encoding: ''
     });
+
+        // Conecta com sucesso.
+        client.addListener('registered', function () {
+        
+       
+            client.join("#portugal", function(channel, error) {});
+          
+
+            // Event listener para verificar se se juntou com sucesso
+            client.on('join', function(channel, nick) {
+
+               console.log("Entrou "+channel)
+            
+            });
+
+        });
 
     // ########################################################################################
     // Verifica se precisa de fazer registo
