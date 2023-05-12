@@ -238,7 +238,14 @@
                         // Muda o limite do quiz
                         core.changeTime(fromNick, client, "setQuizLimit", query);
                     }
-                break;                 
+                break;     
+                case "disconnect":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Desliga-se do servidor.
+                        client.disconnect();
+                    }
+                break;             
                 default:
                 // Nada em Default
             }
