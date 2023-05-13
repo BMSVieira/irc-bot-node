@@ -3,8 +3,6 @@
 const owners = [
     "AsuZ",
     "Monte",
-    "_Clandestina_",
-    "TT",
     "EsQ"
 ];
 

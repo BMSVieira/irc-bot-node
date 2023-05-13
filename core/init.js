@@ -30,10 +30,10 @@ var config = [
     global_nick: "EpiC",
     global_password: "brazink007",
     global_isRegistered: true,
-    global_userName: "portugalbot",
-    global_realName: "portugalbot",
+    global_userName: "EpiC Portugal",
+    global_realName: "EpiC Portugal",
     global_channel: "#Portugal",
-    modoAtual: 2
+    modoAtual: 0
 }];      
 
 /*

@@ -245,7 +245,14 @@
                         // Desliga-se do servidor.
                         client.disconnect();
                     }
-                break;             
+                break; 
+                case "rename":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Modifica o nome do bot
+                        client.send('nick', query);
+                    }
+                break;              
                 default:
                 // Nada em Default
             }

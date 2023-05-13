@@ -41,7 +41,10 @@ Abrir o PV do Bot:
 <stopshout>
 
 **** Modificar o modo do bot ***
-<setmode>
+<setmode> 0/1/2/3/4
 
 **** Desligar o bot do servidor ****
 <disconnect>
+
+**** Desligar o bot do servidor ****
+<rename> {Novo Nick}
