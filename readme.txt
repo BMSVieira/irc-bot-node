@@ -39,3 +39,9 @@ Abrir o PV do Bot:
 
 **** Parar o Shout **** 
 <stopshout>
+
+**** Modificar o modo do bot ***
+<setmode>
+
+**** Desligar o bot do servidor ****
+<disconnect>
