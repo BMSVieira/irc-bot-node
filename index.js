@@ -105,7 +105,7 @@
         var canal;
 
         // Escuta por utilizadores que entrem
-        client.addListener('join', function (channel, nick, message) {
+        /* client.addListener('join', function (channel, nick, message) {
 
                 canal = channel // Canal do user
 
@@ -127,7 +127,7 @@
                         }
 
                 });
-        });
+        }); */
 
         // Escuta por utilizadores que saiem
         client.addListener('quit', function (channel, nick, reason, message) {
