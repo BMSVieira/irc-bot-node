@@ -155,18 +155,21 @@
                 if(smsNick.indexOf(myNick) !== -1 && core.config[0]["modoAtual"] == 0)
                 {
                     core.startResposta(from, client);
-                } else { }
-
+                }
               }
-                console.log(from + '(' + to + ') : ' + message);
-            }
 
+                // Faz console da mensagem
+                console.log(from + '(' + to + ') : ' + message);
+                // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
+                core.verificaCaps(message, from, client);
+            }
+            
         });
     // ########################################################################################
     // Obter mensagens privadas que enviam para mim
     // ########################################################################################
-        client.addListener('pm', function (from, message) {
-
+        client.addListener('pm', function (from, message) 
+        {
             // Variaveis do PV
             var fromNick = from;
             var smsNick = message;
@@ -257,11 +260,4 @@
                 // Nada em Default
             }
         });
-
-    // ########################################################################################
-    // Obter mensagens privadas que enviam para mim
-    // ########################################################################################
-    client.addListener('error', function(message) {
-        console.log('error: ', message);
-    });
 

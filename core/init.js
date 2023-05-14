@@ -34,7 +34,38 @@ var config = [
     global_realName: "EpiC Portugal",
     global_channel: "#Portugal",
     modoAtual: 0
-}];      
+}];     
+
+/*
+    Faz um loop por todas as letras de cada mensagem e verifica se está em CAPS
+    ###########################################################################
+*/
+    function verificaCaps(str, from, client) {
+
+        let uppercaseCount = 0;
+        for (let i = 0; i < str.length; i++) {
+          // Verifica se o caracter atual é uma letra
+          if (/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(str[i])) {
+
+            // Se for uppercase, aumenta o count
+            if (str[i] === str[i].toUpperCase()) {
+              uppercaseCount++;
+            } else {
+              // Se o caracter for lowercase reseta o count
+              uppercaseCount = 0;
+            }
+            // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
+            if (uppercaseCount > 5) {
+                client.say(from, "Mensagem Automática: Cuidado com o uso excessivo de Capslock.");
+                return true;
+            }
+          } else {
+            // Se o caracter atual não for uma letra, reseta o count
+            uppercaseCount = 0;
+          }
+        }
+        return false;
+    }
 
 /*
     Trata a string para ir buscar apenas uma parte dela
@@ -278,4 +309,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = { randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = { verificaCaps, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };

@@ -182,7 +182,7 @@ const frases = [
       frase: "{nick} Eu nem quero mais conversa."
     },
     {
-      frase: "Vai pastar {nick}.."
+      frase: "Vai pastar {nick} .."
     },
     {
       frase: "Dizem que é ofensivo falar de boca cheia {nick}. A mim ofende-me mais que fales de cabeça vazia!"

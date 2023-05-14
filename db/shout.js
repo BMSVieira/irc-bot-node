@@ -20,7 +20,28 @@ var shout = [
       frase: "Tem coisas nesta vida que eu apenas visualizo e não respondo."
     },
     {
-      frase: "Todos falam, mas nenhum diz nada!"
-    }
+      frase: "O vosso nome deve ser Google, têm tudo aquilo que eu procuro"
+    },
+    {
+      frase: "Se a vossa beleza for como o vosso perfume, acabo na cova!"
+    },
+    {
+      frase: "Tantos feios para tantas beldades, acabamos por estrear a bela e o monstro 3."
+    },
+    {
+      frase: "Tanto peixe no mar, e venho vos apanhar aqui."
+    },
+    {
+      frase: "Malandro é o domingo, parecem vocês toda a semana."
+    },
+    {
+      frase: "Quanto mais vos leio, mais entendo porquê que Noé só deixou animais entrar na arca."
+    },
+    {
+      frase: "Dizem sempre 'no meu tempo não havia essa safadeza toda'.. falou o velho que teve 16 filhos."
+    },
+    {
+      frase: "Pareceis ser tramados, não quereis ser o meu 'tramadol'? É que estou cá com uma dor de fios."
+    }  
 ];
 module.exports = shout
