@@ -19,7 +19,7 @@ var quizVencedor = {};
 var fila = [];
 var avisosCaps = [];
 
-var shoutTime = 60000; // 60 Segundos
+var shoutTime = 80000; // 60 Segundos
 var quizTime = 25000; // 15 Segundos
 var quizLimitRespostas = 10 // Limite de respostas do quiz
 
