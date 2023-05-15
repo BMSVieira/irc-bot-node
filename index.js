@@ -1,66 +1,73 @@
-    // ****************************************************************
-    // IRC BOT
-    // ****************************************************************
+        // ****************************************************************
+        // IRC BOT
+        // ****************************************************************
 
-    var irc = require('irc');
-    var os = require('os');
-    var core = require("./core/init");
+        var irc = require('irc');
+        var os = require('os');
+        var core = require("./core/init");
 
-    // 0 - Modo Normal.
-    // 2 - Modo Quiz, não responde a nada.
-    // 3 - Modo Shout.
-    // 4 - Completamente parado.
+        // 0 - Modo Normal.
+        // 2 - Modo Quiz, não responde a nada.
+        // 3 - Modo Shout.
+        // 4 - Completamente parado.
 
-    // Boot
-    console.log("** BOT A iniciar... **");
-    console.log(" ");
+        // Boot
+        console.log("** BOT A iniciar... **");
+        console.log(" ");
 
-    // Criar conexão bot
-    var client = new irc.Client( core.config[0]["global_irc"], core.config[0]["global_nick"], {
-        userName: core.config[0]["global_userName"],
-        realName: core.config[0]["global_realName"],
-        port: core.config[0]["global_port"],
-        localAddress: null,
-        debug: false,
-        showErrors: true,
-        autoRejoin: true,
-        autoConnect: true,
-        secure: true,
-        selfSigned: true,
-        certExpired: true,
-        floodProtection: false,
-        floodProtectionDelay: 1000,
-        sasl: false,
-        retryCount: 5,
-        retryDelay: 2000,
-        stripColors: true,
-        channelPrefixes: "&#",
-        messageSplit: 512,
-        encoding: ''
-    });
+    // ########################################################################################
+    // Faz a conexão ao servidor
+    // ########################################################################################
 
-        // Conecta com sucesso.
-        client.addListener('registered', function () {
-            client.join(core.config[0]["global_channel"], function(channel, error) {});
-            // Event listener para verificar se se juntou com sucesso
-            client.on('join', function(channel, nick) {
-            });
-
+        var client = new irc.Client( core.config[0]["global_irc"], core.config[0]["global_nick"], {
+            userName: core.config[0]["global_userName"],
+            realName: core.config[0]["global_realName"],
+            port: core.config[0]["global_port"],
+            localAddress: null,
+            debug: false,
+            showErrors: true,
+            autoRejoin: true,
+            autoConnect: true,
+            secure: true,
+            selfSigned: true,
+            certExpired: true,
+            floodProtection: false,
+            floodProtectionDelay: 1000,
+            sasl: false,
+            retryCount: 5,
+            retryDelay: 2000,
+            stripColors: true,
+            channelPrefixes: "&#",
+            messageSplit: 512,
+            encoding: ''
         });
 
     // ########################################################################################
-    // Verifica se precisa de fazer registo
+    // Após estar registado, junta-se e entra com a conta
     // ########################################################################################
 
-        // Verifica se tem de registar o nick mas só o faz quando receber a mensagem de sucesso.
-        if(core.config[0]["global_isRegistered"])
-        {
-            client.addListener('registered', function (message) {
-              client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]);
-            }); 
-        }
+        // Verifica se conecta com sucesso
+        client.addListener('registered', function () {
+
+            // Junta-se ao canal
+            client.join(core.config[0]["global_channel"], function(channel, error) {});
+
+            // Verifica se tem de registar o nick
+            if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
+
+            // Cria a função que envia as mensagens
+            let interval = setInterval(function(){
+                if(core.fila.length > 0)
+                {
+                    client.say(core.config[0]["global_channel"], core.fila[0]);
+                    core.fila.shift();
+                }
+            }, 1500);
+            
+        });
   
-    // Mensagens do dia e bot ativo.
+    // ########################################################################################
+    // Mensagens do dia
     // ########################################################################################
         
         // Recebe a Message of The Day
@@ -75,59 +82,14 @@
             console.log("Keep-alive enviado");
         });
 
-        // Quando estiver registado, inicia a procura por mensagens
-        client.addListener('registered', function (argument) {
-
-                // function creation
-                let interval = setInterval(function(){
-                  if(core.fila.length > 0)
-                  {
-                    client.say(core.config[0]["global_channel"], core.fila[0]);
-                    core.fila.shift();
-                  }
-                }, 1500);
-        });
-
     // ########################################################################################
     // Obter mensagens totais
     // ########################################################################################
         
         // Escuta por Utilizadores que entrem com status para dar a mensagem de boas vindas
         client.addListener('+mode', function (channel, by, mode, argument, message) {
-            
-            if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"])
-            {
-               core.nickJoinedChannel(client, argument); 
-            }    
-
+            if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"]) { core.nickJoinedChannel(client, argument); }    
         });
-
-        var canal;
-
-        // Escuta por utilizadores que entrem
-        /* client.addListener('join', function (channel, nick, message) {
-
-                canal = channel // Canal do user
-
-                // Faz um Whois ao nick que acabou de entrar
-                client.whois(message.nick, function (raw) {
-                
-                        // Retirar todos os espaçamentos da mensagem
-                        var message = raw.realname;
-                        if(message)
-                        {
-                            message = message.replace(/\s/g, '');
-                            // Verifica se está a usar VPN ou não
-                            if(core.getSubstring(message, '*', '-') === "Estáem" || message == 'https://batepapo.brazink.com.br')
-                            {
-                              console.log('\x1b[31m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname); 
-                            } else {
-                              console.log('\x1b[36m%s\x1b[0m', '' + raw.nick + ' - ' + raw.realname);
-                            }
-                        }
-
-                });
-        }); */
 
         // Escuta por utilizadores que saiem
         client.addListener('quit', function (channel, nick, reason, message) {
@@ -157,17 +119,17 @@
                     core.startResposta(from, client);
                 }
               }
-
-                // Faz console da mensagem
-                console.log(from + '(' + to + ') : ' + message);
                 // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
+                console.log(from + '(' + to + ') : ' + message);
                 core.verificaCaps(message, from, client);
             }
             
         });
+
     // ########################################################################################
-    // Obter mensagens privadas que enviam para mim
+    // Obter mensagens de ordem
     // ########################################################################################
+
         client.addListener('pm', function (from, message) 
         {
             // Variaveis do PV
