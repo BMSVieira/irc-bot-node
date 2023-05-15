@@ -17,10 +17,11 @@ var quizCount = 1;
 var quizBlockedQuestion = 0;
 var quizVencedor = {};
 var fila = [];
+var avisosCaps = [];
 
 var shoutTime = 60000; // 60 Segundos
 var quizTime = 25000; // 15 Segundos
-var quizLimitRespostas = 7 // Limite de respostas do quiz
+var quizLimitRespostas = 10 // Limite de respostas do quiz
 
 // Config values
 var config = [
@@ -40,6 +41,18 @@ var config = [
     Faz um loop por todas as letras de cada mensagem e verifica se está em CAPS
     ###########################################################################
 */
+    // Acrescenta o nome no array
+    function contarNotificacoes(nomes, nomeParaContar) {
+        let contador = 0;
+        for (let i = 0; i < nomes.length; i++) { const nome = nomes[i]; if (nome === nomeParaContar) { contador++; } }
+        return contador;
+    }
+
+    // Remove o nome do array
+    function removerNome(nomeParaRemover) {
+        return avisosCaps.filter(nome => nome !== nomeParaRemover);
+    }
+
     function verificaCaps(str, from, client) {
 
         let uppercaseCount = 0;
@@ -56,7 +69,16 @@ var config = [
             }
             // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
             if (uppercaseCount > 5) {
-                client.say(from, "Mensagem Automática: Cuidado com o uso excessivo de Capslock.");
+
+                if(contarNotificacoes(avisosCaps, from) > 2)
+                {
+                    client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
+                    avisosCaps = removerNome(from);
+                    console.log(avisosCaps);
+                } else {
+                    client.say(from, "[MSG. Automática] Cuidado com o uso excessivo de Capslock.");
+                    avisosCaps.push(from);
+                }
                 return true;
             }
           } else {
