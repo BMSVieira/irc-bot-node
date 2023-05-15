@@ -41,10 +41,16 @@ Abrir o PV do Bot:
 <stopshout>
 
 **** Modificar o modo do bot ***
-<setmode> 0/1/2/3/4
+<setmode> 0/2/3
 
 **** Desligar o bot do servidor ****
 <disconnect>
 
-**** Desligar o bot do servidor ****
+**** Modificar o nome do bot ****
 <rename> {Novo Nick}
+
+**** Modificar a quantidade de respostas do quiz ****
+<setQuizLimit> 15000 (1000 = 1 Segundo)
+
+**** Modificar tempo de resposta do Shout ****
+<setShoutTime> 15000 (1000 = 1 Segundo)

@@ -5,11 +5,12 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
+        const https = require('https');
+
 
         // 0 - Modo Normal.
-        // 2 - Modo Quiz, não responde a nada.
-        // 3 - Modo Shout.
-        // 4 - Completamente parado.
+        // 2 - Quiz
+        // 3 - Shout
 
         // Boot
         console.log("** BOT A iniciar... **");
@@ -62,7 +63,7 @@
                     client.say(core.config[0]["global_channel"], core.fila[0]);
                     core.fila.shift();
                 }
-            }, 1500);
+            }, 2000);
             
         });
   
@@ -107,18 +108,16 @@
               var myNick = core.config[0]["global_nick"].toLowerCase();
               var smsNick = message.toLowerCase();
 
-              // Modo 2, está em modo quiz
-              if(core.config[0]["modoAtual"] == 2)
-              {
-                core.CheckRespostaQuiz(client, smsNick, fromNick);
-              } else {
-                
-                // Verifica se identificaram o nome do bot em algum lado
-                if(smsNick.indexOf(myNick) !== -1 && core.config[0]["modoAtual"] == 0)
-                {
-                    core.startResposta(from, client);
-                }
+              switch (core.config[0]["modoAtual"]) {
+                case 0: // Modo Normal
+                    if(smsNick.indexOf(myNick) !== -1) { core.startResposta(from, client);  }
+                break;
+                case 2: // Modo Quiz
+                    core.CheckRespostaQuiz(client, smsNick, fromNick);
+                break;
+                default:
               }
+
                 // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
                 console.log(from + '(' + to + ') : ' + message);
                 core.verificaCaps(message, from, client);
@@ -148,7 +147,7 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Diz o que lhe mandaram
-                        client.say(core.config[0]["global_channel"], query);
+                        core.filaDeMensagens(query);
                     }
                 break; 
                 case "startquiz":
@@ -176,7 +175,7 @@
                         // Inicia o Shout
                         client.say(fromNick, "Shout a iniciar.");
                         core.unbindAll();
-                        core.startShout(client);       
+                        core.startShout(client, https);       
                     }
                 break;
                 case "stopshout":
@@ -203,7 +202,14 @@
                         // Muda o limite do quiz
                         core.changeTime(fromNick, client, "setQuizLimit", query);
                     }
-                break;     
+                break; 
+                case "setShoutTime":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Muda o limite do quiz
+                        core.changeTime(fromNick, client, "setShoutTime", query);
+                    }
+                break;       
                 case "disconnect":
                     if(core.isAdmin(fromNick))
                     {

@@ -3,7 +3,7 @@ var owners = require('../db/owners');
 var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
-var shout = require('../db/shout');
+var autores = require('../db/autores');
 
 // ** Variaveis Globais
 var interval_shout;
@@ -41,73 +41,73 @@ var config = [
     Faz um loop por todas as letras de cada mensagem e verifica se está em CAPS
     ###########################################################################
 */
-    // Acrescenta o nome no array
-    function contarNotificacoes(nomes, nomeParaContar) {
-        let contador = 0;
-        for (let i = 0; i < nomes.length; i++) { const nome = nomes[i]; if (nome === nomeParaContar) { contador++; } }
-        return contador;
-    }
+// Acrescenta o nome no array
+function contarNotificacoes(nomes, nomeParaContar) {
+    let contador = 0;
+    for (let i = 0; i < nomes.length; i++) { const nome = nomes[i]; if (nome === nomeParaContar) { contador++; } }
+    return contador;
+}
 
-    // Remove o nome do array
-    function removerNome(nomeParaRemover) {
-        return avisosCaps.filter(nome => nome !== nomeParaRemover);
-    }
+// Remove o nome do array
+function removerNome(nomeParaRemover) {
+    return avisosCaps.filter(nome => nome !== nomeParaRemover);
+}
 
-    function verificaCaps(str, from, client) {
+function verificaCaps(str, from, client) {
 
-        let uppercaseCount = 0;
-        for (let i = 0; i < str.length; i++) {
-          // Verifica se o caracter atual é uma letra
-          if (/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(str[i])) {
+    let uppercaseCount = 0;
+    for (let i = 0; i < str.length; i++) {
+        // Verifica se o caracter atual é uma letra
+        if (/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(str[i])) {
 
-            // Se for uppercase, aumenta o count
-            if (str[i] === str[i].toUpperCase()) {
-              uppercaseCount++;
-            } else {
-              // Se o caracter for lowercase reseta o count
-              uppercaseCount = 0;
-            }
-            // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
-            if (uppercaseCount > 5) {
-
-                if(contarNotificacoes(avisosCaps, from) > 2)
-                {
-                    client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
-                    avisosCaps = removerNome(from);
-                } else {
-                    client.say(from, "[MSG. Automática] Cuidado com o uso excessivo de Capslock.");
-                    avisosCaps.push(from);
-                }
-                return true;
-            }
-          } else {
-            // Se o caracter atual não for uma letra, reseta o count
+        // Se for uppercase, aumenta o count
+        if (str[i] === str[i].toUpperCase()) {
+            uppercaseCount++;
+        } else {
+            // Se o caracter for lowercase reseta o count
             uppercaseCount = 0;
-          }
         }
-        return false;
+        // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
+        if (uppercaseCount > 5) {
+
+            if(contarNotificacoes(avisosCaps, from) > 2)
+            {
+                client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
+                avisosCaps = removerNome(from);
+            } else {
+                client.say(from, "[Mensagem Automática] Cuidado com o uso excessivo de Capslock.");
+                avisosCaps.push(from);
+            }
+            return true;
+        }
+        } else {
+        // Se o caracter atual não for uma letra, reseta o count
+        uppercaseCount = 0;
+        }
     }
+    return false;
+}
 
 /*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################
 */
-    function getSubstring(string, char1, char2) {
-      return string.slice(
-        string.indexOf(char1) + 1,
-        string.lastIndexOf(char2),
-      );
-    }
+function getSubstring(string, char1, char2) {
+    return string.slice(
+    string.indexOf(char1) + 1,
+    string.lastIndexOf(char2),
+    );
+}
 
 /*
     Retorna um valor aleatório
     ####################################################################
 */
-    function randomizeBetween(min, max) {
-        var time = new Date().getTime();
-        var randomNum = (time % (max - min + 1)) + min;
-        return randomNum;
-    }
+function randomizeBetween(min, max) {
+    var time = new Date().getTime();
+    var randomNum = (time % (max - min + 1)) + min;
+    return randomNum;
+}
 
 /* 
     Adiciona a mensagem a fila de mensagens
@@ -115,7 +115,7 @@ var config = [
 */
 function filaDeMensagens(mensagem)
 {
-  fila.push(mensagem);
+    fila.push(mensagem);
 }
 
 /* 
@@ -184,10 +184,10 @@ function startQuiz(client)
         if(quizCount <= quizLimitRespostas)
         {
 
-            var rndInt = randomizeBetween(1,60);
+            var rndInt = randomizeBetween(1,quiz.length-1);
             while(quizPerguntadas.includes(rndInt))
             {
-                rndInt = randomizeBetween(1,60);
+                rndInt = randomizeBetween(1,quiz.length-1);
             }
                     
             quizBlockedQuestion = 0;
@@ -209,8 +209,8 @@ function startQuiz(client)
 
     }, quizTime);
 
-  // Altera o modo do bot para "In Quiz"
-  config[0]["modoAtual"] = 2;
+// Altera o modo do bot para "In Quiz"
+config[0]["modoAtual"] = 2;
 }
 /* 
     Verifica a resposta da quiz
@@ -233,8 +233,8 @@ function CheckRespostaQuiz(client, smsNick, fromNick)
         var valorPontos = 1;
         if(quizVencedor[fromNick])
         {
-          var data = quizVencedor[fromNick];
-          valorPontos = data+1;
+        var data = quizVencedor[fromNick];
+        valorPontos = data+1;
         } 
 
         quizVencedor[fromNick] = valorPontos;
@@ -250,10 +250,10 @@ function startResposta(nick, client)
 {
     setTimeout(function () {
 
-        var rndInt = randomizeBetween(1,60);
+        var rndInt = randomizeBetween(1,frases.length-1);
         while(rndInt == ultimaResposta)
         {
-            rndInt = randomizeBetween(1,60);
+            rndInt = randomizeBetween(1,frases.length-1);
         }
 
         var frase = frases[rndInt].frase;
@@ -264,7 +264,6 @@ function startResposta(nick, client)
 
     }, 2000);
 }  
-
 /* 
     Envia resposta se alguem tocar no nome do bot
     ####################################################################
@@ -273,10 +272,10 @@ function nickJoinedChannel(client, nick)
 {
     setTimeout(function () {
 
-            var rndInt = randomizeBetween(1,14);
+            var rndInt = randomizeBetween(1,frasesNicksStatus.length-1);
             while(rndInt == ultimaFraseNicksStatus)
             {
-                rndInt = randomizeBetween(1,14);
+                rndInt = randomizeBetween(1,frasesNicksStatus.length-1);
             }
 
             var frase = frasesNicksStatus[rndInt].frase;
@@ -291,23 +290,41 @@ function nickJoinedChannel(client, nick)
     Inicia o Shout
     ####################################################################
 */
-function startShout(client)
+function startShout(client, https)
 {
     interval_shout = setInterval(function () {
 
-            var rndInt = randomizeBetween(1,5);
-            while(rndInt == ultimoShout)
-            {
-                rndInt = randomizeBetween(1,5);
-            }
+        var randomAutor = randomizeBetween(0,autores.length-1);
+        var randomFrase = randomizeBetween(0,9);
+        var autor = autores[randomAutor].autor;
 
-            filaDeMensagens(shout[rndInt].frase);
-            ultimoShout = rndInt;
-        
+            let url = "https://pensador-api.vercel.app/?term="+autor+"&max=10";
+            https.get(url,(res) => {
+                let body = "";
+            
+                res.on("data", (chunk) => {
+                    body += chunk;
+                });
+            
+                res.on("end", () => {
+                    try {
+
+                        let json = JSON.parse(body);
+                        filaDeMensagens(json['frases'][randomFrase]['texto']);
+
+                    } catch (error) {
+                        console.error(error.message);
+                    };
+                });
+            
+            }).on("error", (error) => {
+                console.error(error.message);
+            });
+
     }, shoutTime);
 
-    // Altera o modo do bot para "In Shout"
-    config[0]["modoAtual"] = 3; 
+    // Altera o modo do bot para "Shout"
+    config[0]["modoAtual"] = 0; 
 } 
 /* 
     Função que muda o tempo das mensagens
@@ -324,7 +341,11 @@ function changeTime(from, client, cmd, query)
             quizLimitRespostas = query;
             client.say(from, "Limite de perguntas modificado para: "+ query);
         break; 
-      default:
+        case "setShoutTime":
+            shoutTime = query;
+            client.say(from, "Tempo de Shout modificado para: "+ query);
+        break; 
+    default:
         // Nada em Default
     }
 } 
