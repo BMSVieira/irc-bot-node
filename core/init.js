@@ -74,7 +74,6 @@ var config = [
                 {
                     client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
                     avisosCaps = removerNome(from);
-                    console.log(avisosCaps);
                 } else {
                     client.say(from, "[MSG. Automática] Cuidado com o uso excessivo de Capslock.");
                     avisosCaps.push(from);
