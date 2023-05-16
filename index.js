@@ -97,6 +97,11 @@
             console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
         });
 
+        // Escuta por utilizadores que entrem no canal
+        client.addListener('join', function (channel, nick, message) {
+            core.verificaNick(nick, client);
+        });
+        
         // Escuta por mensagens
         client.addListener('message', function (from, to, message) {
             

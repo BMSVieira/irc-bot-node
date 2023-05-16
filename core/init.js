@@ -89,6 +89,19 @@ function verificaCaps(str, from, client) {
 }
 
 /*
+    Verifica se o nick da pessoa que se juntou, é menor do que 3 letras
+    ###########################################################################
+*/
+function verificaNick(from, client) {
+
+    var cumprimentoNick = from.length;
+    if(cumprimentoNick < 3)
+    {
+        client.send('kick', config[0]["global_channel"], from, "Nick demasiado curto, escolhe outro mais longo por favor.");
+    }
+}
+
+/*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################
 */
@@ -351,4 +364,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = { verificaCaps, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = { verificaNick, verificaCaps, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
