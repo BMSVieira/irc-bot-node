@@ -4,6 +4,7 @@ var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
 var autores = require('../db/autores');
+var protected = require('../db/protected');
 
 // ** Variaveis Globais
 var interval_shout;
@@ -55,37 +56,40 @@ function removerNome(nomeParaRemover) {
 
 function verificaCaps(str, from, client) {
 
-    let uppercaseCount = 0;
-    for (let i = 0; i < str.length; i++) {
-        // Verifica se o caracter atual é uma letra
-        if (/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(str[i])) {
+    if(!protected.includes(from))
+    {
+        let uppercaseCount = 0;
+        for (let i = 0; i < str.length; i++) {
+            // Verifica se o caracter atual é uma letra
+            if (/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(str[i])) {
 
-        // Se for uppercase, aumenta o count
-        if (str[i] === str[i].toUpperCase()) {
-            uppercaseCount++;
-        } else {
-            // Se o caracter for lowercase reseta o count
-            uppercaseCount = 0;
-        }
-        // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
-        if (uppercaseCount > 5) {
-
-            if(contarNotificacoes(avisosCaps, from) > 2)
-            {
-                client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
-                avisosCaps = removerNome(from);
+            // Se for uppercase, aumenta o count
+            if (str[i] === str[i].toUpperCase()) {
+                uppercaseCount++;
             } else {
-                client.say(from, "[Mensagem Automática] Cuidado com o uso excessivo de Capslock.");
-                avisosCaps.push(from);
+                // Se o caracter for lowercase reseta o count
+                uppercaseCount = 0;
             }
-            return true;
+            // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
+            if (uppercaseCount > 5) {
+
+                if(contarNotificacoes(avisosCaps, from) > 2)
+                {
+                    client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
+                    avisosCaps = removerNome(from);
+                } else {
+                    client.say(from, "[Mensagem Automática] Cuidado com o uso excessivo de Capslock.");
+                    avisosCaps.push(from);
+                }
+                return true;
+            }
+            } else {
+            // Se o caracter atual não for uma letra, reseta o count
+            uppercaseCount = 0;
+            }
         }
-        } else {
-        // Se o caracter atual não for uma letra, reseta o count
-        uppercaseCount = 0;
-        }
-    }
-    return false;
+        return false;
+    } else { console.log("Nick Protegido."); }
 }
 
 /*
