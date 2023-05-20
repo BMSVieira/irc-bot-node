@@ -5,8 +5,7 @@ const protected = [
     "Log",
     "AsuZ",
     "Monte",
-    "Global",
-    "EsQ"
+    "Global"
 ];
 
 module.exports = protected

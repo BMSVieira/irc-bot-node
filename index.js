@@ -5,8 +5,10 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
-        const https = require('https');
 
+        // Modulos
+        var radio = require("./core/radio");
+        const axios = require('axios');
 
         // 0 - Modo Normal.
         // 2 - Quiz
@@ -125,7 +127,10 @@
 
                 // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
                 console.log(from + '(' + to + ') : ' + message);
+
                 core.verificaCaps(message, from, client);
+                radio.atualizaMusicaAtual(message, from, client);
+                radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
             }
             
         });
@@ -180,7 +185,7 @@
                         // Inicia o Shout
                         client.say(fromNick, "Shout a iniciar.");
                         core.unbindAll();
-                        core.startShout(client, https);       
+                        core.startShout(client, axios);       
                     }
                 break;
                 case "stopshout":
@@ -228,7 +233,7 @@
                         // Modifica o nome do bot
                         client.send('nick', query);
                     }
-                break;              
+                break;  
                 default:
                 // Nada em Default
             }

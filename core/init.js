@@ -307,7 +307,7 @@ function nickJoinedChannel(client, nick)
     Inicia o Shout
     ####################################################################
 */
-function startShout(client, https)
+function startShout(client, axios)
 {
     interval_shout = setInterval(function () {
 
@@ -315,28 +315,20 @@ function startShout(client, https)
         var randomFrase = randomizeBetween(0,9);
         var autor = autores[randomAutor].autor;
 
-            let url = "https://pensador-api.vercel.app/?term="+autor+"&max=10";
-            https.get(url,(res) => {
-                let body = "";
-            
-                res.on("data", (chunk) => {
-                    body += chunk;
-                });
-            
-                res.on("end", () => {
-                    try {
+        const url = "https://pensador-api.vercel.app/?term=" + autor + "&max=10";
 
-                        let json = JSON.parse(body);
-                        filaDeMensagens(json['frases'][randomFrase]['texto']);
-
-                    } catch (error) {
-                        console.error(error.message);
-                    };
-                });
-            
-            }).on("error", (error) => {
-                console.error(error.message);
-            });
+        axios.get(url)
+          .then(response => {
+            try {
+              const json = response.data;
+              filaDeMensagens(json.frases[randomFrase].texto);
+            } catch (error) {
+              console.error(error.message);
+            }
+          })
+          .catch(error => {
+            console.error(error.message);
+          });
 
     }, shoutTime);
 
