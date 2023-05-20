@@ -33,7 +33,7 @@ function checkCurtir(string, from, client, axios, channel) {
 
   const regex = /\bcurtir+\b/i;
   if (regex.test(string) && nowPlaying != "") {
-console.log("ola");
+
     const url = 'https://mooviejs.com/bot/ost_wbs/';
     const apiKey = 'a1086415c6ae4aa5b526ce940b8e8284';
     
