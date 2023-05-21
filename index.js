@@ -234,6 +234,22 @@
                         client.send('nick', query);
                     }
                 break;  
+                case "kick":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Kicka um nick
+                        client.send('kick', core.config[0]["global_channel"], query, "");
+                    }
+                break; 
+                case "leave":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Sai de um canal especifico
+                        client.send('part', "#"+query);
+                        client.say(fromNick, "Desconectou-se de: #"+query);
+                    }
+                break; 
+                    
                 default:
                 // Nada em Default
             }
