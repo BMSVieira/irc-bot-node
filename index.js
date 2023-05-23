@@ -5,6 +5,7 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
+        var comportamento = require("./core/comportamento");
 
         // Modulos
         var radio = require("./core/radio");
@@ -101,7 +102,8 @@
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
-            core.verificaNick(nick, client);
+            comportamento.verificaNick(nick, client);
+            comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
         });
         
         // Escuta por mensagens
@@ -128,7 +130,7 @@
                 // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
                 console.log(from + '(' + to + ') : ' + message);
 
-                core.verificaCaps(message, from, client);
+                comportamento.verificaCaps(message, from, client, core.config[0]["global_channel"]);
                 radio.atualizaMusicaAtual(message, from, client);
                 radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
             }

@@ -4,7 +4,6 @@ var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
 var autores = require('../db/autores');
-var protected = require('../db/protected');
 
 // ** Variaveis Globais
 var interval_shout;
@@ -18,7 +17,6 @@ var quizCount = 1;
 var quizBlockedQuestion = 0;
 var quizVencedor = {};
 var fila = [];
-var avisosCaps = [];
 
 var shoutTime = 80000; // 60 Segundos
 var quizTime = 25000; // 15 Segundos
@@ -32,78 +30,11 @@ var config = [
     global_nick: "EpiC",
     global_password: "brazink007",
     global_isRegistered: true,
-    global_userName: "EpiC Portugal",
-    global_realName: "EpiC Portugal",
+    global_userName: "Portugal",
+    global_realName: "Portugal",
     global_channel: "#Portugal",
     modoAtual: 0
 }];     
-
-/*
-    Faz um loop por todas as letras de cada mensagem e verifica se está em CAPS
-    ###########################################################################
-*/
-// Acrescenta o nome no array
-function contarNotificacoes(nomes, nomeParaContar) {
-    let contador = 0;
-    for (let i = 0; i < nomes.length; i++) { const nome = nomes[i]; if (nome === nomeParaContar) { contador++; } }
-    return contador;
-}
-
-// Remove o nome do array
-function removerNome(nomeParaRemover) {
-    return avisosCaps.filter(nome => nome !== nomeParaRemover);
-}
-
-function verificaCaps(str, from, client) {
-
-    if(!protected.includes(from))
-    {
-        let uppercaseCount = 0;
-        for (let i = 0; i < str.length; i++) {
-            // Verifica se o caracter atual é uma letra
-            if (/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(str[i])) {
-
-            // Se for uppercase, aumenta o count
-            if (str[i] === str[i].toUpperCase()) {
-                uppercaseCount++;
-            } else {
-                // Se o caracter for lowercase reseta o count
-                uppercaseCount = 0;
-            }
-            // Se execer os 5, retorna true (este valor pode futuramente ser uma variagem global)
-            if (uppercaseCount > 5) {
-
-                if(contarNotificacoes(avisosCaps, from) > 2)
-                {
-                    client.send('kick', config[0]["global_channel"], from, "Kickado por uso excessivo de Capslock");
-                    avisosCaps = removerNome(from);
-                } else {
-                    client.say(from, "[Mensagem Automática] Cuidado com o uso excessivo de Capslock.");
-                    avisosCaps.push(from);
-                }
-                return true;
-            }
-            } else {
-            // Se o caracter atual não for uma letra, reseta o count
-            uppercaseCount = 0;
-            }
-        }
-        return false;
-    } else { console.log("Nick Protegido."); }
-}
-
-/*
-    Verifica se o nick da pessoa que se juntou, é menor do que 3 letras
-    ###########################################################################
-*/
-function verificaNick(from, client) {
-
-    var cumprimentoNick = from.length;
-    if(cumprimentoNick < 3)
-    {
-        client.send('kick', config[0]["global_channel"], from, "Nick demasiado curto, escolhe outro mais longo por favor.");
-    }
-}
 
 /*
     Trata a string para ir buscar apenas uma parte dela
@@ -360,4 +291,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = { verificaNick, verificaCaps, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
