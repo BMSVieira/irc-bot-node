@@ -102,7 +102,7 @@
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
-            comportamento.verificaNick(nick, client);
+            comportamento.verificaNick(nick, client, core.config[0]["global_channel"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
         });
         
