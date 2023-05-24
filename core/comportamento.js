@@ -88,15 +88,10 @@ function checkForbiddenWords(obj, forbiddenWords) {
     ##############################################################################
 */
 function separateString(str) {
-    let separated = "";
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === '_' || (i > 0 && str[i] !== str[i].toLowerCase())) {
-        separated += ' ';
-      }
-      separated += str[i];
-    }
-    return separated.replace(/[^a-zA-Z0-9]/g, ' ');
-  }
+  let separated = str.replace(/([a-z])([A-Z0-9])/g, '$1 $2');
+  separated = separated.replace(/([0-9])([a-zA-Z])/g, '$1 $2');
+  return separated.replace(/[^a-zA-Z0-9]/g, ' ');
+}
 
 /*
     Verifica se o nick que entrou está dentro das palavras proibidas
