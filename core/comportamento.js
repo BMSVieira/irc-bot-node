@@ -16,6 +16,7 @@ var forbiddenWords = [
     'Gay',
     'Corno',
     'Madura',
+    'Maduro',
     'cd',
     'Submisso',
     'Submissa',
