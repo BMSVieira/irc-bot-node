@@ -92,6 +92,43 @@ function isAdmin(nick)
 }
 
 /* 
+    Verifica se tem status
+    ####################################################################
+*/
+function hasStatus(user, channels, client, callback) {
+
+    // Envia o comando para fazer trigger dos nomes
+    client.send('names', channels);
+  
+    function listener(channel, nicks) {
+      let userHasValue = false;
+      if(nicks.hasOwnProperty(user))
+      {
+        for (let username in nicks) {
+            if (nicks.hasOwnProperty(username)) {
+              if (username === user && nicks[username] !== '') {
+                userHasValue = true;
+                break;
+              }
+            } 
+          }
+          
+      } else { userHasValue = true; }
+
+      // Remove o listener
+      client.removeListener('names', listener); 
+  
+      if (userHasValue) {
+        callback(true);
+      } else {
+        callback(false);
+      }
+    }
+  
+    client.addListener('names', listener);
+}
+
+/* 
     Faz as contas e anuncia o vencedor do quiz
     ####################################################################
 */
@@ -291,4 +328,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = {randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
