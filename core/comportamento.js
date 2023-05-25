@@ -1,68 +1,8 @@
 
 // Config Variables
-
 var protected = require('../db/protected');
-
+var forbiddenWords = require('../db/palavrasProibidas');
 var avisosCaps = [];
-var forbiddenWords = [
-    'Caralho',
-    'Buceta',
-    'Piroca',
-    'Foder',
-    'Pau',
-    'Puta',
-    'Cuzinho',
-    'Porno',
-    'Gay',
-    'Corno',
-    'Madura',
-    'cd',
-    'Submisso',
-    'Submissa',
-    'Curioso',
-    'Curiosa',
-    'Dom',
-    'Femdom',
-    'cdzinha',
-    'Bi',
-    'Cross',
-    'Prazer',
-    'Perverso',
-    'Perversa',
-    'Orgasmo',
-    'Orgasm',
-    'Cuck',
-    'Policia',
-    'Fdp',
-    'Mamar',
-    'Mama',
-    'Leite',
-    'Leitinho',
-    'Esperma',
-    'Anal',
-    'XXX',
-    'Vaginal',
-    'Vagina',
-    'Cu',
-    'Cona',
-    'Travesti',
-    'Shemale',
-    'Carente',
-    'Dominatrix',
-    'Cuckold',
-    'Chupar',
-    'Lamber',
-    'Dildo',
-    'Vibrador',
-    'Tesão',
-    'Ménage',
-    'Orgia',
-    'Sissy',
-    'Corninho',
-    'Gemer',
-    'Grosso',
-    'Sigilo'
-];
 
 /*
     Verifica por palavras proibidas
@@ -87,15 +27,10 @@ function checkForbiddenWords(obj, forbiddenWords) {
     ##############################################################################
 */
 function separateString(str) {
-    let separated = "";
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === '_' || (i > 0 && str[i] !== str[i].toLowerCase())) {
-        separated += ' ';
-      }
-      separated += str[i];
-    }
-    return separated.replace(/[^a-zA-Z0-9]/g, ' ');
-  }
+  let separated = str.replace(/([a-z])([A-Z0-9])/g, '$1 $2');
+  separated = separated.replace(/([0-9])([a-zA-Z])/g, '$1 $2');
+  return separated.replace(/[^a-zA-Z0-9]/g, ' ');
+}
 
 /*
     Verifica se o nick que entrou está dentro das palavras proibidas
@@ -110,9 +45,8 @@ function checkKick(nick, client, channel)
     // Se retornar true, vai kickar.
     if(containsForbiddenWord)
     {
-        client.send('kick', channel, nick, "O Nick contém palavras proibidas, por favor, escolhe outro nick.");
+        client.send('kick', channel, nick, "Nick com conteúdo sexual não permitido. Mude de nick ou de sala!");
     }
-
 }
 
 /*

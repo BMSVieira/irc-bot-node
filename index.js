@@ -4,12 +4,12 @@
 
         var irc = require('irc');
         var os = require('os');
-        var core = require("./core/init");
-        var comportamento = require("./core/comportamento");
+        var core = require("./cor8e/init");
+        const axios = require('axios');
 
         // Modulos
         var radio = require("./core/radio");
-        const axios = require('axios');
+        var comportamento = require("./core/comportamento");
 
         // 0 - Modo Normal.
         // 2 - Quiz
@@ -105,6 +105,11 @@
             comportamento.verificaNick(nick, client, core.config[0]["global_channel"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
         });
+
+        // Escuta por erros
+        client.addListener('error', function (message) {
+            console.error('Error:', message['args'][2]);
+        });
         
         // Escuta por mensagens
         client.addListener('message', function (from, to, message) {
@@ -131,8 +136,8 @@
                 console.log(from + '(' + to + ') : ' + message);
 
                 comportamento.verificaCaps(message, from, client, core.config[0]["global_channel"]);
-                radio.atualizaMusicaAtual(message, from, client);
-                radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
+                // radio.atualizaMusicaAtual(message, from, client);
+                // radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
             }
             
         });
@@ -256,4 +261,3 @@
                 // Nada em Default
             }
         });
-
