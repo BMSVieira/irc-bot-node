@@ -4,7 +4,7 @@
 
         var irc = require('irc');
         var os = require('os');
-        var core = require("./cor8e/init");
+        var core = require("./core/init");
         const axios = require('axios');
 
         // Modulos
