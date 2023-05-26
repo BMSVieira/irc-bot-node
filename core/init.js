@@ -17,6 +17,7 @@ var quizCount = 1;
 var quizBlockedQuestion = 0;
 var quizVencedor = {};
 var fila = [];
+var denuncias = [];
 
 var shoutTime = 80000; // 60 Segundos
 var quizTime = 25000; // 15 Segundos
@@ -126,6 +127,80 @@ function hasStatus(user, channels, client, callback) {
     }
   
     client.addListener('names', listener);
+}
+
+/* 
+    Faz a denuncia
+    ####################################################################
+*/
+function denunciar(query, fromNick, client, channel) {
+
+    // Verifica se o user que stá a pedir, tem status
+    hasStatus(fromNick, channel, client, function(result) {
+        if(result){ 
+
+                // Verifica se o user ao qual querem denunciar, tem status.
+                hasStatus(query, channel, client, function(result) {
+
+                    if(result){
+                        client.say(fromNick, "A denuncia não irá ser feita, aqui estão os possiveis motivos.");
+                        client.say(fromNick, " - Escreveu mal o nick e este não se encontra na sala.");
+                        client.say(fromNick, " - O nick tem status e como tal, não pode ser denunciado através desta funcionalidade. Fale com um moderador.");                  
+                    } else {
+
+                            client.whois(fromNick, function (raw) {
+
+                                var searchNick = fromNick;
+                                var searchDenuncia = query;
+                                var count = 0;
+
+                                // Conta a quantidade de denuncias que tem um determinado nick
+                                for (var i = 0; i < denuncias.length; i++) {
+                                    if (denuncias[i].nick === searchNick && denuncias[i].denuncia === searchDenuncia) {
+                                        count++;
+                                    }
+                                }
+
+                                // Verifica se a mesma pessoa já denunciou o mesmo nick uma vez.
+                                if(count >= 1)
+                                {
+                                    client.say(fromNick, "Já denunciaste este nick, só o podes fazer uma vez.");
+                                } else {
+
+                                    // Adiciona a denuncia ao array
+                                    var detalhes = {nick: fromNick, denuncia: query, host: raw['host']};
+                                    denuncias.push(detalhes);
+
+                                    client.say(fromNick, "Denuncia feita com sucesso.");
+
+                                    // Verifica a quantidade de denuncias que aquele nick tem.
+                                    var countDenunciasNick = 0;
+                                    for (var i = 0; i < denuncias.length; i++) {
+                                        if (denuncias[i].denuncia === searchDenuncia) {
+                                            countDenunciasNick++;
+                                        }
+                                    }   
+
+                                    console.log(denuncias);
+
+                                    // Se for maior ou igual a 3, da o kick.
+                                    if(countDenunciasNick >= 3)
+                                    {
+                                        client.send('kick', channel, query, "User kickado por denuncia de vários utilizadores.");
+
+                                        // Remove esse utilizador da lista de denuncias
+                                        denuncias = denuncias.filter(function(record) {
+                                            return record.denuncia !== query;
+                                        });   
+                                    }
+                                }
+                            });
+                    }
+                });
+
+        } else { client.say(fromNick, "Apenas nicks com Status podem fazer denúncias."); }
+        
+    });
 }
 
 /* 
@@ -328,4 +403,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = {hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
