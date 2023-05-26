@@ -260,17 +260,8 @@
                 case "regras":
                     ajuda.regrasSala(fromNick, client);
                 break; 
-                case "denuncia":
-                    // Verifica se o nick
-                    core.hasStatus(query, core.config[0]["global_channel"], client, function(result) {
-                        if(result){
-                            client.say(fromNick, "A denuncia não irá ser feita, aqui estão os possiveis motivos.");
-                            client.say(fromNick, " - Escreveu mal o nick e este não se encontra na sala.");
-                            client.say(fromNick, " - O nick tem status e como tal, não pode ser denunciado através desta funcionalidade. Fale com um moderador.");                  
-                        } else {
-                            // Código da denuncia.
-                        }
-                    });
+                case "denunciar":
+                    core.denunciar(query, fromNick, client, core.config[0]["global_channel"]);
                 break;   
                 default:
                 // Nada em Default
