@@ -30,14 +30,14 @@ var quizLimitRespostas = 10 // Limite de respostas do quiz
 // Config values
 var config = [
 {
-    global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
+    global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     global_port: 6697,
     global_nick: "EpiC",
     global_password: "brazink007",
     global_isRegistered: true,
     global_userName: "Portugal",
     global_realName: "Portugal",
-    global_channel: "#yup",
+    global_channel: "#Portugal",
     modoAtual: 0
 }];     
 
