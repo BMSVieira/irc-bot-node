@@ -136,9 +136,25 @@
                 // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
                 console.log(from + '(' + to + ') : ' + message);
 
+                // Funções & Modulos
                 comportamento.verificaCaps(message, from, client, core.config[0]["global_channel"]);
-                // radio.atualizaMusicaAtual(message, from, client);
-                // radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
+                radio.atualizaMusicaAtual(message, from, client);
+                radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
+
+                // Pesquisa por comandos que os utilizadores possam dizer
+                const regex = /<([^>]+)>/;
+                const matches = message.match(regex);
+                if(matches)
+                {
+                  switch (matches[1].toLowerCase()) {
+                    case 'regras':
+                        ajuda.regrasSala(fromNick, client);
+                    break;
+                    default:
+                    // Nada em default
+                  }
+                }
+
             }
             
         });
@@ -195,6 +211,23 @@
                         core.unbindAll();
                         core.startShout(client, axios);       
                     }
+                break;
+                case "startanuncios":
+                        if(core.isAdmin(fromNick))
+                        {
+                            // Inicia o Shout
+                            client.say(fromNick, "Anuncios a iniciar.");
+                            core.unbindAll();
+                            core.startAnuncios(client);       
+                        }                    
+                break;
+                case "stopanuncios":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Cancela os anuncios
+                        client.say(fromNick, "Anuncios parados.");
+                        core.unbindAll();
+                    }                    
                 break;
                 case "stopshout":
                     if(core.isAdmin(fromNick))

@@ -4,11 +4,14 @@ var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
 var autores = require('../db/autores');
+var anuncios = require('../db/anuncios');
 
 // ** Variaveis Globais
 var interval_shout;
 var interval_quiz;
+var interval_anuncio;
 var ultimoShout;
+var ultimoAnnuncio;
 var ultimaFraseNicksStatus;
 var ultimaResposta;
 var quizPergunta = 0;
@@ -19,21 +22,22 @@ var quizVencedor = {};
 var fila = [];
 var denuncias = [];
 
-var shoutTime = 80000; // 60 Segundos
+var shoutTime = 300000; // 80 Segundos
+var anuncioTime = 600000; // 10 minutos
 var quizTime = 25000; // 15 Segundos
 var quizLimitRespostas = 10 // Limite de respostas do quiz
 
 // Config values
 var config = [
 {
-    global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
+    global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
     global_port: 6697,
     global_nick: "EpiC",
     global_password: "brazink007",
     global_isRegistered: true,
     global_userName: "Portugal",
     global_realName: "Portugal",
-    global_channel: "#Portugal",
+    global_channel: "#yup",
     modoAtual: 0
 }];     
 
@@ -75,6 +79,7 @@ function unbindAll()
 {
     clearTimeout(interval_shout); 
     clearTimeout(interval_quiz);
+    clearTimeout(interval_anuncio); 
 
     // Reset do Quiz
     quizPergunta = 0;
@@ -379,6 +384,28 @@ function startShout(client, axios)
     config[0]["modoAtual"] = 0; 
 } 
 /* 
+    Inicia o Anuncios
+    ####################################################################
+*/
+function startAnuncios(client)
+{
+    interval_anuncio = setInterval(function () {
+
+        var rndInt = randomizeBetween(1,anuncios.length-1);
+        while(rndInt == ultimoAnnuncio)
+        {
+            rndInt = randomizeBetween(1,anuncios.length-1);
+        }
+
+        filaDeMensagens(anuncios[rndInt].frase);
+        ultimoAnnuncio = rndInt;
+
+    }, anuncioTime);
+
+    // Altera o modo do bot para "Shout"
+    config[0]["modoAtual"] = 0; 
+} 
+/* 
     Função que muda o tempo das mensagens
     ####################################################################
 */
@@ -387,7 +414,8 @@ function changeTime(from, client, cmd, query)
     // Limpa o interval atual
     clearTimeout(interval_shout); 
     clearTimeout(interval_quiz);
-    
+    clearTimeout(interval_anuncio); 
+
     switch(cmd) {
         case "setQuizLimit":
             quizLimitRespostas = query;
@@ -403,4 +431,4 @@ function changeTime(from, client, cmd, query)
 } 
 
 // Faz o export dos modulos
-module.exports = {denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
