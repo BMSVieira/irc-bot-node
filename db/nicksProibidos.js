@@ -25,7 +25,15 @@ const nicksProibidos = [
     'cazal',
     'madura',
     'ativo',
-    'passivo'
+    'passivo',
+    'xhxh',
+    'csdo',
+    'csda',
+    'manso',
+    'cormanso',
+    '50tao',
+    '60tao',
+    '40tao'
 
 ];
 
