@@ -17,7 +17,15 @@ const nicksProibidos = [
     'bicasado',
     'sissy',
     'falodela',
-    'falodelafone'
+    'falodelafone',
+    'corno',
+    'gay',
+    'panuca',
+    'prazer',
+    'cazal',
+    'madura',
+    'ativo',
+    'passivo'
 
 ];
 

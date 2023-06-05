@@ -68,7 +68,9 @@ const forbiddenWords = [
     'quero',
     'milf',
     'at',
-    'pass'
+    'pass',
+    'Pecador',
+    'mad'
 ];
 
 module.exports = forbiddenWords
