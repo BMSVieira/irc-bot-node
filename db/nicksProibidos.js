@@ -3,12 +3,22 @@
 const nicksProibidos = [
     'maduro',
     'discreto',
+    'discretto',
+    'discretoo',
+    'dscreto',
     'madurao',
     'safado',
     'safada',
     'bancado',
     'xulo',
-    'guloso'
+    'guloso',
+    'casal',
+    'casadobi',
+    'bicasado',
+    'sissy',
+    'falodela',
+    'falodelafone'
+
 ];
 
 module.exports = nicksProibidos
