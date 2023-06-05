@@ -58,7 +58,10 @@ const forbiddenWords = [
     'Corninho',
     'Gemer',
     'Grosso',
-    'Sigilo'
+    'Sigilo',
+    'guloso',
+    'ativo',
+    'kota'
 ];
 
 module.exports = forbiddenWords

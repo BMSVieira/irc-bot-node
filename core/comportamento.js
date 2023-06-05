@@ -2,7 +2,23 @@
 // Config Variables
 var protected = require('../db/protected');
 var forbiddenWords = require('../db/palavrasProibidas');
+var nicksProibidos = require('../db/nicksProibidos');
 var avisosCaps = [];
+
+/*
+    Verifica por palavras proibidas no meio dos nicks
+    ##############################################################################
+*/
+function checkMeioNome(str) {
+    var encontrouMeio = [];
+    for (let i = 0; i < nicksProibidos.length; i++) {
+        if (str.toLowerCase().includes(nicksProibidos[i])) {
+            encontrouMeio.push(str.toLowerCase());
+        }
+    }
+    // Se encontrou algum match
+    if(encontrouMeio.length) { return true } else { return false }
+}
 
 /*
     Verifica por palavras proibidas
@@ -33,17 +49,29 @@ function separateString(str) {
 }
 
 /*
-    Verifica se o nick que entrou está dentro das palavras proibidas
+    Dando um nick, verifica se o nick contém palavras proibidas
     ##############################################################################
 */
 function checkKick(nick, client, channel)
 {
+    // ==========================================================================
+
+    // Separa o nick da pessoa por Numeros, maiusculas ou caracteres especiais
     const separated = separateString(nick);
+    // Coloca tudo num objecto
     const nameParts = separated.split(" ");
+    // Verifica no objecto, palavra a palavra
     const containsForbiddenWord = checkForbiddenWords(nameParts, forbiddenWords);
 
-    // Se retornar true, vai kickar.
-    if(containsForbiddenWord)
+    // ==========================================================================
+
+    // Verifica palavras proibidas nomeio do nick
+    const constainsMeioNick = checkMeioNome(nick);
+
+    // ==========================================================================
+    
+    // Se retornar true um ou outro, kicka.
+    if(containsForbiddenWord || constainsMeioNick)
     {
         client.send('kick', channel, nick, "Nick com conteúdo sexual não permitido. Mude de nick ou de sala!");
     }
@@ -117,4 +145,4 @@ function verificaNick(from, client, channel) {
 }
 
 // Faz o export dos modulos
-module.exports = { verificaNick, verificaCaps, checkKick};
+module.exports = { checkMeioNome, verificaNick, verificaCaps, checkKick};
