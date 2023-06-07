@@ -35,7 +35,13 @@ const nicksProibidos = [
     '60tao',
     '40tao',
     'caralhao',
-    'policia'
+    'policia',
+    'maridoker',
+    'maridoquer',
+    'fetiches',
+    'encontros',
+    'encontro'
+
 
 ];
 
