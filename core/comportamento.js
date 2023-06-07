@@ -6,14 +6,28 @@ var nicksProibidos = require('../db/nicksProibidos');
 var avisosCaps = [];
 
 /*
+    Remove todos os caracteres especiais do nick, retorna em lowercase e limpo
+    ##############################################################################
+*/
+function removeSpecialCharacters(str) {
+  
+    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]+/g;
+    var result = str.replace(regex, '');
+    result = result.toLowerCase();
+  
+    return result;
+  }
+
+/*
     Verifica por palavras proibidas no meio dos nicks
     ##############################################################################
 */
 function checkMeioNome(str) {
     var encontrouMeio = [];
+    str = removeSpecialCharacters(str);
     for (let i = 0; i < nicksProibidos.length; i++) {
-        if (str.toLowerCase().includes(nicksProibidos[i])) {
-            encontrouMeio.push(str.toLowerCase());
+        if (str.includes(nicksProibidos[i])) {
+            encontrouMeio.push(str);
         }
     }
     // Se encontrou algum match
