@@ -33,7 +33,9 @@ const nicksProibidos = [
     'cormanso',
     '50tao',
     '60tao',
-    '40tao'
+    '40tao',
+    'caralhao',
+    'policia'
 
 ];
 
