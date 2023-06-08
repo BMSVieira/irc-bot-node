@@ -290,6 +290,13 @@
                         client.say(fromNick, "Desconectou-se de: #"+query);
                     }
                 break; 
+                case "atualiza":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        comportamento.atualizaMeiasPalavras(client, axios);
+                    }
+                break; 
                 case "regras":
                     ajuda.regrasSala(fromNick, client);
                 break; 

@@ -5,6 +5,12 @@ var forbiddenWords = require('../db/palavrasProibidas');
 var nicksProibidos = require('../db/nicksProibidos');
 var avisosCaps = [];
 
+// Parametro da API
+const url = 'https://mooviejs.com/bot/ost_wbs/';
+const headers = {
+    apiKey: 'a1086415c6ae4aa5b526ce940b8e8284'
+};
+
 /*
     Remove todos os caracteres especiais do nick, retorna em lowercase e limpo
     ##############################################################################
@@ -158,5 +164,36 @@ function verificaNick(from, client, channel) {
     }
 }
 
+/*
+    Verifica se o nick da pessoa que se juntou, é menor do que 3 letras
+    ###########################################################################
+*/
+function atualizaMeiasPalavras(client, axios) {
+
+    // Corpo da request
+    const body = {
+      query: 'meiaspalavras',
+      condition: 'all'
+    };
+
+    // Request
+    axios.post(url, body, { headers })
+      .then(response => {
+        if (response.status == 200) {
+            // Faz o reset do object
+            nicksProibidos = [];
+            const palavras = response.data.data.palavras;
+            for (const palavra of palavras) {
+                // Redefine o objecto novamente
+                nicksProibidos.push(palavra.category);
+            }
+        }  
+      })
+      .catch(error => {
+        console.error(error);
+      });
+}
+
+
 // Faz o export dos modulos
-module.exports = { checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = { atualizaMeiasPalavras, checkMeioNome, verificaNick, verificaCaps, checkKick};
