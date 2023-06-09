@@ -44,7 +44,8 @@ const nicksProibidos = [
     'curioso',
     'curiosa',
     'cuck',
-    'cuckold'
+    'cuckold',
+    'levei'
 ];
 
 module.exports = nicksProibidos

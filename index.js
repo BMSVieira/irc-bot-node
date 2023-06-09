@@ -69,6 +69,10 @@
                 }
             }, 2000);
             
+            // Atualiza os parametros de kick vindos da BD
+            comportamento.atualizaMeioNick(client, axios);
+            comportamento.atualizaPalavrasProibidas(client, axios);
+
         });
   
     // ########################################################################################
@@ -294,7 +298,8 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Atualiza os parametros de kick
-                        comportamento.atualizaMeiasPalavras(client, axios);
+                        comportamento.atualizaMeioNick(client, axios);
+                        comportamento.atualizaPalavrasProibidas(client, axios);
                     }
                 break; 
                 case "regras":

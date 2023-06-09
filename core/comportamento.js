@@ -93,7 +93,7 @@ function checkKick(nick, client, channel)
     // Se retornar true um ou outro, kicka.
     if(containsForbiddenWord || constainsMeioNick)
     {
-        client.send('kick', channel, nick, "Nick com conteúdo sexual não permitido. Mude de nick ou de sala!");
+        client.send('kick', channel, nick, "Nick com conteúdo sexual ou palavra não permitida. Mude de nick ou de sala!");
     }
 }
 
@@ -165,10 +165,10 @@ function verificaNick(from, client, channel) {
 }
 
 /*
-    Verifica se o nick da pessoa que se juntou, é menor do que 3 letras
+    Atualiza o objecto dos nicks com informação da Base de Dados
     ###########################################################################
 */
-function atualizaMeiasPalavras(client, axios) {
+function atualizaMeioNick(client, axios) {
 
     // Corpo da request
     const body = {
@@ -185,7 +185,33 @@ function atualizaMeiasPalavras(client, axios) {
             const palavras = response.data.data.palavras;
             for (const palavra of palavras) {
                 // Redefine o objecto novamente
-                nicksProibidos.push(palavra.category);
+                nicksProibidos.push(palavra.palavra);
+            }
+        }  
+      })
+      .catch(error => {
+        console.error(error);
+      });
+}
+
+function atualizaPalavrasProibidas(client, axios) {
+
+    // Corpo da request
+    const body = {
+      query: 'palavrasproibidas',
+      condition: 'all'
+    };
+
+    // Request
+    axios.post(url, body, { headers })
+      .then(response => {
+        if (response.status == 200) {
+            // Faz o reset do object
+            forbiddenWords = [];
+            const palavras = response.data.data.palavras;
+            for (const palavra of palavras) {
+                // Redefine o objecto novamente
+                forbiddenWords.push(palavra.palavra);
             }
         }  
       })
@@ -195,5 +221,6 @@ function atualizaMeiasPalavras(client, axios) {
 }
 
 
+
 // Faz o export dos modulos
-module.exports = { atualizaMeiasPalavras, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = { atualizaPalavrasProibidas, atualizaMeioNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
