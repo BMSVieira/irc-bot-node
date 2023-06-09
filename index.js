@@ -109,7 +109,7 @@
         client.addListener('join', function (channel, nick, message) {
             comportamento.verificaNick(nick, client, core.config[0]["global_channel"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
-            comportamento.verificaNumerosNick(nick, client, core.config[0]["global_channel"]);
+            // comportamento.verificaNumerosNick(nick, client, core.config[0]["global_channel"]);
         });
 
         // Escuta por erros
