@@ -301,6 +301,7 @@
                         // Atualiza os parametros de kick
                         comportamento.atualizaMeioNick(client, axios);
                         comportamento.atualizaPalavrasProibidas(client, axios);
+                        client.say(fromNick, "Parametros Atualizados.");
                     }
                 break; 
                 case "regras":
