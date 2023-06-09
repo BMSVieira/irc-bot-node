@@ -22,6 +22,23 @@ function removeSpecialCharacters(str) {
     result = result.toLowerCase();
   
     return result;
+}
+
+/*
+    Verifica por numeros no nick
+    ##############################################################################
+*/
+function verificaNumerosNick(nick, client, channel) {
+
+    const digitsOnly = nick.replace(/\D/g, '');
+    
+    // 2 e 3 ou maior do 4 numeros.
+    if ((digitsOnly.length >= 2 && digitsOnly.length <= 3) || digitsOnly.length > 4) {
+        client.send('kick', channel, nick, "Nick inválido. Caracteres numéricos indevidos.");
+        return true;
+    } else {
+      return false; 
+    }
   }
 
 /*
@@ -223,4 +240,4 @@ function atualizaPalavrasProibidas(client, axios) {
 
 
 // Faz o export dos modulos
-module.exports = { atualizaPalavrasProibidas, atualizaMeioNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = { verificaNumerosNick, atualizaPalavrasProibidas, atualizaMeioNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
