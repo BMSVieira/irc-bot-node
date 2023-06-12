@@ -50,11 +50,11 @@ function checkMeioNome(str) {
     str = removeSpecialCharacters(str);
     for (let i = 0; i < nicksProibidos.length; i++) {
         if (str.includes(nicksProibidos[i])) {
-            encontrouMeio.push(nicksProibidos[i]);
+            encontrouMeio.push(str);
         }
     }
     // Se encontrou algum match
-    if(encontrouMeio.length) { return encontrouMeio } else { return false }
+    if(encontrouMeio.length) { return true } else { return false }
 }
 
 /*
@@ -67,12 +67,12 @@ function checkForbiddenWords(obj, forbiddenWords) {
   
       for (let i = 0; i < forbiddenWords.length; i++) {
         if (forbiddenWords[i].toLowerCase() === element.toLowerCase()) {
-          encontrou.push(forbiddenWords[i].toLowerCase());
+          encontrou.push(element.toLowerCase());
         }
       }
     });
     // Se encontrou algum match
-    if(encontrou.length) { return encontrou } else { return false }
+    if(encontrou.length) { return true } else { return false }
   }
 
 /*
@@ -110,9 +110,7 @@ function checkKick(nick, client, channel)
     // Se retornar true um ou outro, kicka.
     if(containsForbiddenWord || constainsMeioNick)
     {
-        var palavrasDetetadas = containsForbiddenWord.concat(constainsMeioNick.filter(item => !containsForbiddenWord.includes(item)));
-        palavrasDetetadas = palavrasDetetadas.join(', ');
-        client.send('kick', channel, nick, "Nick com conteúdo sexual ou palavra não permitida ("+palavrasDetetadas+"). Mude de nick ou de sala!");
+        client.send('kick', channel, nick, "Nick com conteúdo sexual ou palavra não permitida. Mude de nick ou de sala!");
     }
 }
 
