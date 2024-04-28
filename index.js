@@ -58,7 +58,7 @@
             client.join(core.config[0]["global_channel"], function(channel, error) {});
 
             // Verifica se tem de registar o nick
-            client.send('NickServ IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]);
+            if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
 
             // Cria a função que envia as mensagens
             let interval = setInterval(function(){
