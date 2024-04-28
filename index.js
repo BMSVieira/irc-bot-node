@@ -27,7 +27,6 @@
     // ########################################################################################
 
         var client = new irc.Client( core.config[0]["global_irc"], core.config[0]["global_nick"], {
-            channels: ['#Portugal'],
             userName: core.config[0]["global_userName"],
             realName: core.config[0]["global_realName"],
             port: core.config[0]["global_port"],
