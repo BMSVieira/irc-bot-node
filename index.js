@@ -49,26 +49,19 @@
             messageSplit: 512,
             encoding: ''
         });
-console.log(client);
+
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
     // ########################################################################################
 
         // Verifica se conecta com sucesso
         client.addListener('registered', function () {
-console.log("registado");
+                
             // Junta-se ao canal
             client.join(core.config[0]["global_channel"], function(channel, error) {});
-console.log("Entrei no canal");
+
             // Verifica se tem de registar o nick
-            if(core.config[0]["global_isRegistered"]) {
-                    
-                    console.log(core.config[0]["global_nick"]);
-                    console.log(core.config[0]["global_password"]);
-
-
-
-client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
+            if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
 
             // Cria a função que envia as mensagens
             let interval = setInterval(function(){
