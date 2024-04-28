@@ -20,6 +20,8 @@
         console.log("** BOT A iniciar... **");
         console.log(" ");
 
+              console.log(core.config[0]["global_nick"]);
+                    console.log(core.config[0]["global_password"]);
     // ########################################################################################
     // Faz a conexão ao servidor
     // ########################################################################################
