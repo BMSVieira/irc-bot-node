@@ -30,7 +30,7 @@
             userName: core.config[0]["global_userName"],
             realName: core.config[0]["global_realName"],
             port: core.config[0]["global_port"],
-            localAddress: core.config[0]["global_irc"],
+            localAddress: "167.114.8.146",
             debug: false,
             showErrors: true,
             autoRejoin: true,
