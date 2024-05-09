@@ -37,7 +37,7 @@ var config = [
     global_isRegistered: false,
     global_userName: "Portugal",
     global_realName: "Portugal",
-    global_channel: "#Portugal",
+    global_channel: "#hey",
     modoAtual: 0
 }];     
 
