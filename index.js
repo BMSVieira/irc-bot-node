@@ -32,22 +32,24 @@
             port: core.config[0]["global_port"],
             localAddress: "",
             debug: false,
-            showErrors: true,
-            autoRejoin: true,
+            showErrors: false,
+            autoRejoin: false,
             autoConnect: true,
+            channels: [],
             secure: false,
             selfSigned: false,
             certExpired: false,
             floodProtection: false,
             floodProtectionDelay: 1000,
-            sasl: true,
-            retryCount: 5,
+            sasl: false,
+            retryCount: 0,
             retryDelay: 2000,
-            stripColors: true,
+            stripColors: false,
             channelPrefixes: "&#",
             messageSplit: 512,
             encoding: ''
         });
+
 
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
