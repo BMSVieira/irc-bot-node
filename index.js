@@ -50,6 +50,7 @@
             encoding: ''
         });
 
+        client.connect();
 
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
