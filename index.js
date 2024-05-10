@@ -57,11 +57,16 @@
         // Verifica se conecta com sucesso
         client.addListener('registered', function () {
                 
-            // Junta-se ao canal
-            client.join(core.config[0]["global_channel"], function(channel, error) {});
+            console.log("joined.");
 
-            // Verifica se tem de registar o nick
-            if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
+            // Junta-se ao canal
+            client.join(core.config[0]["global_channel"], function(channel, error) {
+
+                console.log("joined ch.");
+
+                if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
+
+            });
 
             // Cria a função que envia as mensagens
             let interval = setInterval(function(){
