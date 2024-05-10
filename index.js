@@ -32,26 +32,24 @@
             port: core.config[0]["global_port"],
             localAddress: "",
             debug: false,
-            showErrors: false,
+            showErrors: true,
             autoRejoin: false,
-            autoConnect: true,
-            channels: [],
-            secure: false,
-            selfSigned: false,
-            certExpired: false,
+            autoConnect: false,
+            secure: true,
+            selfSigned: true,
+            certExpired: true,
             floodProtection: false,
             floodProtectionDelay: 1000,
             sasl: false,
             retryCount: 0,
             retryDelay: 2000,
             stripColors: false,
-            channelPrefixes: "&#",
+            channelPrefixes: "#",
             messageSplit: 512,
             encoding: ''
         });
 
         client.connect();
-
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
     // ########################################################################################
@@ -75,8 +73,8 @@
             }, 2000);
             
             // Atualiza os parametros de kick vindos da BD
-            comportamento.atualizaMeioNick(client, axios);
-            comportamento.atualizaPalavrasProibidas(client, axios);
+            // comportamento.atualizaMeioNick(client, axios);
+            // comportamento.atualizaPalavrasProibidas(client, axios);
 
         });
   
