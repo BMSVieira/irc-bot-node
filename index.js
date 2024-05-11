@@ -20,36 +20,45 @@
         console.log("** BOT A iniciar... **");
         console.log(" ");
 
-              console.log(core.config[0]["global_nick"]);
-                    console.log(core.config[0]["global_password"]);
+console.log(core.config[0]["global_nick"]);
+console.log(core.config[0]["global_password"]);
+console.log(core.config[0]["global_irc"]);
+console.log(core.config[0]["global_userName"]);
+console.log(core.config[0]["global_realName"]);
+console.log(core.config[0]["global_port"]);
+console.log(core.config[0]["global_channel"]);
+
+
     // ########################################################################################
     // Faz a conexão ao servidor
     // ########################################################################################
 
-        var client = new irc.Client( core.config[0]["global_irc"], core.config[0]["global_nick"], {
-            userName: core.config[0]["global_userName"],
-            realName: core.config[0]["global_realName"],
-            port: core.config[0]["global_port"],
+        var client = new irc.Client( "irc.ptnet.org", "teste", {
+            userName: 'nodebot',
+            realName: 'nodeJS IRC client',
+            port: 6667,
             localAddress: null,
             debug: false,
-            showErrors: true,
-            autoRejoin: true,
+            showErrors: false,
+            autoRejoin: false,
             autoConnect: true,
+            channels: [],
             secure: false,
-            selfSigned: true,
-            certExpired: true,
+            selfSigned: false,
+            certExpired: false,
             floodProtection: false,
             floodProtectionDelay: 1000,
             sasl: false,
-            retryCount: 5,
+            retryCount: 0,
             retryDelay: 2000,
-            stripColors: true,
+            stripColors: false,
             channelPrefixes: "&#",
             messageSplit: 512,
             encoding: ''
         });
 
-        client.connect();
+       // client.connect();
+        console.log(client);
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
     // ########################################################################################

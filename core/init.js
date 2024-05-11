@@ -34,7 +34,7 @@ var config = [
     global_port: 6697,
     global_nick: "EpiC",
     global_password: "asuz12345",
-    global_isRegistered: true,
+    global_isRegistered: false,
     global_userName: "Portugal",
     global_realName: "Portugal",
     global_channel: "#hey",
