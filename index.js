@@ -5,7 +5,7 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
-        const axios = require('axios');
+       //  const axios = require('axios');
 
         // Modulos
         var radio = require("./core/radio");
@@ -33,32 +33,31 @@ console.log(core.config[0]["global_channel"]);
     // Faz a conexão ao servidor
     // ########################################################################################
 
-        var client = new irc.Client( "irc.brazink.net", "atipico123", {
-            userName: 'nodebot',
-            realName: 'nodeJS IRC client',
-            port: 6667,
-            localAddress: null,
-            debug: false,
-            showErrors: false,
-            autoRejoin: false,
-            autoConnect: true,
-            channels: [],
-            secure: false,
-            selfSigned: false,
-            certExpired: false,
-            floodProtection: false,
-            floodProtectionDelay: 1000,
-            sasl: false,
-            retryCount: 0,
-            retryDelay: 2000,
-            stripColors: false,
-            channelPrefixes: "&#",
-            messageSplit: 512,
-            encoding: ''
-        });
+    var client = new irc.Client( core.config[0]["global_irc"], core.config[0]["global_nick"], {
+        userName: core.config[0]["global_userName"],
+        realName: core.config[0]["global_realName"],
+        port: core.config[0]["global_port"],
+        localAddress: "",
+        debug: false,
+        showErrors: true,
+        autoRejoin: false,
+        autoConnect: false,
+        secure: true,
+        selfSigned: true,
+        certExpired: true,
+        floodProtection: false,
+        floodProtectionDelay: 1000,
+        sasl: false,
+        retryCount: 0,
+        retryDelay: 2000,
+        stripColors: false,
+        channelPrefixes: "#",
+        messageSplit: 512,
+        encoding: ''
+    });
 
-       // client.connect();
-        console.log(client);
+    client.connect();
+
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
     // ########################################################################################
@@ -69,7 +68,7 @@ console.log(core.config[0]["global_channel"]);
             console.log("joined.");
 
             // Junta-se ao canal
-            client.join(core.config[0]["global_channel"], function(channel, error) {
+            client.join("#Portugal", function(channel, error) {
 
                 console.log("joined ch.");
 
