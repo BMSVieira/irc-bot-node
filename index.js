@@ -33,7 +33,7 @@ console.log(core.config[0]["global_channel"]);
     // Faz a conexão ao servidor
     // ########################################################################################
 
-        var client = new irc.Client( "irc.ptnet.org", "teste", {
+        var client = new irc.Client( "irc.brazink.net", "atipico123", {
             userName: 'nodebot',
             realName: 'nodeJS IRC client',
             port: 6667,
