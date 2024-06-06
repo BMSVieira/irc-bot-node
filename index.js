@@ -67,6 +67,9 @@ console.log(core.config[0]["global_channel"]);
                 
             console.log("joined.");
 
+
+   setInterval(function(){
+                
             // Junta-se ao canal
             client.join("#Porto", function(channel, error) {
 
@@ -75,7 +78,7 @@ console.log(core.config[0]["global_channel"]);
                 if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
 
             });
-
+ }, 5000);
             // Cria a função que envia as mensagens
             let interval = setInterval(function(){
                 if(core.fila.length > 0)
