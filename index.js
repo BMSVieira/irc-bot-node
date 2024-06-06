@@ -68,7 +68,7 @@ console.log(core.config[0]["global_channel"]);
             console.log("joined.");
 
             // Junta-se ao canal
-            client.join("#Portugal", function(channel, error) {
+            client.join("#Porto", function(channel, error) {
 
                 console.log("joined ch.");
 
