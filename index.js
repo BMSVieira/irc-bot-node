@@ -5,7 +5,7 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
-       //  const axios = require('axios');
+        const axios = require('axios');
 
         // Modulos
         var radio = require("./core/radio");
@@ -19,15 +19,6 @@
         // Boot
         console.log("** BOT A iniciar... **");
         console.log(" ");
-
-console.log(core.config[0]["global_nick"]);
-console.log(core.config[0]["global_password"]);
-console.log(core.config[0]["global_irc"]);
-console.log(core.config[0]["global_userName"]);
-console.log(core.config[0]["global_realName"]);
-console.log(core.config[0]["global_port"]);
-console.log(core.config[0]["global_channel"]);
-
 
     // ########################################################################################
     // Faz a conexão ao servidor
@@ -67,18 +58,11 @@ console.log(core.config[0]["global_channel"]);
                 
             console.log("joined.");
 
-
-   setInterval(function(){
-                
             // Junta-se ao canal
-            client.join("#Porto", function(channel, error) {
-
-                console.log("joined ch.");
-
+            client.join(core.config[0]["global_channel"], function(channel, error) {
                 if(core.config[0]["global_isRegistered"]) { client.send('PRIVMSG NickServ :IDENTIFY ', core.config[0]["global_nick"], ' ', core.config[0]["global_password"]); }
-
             });
- }, 5000);
+
             // Cria a função que envia as mensagens
             let interval = setInterval(function(){
                 if(core.fila.length > 0)
@@ -178,7 +162,6 @@ console.log(core.config[0]["global_channel"]);
                     // Nada em default
                   }
                 }
-
             }
             
         });
@@ -223,7 +206,6 @@ console.log(core.config[0]["global_channel"]);
                     {
                         // Anuncia o vencedor e acaba com o quiz    
                         client.say(fromNick, "Quiz parou.");
-                        core.anunciaVencedorQuiz(client);
                         core.unbindAll(); 
                     }
                 break;
@@ -239,10 +221,15 @@ console.log(core.config[0]["global_channel"]);
                 case "startanuncios":
                         if(core.isAdmin(fromNick))
                         {
-                            // Inicia o Shout
-                            client.say(fromNick, "Anuncios a iniciar.");
-                            core.unbindAll();
-                            core.startAnuncios(client);       
+                            if(query)
+                            {
+                                // Inicia o Anuncios
+                                client.say(fromNick, "Anuncios a iniciar.");
+                                core.unbindAll();
+                                core.startAnuncios(client, query);   
+                            } else {
+                                client.say(fromNick, "Tem de dizer qual é o anúncio.");
+                            }
                         }                    
                 break;
                 case "stopanuncios":
@@ -268,7 +255,6 @@ console.log(core.config[0]["global_channel"]);
                         client.say(fromNick, "Modo Anterior: "+core.config[0]["modoAtual"]);
                         core.config[0]["modoAtual"] = query;
                         client.say(fromNick, "Modo Atual: "+core.config[0]["modoAtual"]);
-                        core.unbindAll(); 
                     }
                 break;
                 case "setQuizLimit":
