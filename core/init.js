@@ -26,8 +26,24 @@ var shoutTime = 300000; // 80 Segundos
 var anuncioTime = 600000; // 10 minutos
 var quizTime = 25000; // 15 Segundos
 var quizLimitRespostas = 10 // Limite de respostas do quiz
+var anuncioFrase = ""; // Frase anuncio
 
 // Config values
+/*
+var config = [
+{
+    global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
+    global_port: 6697,
+    global_nick: "EpiC",
+    global_password: "asuz12345",
+    global_isRegistered: false,
+    global_userName: "Portugal",
+    global_realName: "Portugal",
+    global_channel: "#trainingground2",
+    modoAtual: 0
+}];  
+*/
+
 var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -40,6 +56,7 @@ var config = [
         global_channel: "#Portugal",
         modoAtual: 0
     }];     
+
 
 /*
     Trata a string para ir buscar apenas uma parte dela
@@ -87,6 +104,8 @@ function unbindAll()
     quizCount = 1;
     quizBlockedQuestion = 0;
     quizVencedor = {};
+
+    config[0]["modoAtual"] = 0; 
 }
 /* 
     Verifica se é Owner
@@ -261,10 +280,8 @@ function startQuiz(client)
             quizPergunta = rndInt;
 
         } else {
-
             // Anuncia o vencedor    
             anunciaVencedorQuiz(client);
-
             // Reseta tudo
             unbindAll();
         }
@@ -274,8 +291,8 @@ function startQuiz(client)
 
     }, quizTime);
 
-// Altera o modo do bot para "In Quiz"
-config[0]["modoAtual"] = 2;
+    // Altera o modo do bot para "In Quiz"
+    config[0]["modoAtual"] = 2;
 }
 /* 
     Verifica a resposta da quiz
@@ -387,23 +404,26 @@ function startShout(client, axios)
     Inicia o Anuncios
     ####################################################################
 */
-function startAnuncios(client)
+function startAnuncios(client, query)
 {
+
+    // Verifica se a mensagem trouxe frase.
+    if(query)
+    {
+        anuncioFrase = query;
+    }
+
+    var c=0;
     interval_anuncio = setInterval(function () {
-
-        var rndInt = randomizeBetween(1,anuncios.length-1);
-        while(rndInt == ultimoAnnuncio)
-        {
-            rndInt = randomizeBetween(1,anuncios.length-1);
-        }
-
-        filaDeMensagens(anuncios[rndInt].frase);
-        ultimoAnnuncio = rndInt;
-
-    }, anuncioTime);
+     
+            if(c & 1){var even = "**";}else { var even = "*"; }
+            filaDeMensagens(even+" "+anuncioFrase+" "+even);
+            c++;
+    
+    }, 5000);
 
     // Altera o modo do bot para "Shout"
-    config[0]["modoAtual"] = 0; 
+    config[0]["modoAtual"] = 2; 
 } 
 /* 
     Função que muda o tempo das mensagens
@@ -429,6 +449,5 @@ function changeTime(from, client, cmd, query)
         // Nada em Default
     }
 } 
-
 // Faz o export dos modulos
 module.exports = {startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };

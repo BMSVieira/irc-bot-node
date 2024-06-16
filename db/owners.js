@@ -2,7 +2,9 @@
 // Owners do Bot 
 const owners = [
     "AsuZ",
-    "Monte",
+    "Devyl",
+    "Bitaites",
+    "bitaites",
     "EsQ"
 ];
 
