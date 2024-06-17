@@ -111,10 +111,6 @@ const quiz = [
     },
     {
       pergunta: "Que substância é absorvida pelas plantas e expirada por todos os seres vivos?",
-      resposta: "Artérias"
-    },
-    {
-      pergunta: "Que substância é absorvida pelas plantas e expirada por todos os seres vivos?",
       resposta: "Dióxido de carbono"
     },
     {

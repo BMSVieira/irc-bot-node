@@ -230,7 +230,70 @@ const frases = [
       frase: "Acabei de ver a pessoa mais inteligente do mundo {nick}! Olhei-me ao espelho!"
     },
     {
-      frase: "{nick} antigamente era arrogante! Felizmente agora sou perfeita!"
+      frase: "{nick} antigamente era arrogante! Felizmente agora sou perfeito!"
+    },
+    {
+      frase: "Vou-te contar uma anedota {nick}: Futebol Clube do Porto."
+    },
+    {
+      frase: "Vou-te contar uma anedota {nick}: Sport Lisboa e Benfica."
+    },
+    {
+      frase: "Vou-te contar uma anedota {nick}: Sporting Clube de Portugal."
+    },
+    {
+      frase: "Não é que eu tenha medo de morrer {nick}. Só não quero estar lá na hora que isso acontecer."
+    },
+    {
+      frase: "{nick}, o cérebro é o meu segundo órgão favorito."
+    },
+    {
+      frase: "Quem ama o feio é porque o bonito não aparece, {nick}."
+    },
+    {
+      frase: "{nick}, A realidade é dura, mas ainda é o único lugar onde se pode comer um bom bife."
+    },
+    {
+      frase: "Sabes {nick}, Que mundo! Poderia ser maravilhoso se não fossem as pessoas."
+    },
+    {
+      frase: "{nick}, O pessimista afirma que já atingimos o fundo do poço, o otimista acha que dá pra cair mais."
+    },
+    {
+      frase: "Há casamentos que acabam bem, há outros que duram para sempre, {nick}."
+    },
+    {
+      frase: "{nick}, É bem melhor pensar sem falar do que falar sem pensar."
+    },
+    {
+      frase: "{nick}, Quando o feriado é religioso, até ateu comemora."
+    },
+    {
+      frase: "{nick}, o ser humano aprende a falar com cerca de 3 anos, a ouvir, nunca."
+    },
+    {
+      frase: "{nick}, Isto seria muito mais divertido se estivéssemos nus."
+    },
+    {
+      frase: "{nick}, Não me uses para chamar a atenção de quem realmente queres."
+    },
+    {
+      frase: "{nick}, Volta para o teu canto."
+    },
+    {
+      frase: "Tens muitas teclas nesse teclado, {nick}."
+    },
+    {
+      frase: "É isso {nick}, experimenta sair do chat."
+    },
+    {
+      frase: "{nick}, visto daqui, consigo ver umas 20 pessoas para ires chatear, vai."
+    },
+    {
+      frase: "{nick}, o teu raciocínio parece um puzzle acabado de abrir, nada faz sentido."
+    },
+    {
+      frase: "Vai indo {nick}, que eu já lá vou."
     }
 ];
 

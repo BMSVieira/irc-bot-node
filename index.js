@@ -8,7 +8,7 @@
         const axios = require('axios');
 
         // Modulos
-        var radio = require("./core/radio");
+        // var radio = require("./core/radio");
         var comportamento = require("./core/comportamento");
         var ajuda = require("./core/ajuda");
 
@@ -146,8 +146,10 @@
 
                 // Funções & Modulos
                 comportamento.verificaCaps(message, from, client, core.config[0]["global_channel"]);
-                radio.atualizaMusicaAtual(message, from, client);
-                radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
+                
+                // Deprecated
+                // radio.atualizaMusicaAtual(message, from, client);
+                // radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
 
                 // Pesquisa por comandos que os utilizadores possam dizer
                 const regex = /<([^>]+)>/;
@@ -195,7 +197,8 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Iniciar Quiz
-                        core.filaDeMensagens("#### Quiz vai iniciar dentro de segundos... ####");
+                        core.filaDeMensagens("#### Quiz vai iniciar dentro de segundos ####");
+                        core.filaDeMensagens("#### Só serão consideradas respostas completas e com acentuação. ####");
                         client.say(fromNick, "Quiz a iniciar.");
                         core.unbindAll();
                         core.startQuiz(client);

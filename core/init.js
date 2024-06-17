@@ -23,9 +23,9 @@ var fila = [];
 var denuncias = [];
 
 var shoutTime = 300000; // 80 Segundos
-var anuncioTime = 600000; // 10 minutos
-var quizTime = 25000; // 15 Segundos
-var quizLimitRespostas = 10 // Limite de respostas do quiz
+var anuncioTime = 60000; // 10 minutos
+var quizTime = 25000; // 25 Segundos
+var quizLimitRespostas = 20 // Limite de respostas do quiz
 var anuncioFrase = ""; // Frase anuncio
 
 // Config values
@@ -420,7 +420,7 @@ function startAnuncios(client, query)
             filaDeMensagens(even+" "+anuncioFrase+" "+even);
             c++;
     
-    }, 5000);
+    }, anuncioTime);
 
     // Altera o modo do bot para "Shout"
     config[0]["modoAtual"] = 2; 
