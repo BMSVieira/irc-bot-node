@@ -275,9 +275,6 @@ const frases = [
       frase: "{nick}, Isto seria muito mais divertido se estivéssemos nus."
     },
     {
-      frase: "{nick}, Não me uses para chamar a atenção de quem realmente queres."
-    },
-    {
       frase: "{nick}, Volta para o teu canto."
     },
     {
@@ -294,7 +291,59 @@ const frases = [
     },
     {
       frase: "Vai indo {nick}, que eu já lá vou."
+    },
+    {
+      frase: "{nick}, gosto tanto do som do silêncio do teu teclado"
+    },
+    {
+      frase: "{nick}, estou ocupado agora! Posso ignorar-te noutra hora?"
+    },
+    {
+      frase: "{nick}, se corresses tanto quanto escreves, estarias em excelente forma!"
+    },
+    {
+      frase: "{nick}, desculpa não ter um tapete de boas vindas na entrada da sala, eu não sei mentir!"
+    },
+    {
+      frase: "{nick}, sossega, estás a salvo! Os zombies só comem cérebros!"
+    },
+    {
+      frase: "{nick}, continua a revirar os olhos. Pode ser que encontres o teu cérebro, lá atrás!"
+    },
+    {
+      frase: "{nick}, que deus te guarde, e se esqueça onde!"
+    },
+    {
+      frase: "{nick}, quem tem de ser pacífico é o oceano, Não eu!"
+    },
+    {
+      frase: "{nick}, eu prometo ser mais porreiro, se tu prometeres ser menos parvo!"
+    },
+    {
+      frase: "{nick}, o mundo não é ruim, apenas é mal frequentado!"
+    },
+    {
+      frase: "{nick}, sinto-me uma estrela de cinema, por tanta gente se preocupar com a minha vida!"
+    },
+    {
+      frase: "{nick}, para bom entendedor, meia sobrancelha (levantada) basta!"
+    },
+    {
+      frase: "{nick}, cuidado não chames de inteligente, a quem pensa como tu!"
+    },
+    {
+      frase: "{nick}, depois da tempestade, vem a gripe! Saúde!"
+    },
+    {
+      frase: "{nick}, o mundo é redondo, pena ser frequentado por gente tão quadrada!"
+    },
+    {
+      frase: "{nick}, lamento a minha ironia! A opção B seria usar uma metralhadora."
+    },
+    {
+      frase: "{nick}, tens síndrome de abelha. Pensas que és rei/rainha, mas não passas de um inseto!"
     }
+  
 ];
 
 module.exports = frases
