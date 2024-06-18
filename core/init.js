@@ -4,7 +4,6 @@ var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
 var autores = require('../db/autores');
-var anuncios = require('../db/anuncios');
 
 // ** Variaveis Globais
 var interval_shout;
@@ -54,9 +53,18 @@ var config = [
         global_userName: "Portugal",
         global_realName: "Portugal",
         global_channel: "#Portugal",
+        telegram: {
+            telegram_token: "7448920077:AAF2tXjg9FUPiaqgqM_Thw-sg3pZs7F8yHE",
+            telegram_active: true,
+            telegram_join: true,
+            telegram_leave: true,
+            telegram_users: [
+                "5854934549"
+            ]
+        },
         modoAtual: 0
-    }];     
-
+    }
+];
 
 /*
     Trata a string para ir buscar apenas uma parte dela

@@ -5,12 +5,6 @@ var forbiddenWords = require('../db/palavrasProibidas');
 var nicksProibidos = require('../db/nicksProibidos');
 var avisosCaps = [];
 
-// Parametro da API
-const url = 'https://mooviejs.com/bot/ost_wbs/';
-const headers = {
-    apiKey: 'a1086415c6ae4aa5b526ce940b8e8284'
-};
-
 /*
     Remove todos os caracteres especiais do nick, retorna em lowercase e limpo
     ##############################################################################
@@ -181,63 +175,5 @@ function verificaNick(from, client, channel) {
     }
 }
 
-/*
-    Atualiza o objecto dos nicks com informação da Base de Dados
-    ###########################################################################
-*/
-function atualizaMeioNick(client, axios) {
-
-    // Corpo da request
-    const body = {
-      query: 'meiaspalavras',
-      condition: 'all'
-    };
-
-    // Request
-    axios.post(url, body, { headers })
-      .then(response => {
-        if (response.status == 200) {
-            // Faz o reset do object
-            nicksProibidos = [];
-            const palavras = response.data.data.palavras;
-            for (const palavra of palavras) {
-                // Redefine o objecto novamente
-                nicksProibidos.push(palavra.palavra);
-            }
-        }  
-      })
-      .catch(error => {
-        console.error(error);
-      });
-}
-
-function atualizaPalavrasProibidas(client, axios) {
-
-    // Corpo da request
-    const body = {
-      query: 'palavrasproibidas',
-      condition: 'all'
-    };
-
-    // Request
-    axios.post(url, body, { headers })
-      .then(response => {
-        if (response.status == 200) {
-            // Faz o reset do object
-            forbiddenWords = [];
-            const palavras = response.data.data.palavras;
-            for (const palavra of palavras) {
-                // Redefine o objecto novamente
-                forbiddenWords.push(palavra.palavra);
-            }
-        }  
-      })
-      .catch(error => {
-        console.error(error);
-      });
-}
-
-
-
 // Faz o export dos modulos
-module.exports = { verificaNumerosNick, atualizaPalavrasProibidas, atualizaMeioNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = { verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};

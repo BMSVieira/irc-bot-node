@@ -342,8 +342,10 @@ const frases = [
     },
     {
       frase: "{nick}, tens síndrome de abelha. Pensas que és rei/rainha, mas não passas de um inseto!"
+    },
+    {
+      frase: "{nick}, acalma essas letras! Estás num ponto sem retorno. Ficaste xexé, com tanto gugu-dadá!"
     }
-  
 ];
 
 module.exports = frases

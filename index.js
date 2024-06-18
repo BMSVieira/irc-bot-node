@@ -5,12 +5,18 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
-        const axios = require('axios');
 
         // Modulos
         // var radio = require("./core/radio");
         var comportamento = require("./core/comportamento");
         var ajuda = require("./core/ajuda");
+
+        // Verifica se o telegram está ativo
+        if(core.config[0]["telegram"]['telegram_active'])
+        {
+            var telegramBot = require('node-telegram-bot-api');
+            var telegram = require("./core/telegram");
+        }
 
         // 0 - Modo Normal.
         // 2 - Quiz
@@ -49,6 +55,12 @@
 
     client.connect();
 
+    // Fez conexão ao Telegram
+    if(core.config[0]["telegram"]['telegram_active'])
+    {
+        var bot = new telegramBot(core.config[0]["telegram"]['telegram_token'], {polling: true});
+    }
+
     // ########################################################################################
     // Após estar registado, junta-se e entra com a conta
     // ########################################################################################
@@ -71,11 +83,7 @@
                     core.fila.shift();
                 }
             }, 2000);
-            
-            // Atualiza os parametros de kick vindos da BD
-            // comportamento.atualizaMeioNick(client, axios);
-            // comportamento.atualizaPalavrasProibidas(client, axios);
-
+        
         });
   
     // ########################################################################################
@@ -110,9 +118,14 @@
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
+
+            // Verifica os nicks
             comportamento.verificaNick(nick, client, core.config[0]["global_channel"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
-            // comportamento.verificaNumerosNick(nick, client, core.config[0]["global_channel"]);
+
+
+           bot.sendMessage("5854934549", "User Entrou: "+ nick);
+
         });
 
         // Escuta por erros
@@ -147,10 +160,6 @@
                 // Funções & Modulos
                 comportamento.verificaCaps(message, from, client, core.config[0]["global_channel"]);
                 
-                // Deprecated
-                // radio.atualizaMusicaAtual(message, from, client);
-                // radio.checkCurtir(message, from, client, axios, core.config[0]["global_channel"]);
-
                 // Pesquisa por comandos que os utilizadores possam dizer
                 const regex = /<([^>]+)>/;
                 const matches = message.match(regex);
@@ -218,7 +227,7 @@
                         // Inicia o Shout
                         client.say(fromNick, "Shout a iniciar.");
                         core.unbindAll();
-                        core.startShout(client, axios);       
+                        core.startShout(client);       
                     }
                 break;
                 case "startanuncios":
@@ -307,8 +316,8 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Atualiza os parametros de kick
-                        comportamento.atualizaMeioNick(client, axios);
-                        comportamento.atualizaPalavrasProibidas(client, axios);
+                        comportamento.atualizaMeioNick(client);
+                        comportamento.atualizaPalavrasProibidas(client);
                         client.say(fromNick, "Parametros Atualizados.");
                     }
                 break; 
@@ -322,3 +331,44 @@
                 // Nada em Default
             }
         });
+
+    // ########################################################################################
+    // Eventos do Telegram
+    // ########################################################################################
+
+/* 
+        // Matches "/echo [whatever]"
+        bot.onText(/\/echo (.+)/, (msg, match) => {
+            console.log(msg);
+        // 'msg' is the received Message from Telegram
+        // 'match' is the result of executing the regexp above on the text content
+        // of the message
+
+        const chatId = msg.chat.id;
+        const resp = match[1]; // the captured "whatever"
+
+        // send back the matched "whatever" to the chat
+        bot.sendMessage(chatId, resp);
+        });
+
+        // Listen for any kind of message. There are different kinds of
+        // messages.
+        bot.on('message', (msg) => {
+        const chatId = msg.chat.id;
+
+            // Variaveis do PV
+            var fromNick = chatId;
+            var smsNick = msg.text;
+
+            // Tratar a string para ir buscar o comando
+            var smsCmd = smsNick.substring(smsNick.indexOf("<") + 1, smsNick.lastIndexOf(">"));
+            // Tratar a string para ir buscar o resto do comando depois de >
+            var query = smsNick.substring(smsNick.indexOf('>') + 1);
+            query = query.substring(1); // Remove espaço entre o comando e o inicio da query
+
+        // send a message to the chat acknowledging receipt of their message
+        bot.sendMessage(chatId, "Comando: "+ smsCmd);
+        bot.sendMessage("5854934549", "query: "+ query);
+        });
+
+*/
