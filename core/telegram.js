@@ -3,18 +3,42 @@
 var telegram_owners = require('../db/telegram_owners');
 
 /*
-    Remove todos os caracteres especiais do nick, retorna em lowercase e limpo
+    Envia mensagem para todos os utilizadores
     ##############################################################################
 */
-function telegramNotify(str) {
+function sendTmessage(bot, telegram_config, message)
+{
+    // Faz loop por todos os utilzadores
+    telegram_config.telegram_users.forEach(userId => {
+        bot.sendMessage(userId, message);
+    });
+}
+
+/*
+    Função para fazer a notificação via telegram
+    ##############################################################################
+*/
+function notify(bot, nick, telegram_config, notifycationType) {
   
-    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]+/g;
-    var result = str.replace(regex, '');
-    result = result.toLowerCase();
-  
-    return result;
+    // Verifica qual o tipo de notificação.
+    switch (notifycationType) {
+        case "join":
+                sendTmessage(bot, telegram_config, "User Entrou: "+nick);
+        break;
+        case "leave":
+                sendTmessage(bot, telegram_config, "User Saiu: "+nick);
+        break; 
+        case "kick":
+                sendTmessage(bot, telegram_config, "User Kick: "+nick);
+        break;
+        case "message":
+                
+        break;
+        default:
+        break;
+    }
 }
 
 
 // Faz o export dos modulos
-module.exports = { checkTelegramOwner};
+module.exports = {notify};

@@ -111,9 +111,20 @@
             if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"]) { core.nickJoinedChannel(client, argument); }    
         });
 
-        // Escuta por utilizadores que saiem
+        // Escuta por utilizadores que desligam o browser
         client.addListener('quit', function (channel, nick, reason, message) {
             console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
+
+            // Notifica via Telegram
+            if(core.config[0]["telegram"]['telegram_active']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+        });
+
+        // Escuta por utilizadores que saiem do canal
+        client.addListener('part', function (channel, nick, reason, message) {
+            console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
+
+            // Notifica via Telegram
+            if(core.config[0]["telegram"]['telegram_active']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
         });
 
         // Escuta por utilizadores que entrem no canal
@@ -123,8 +134,8 @@
             comportamento.verificaNick(nick, client, core.config[0]["global_channel"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
 
-
-           bot.sendMessage("5854934549", "User Entrou: "+ nick);
+            // Notifica via Telegram
+            if(core.config[0]["telegram"]['telegram_active']) { telegram.notify(bot, nick, core.config[0]["telegram"], "join"); }
 
         });
 
