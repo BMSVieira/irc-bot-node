@@ -28,7 +28,7 @@ var quizLimitRespostas = 20 // Limite de respostas do quiz
 var anuncioFrase = ""; // Frase anuncio
 
 // Config values
-/*
+
 var config = [
 {
     global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -52,8 +52,8 @@ var config = [
         },
         modoAtual: 0
 }];  
-*/
 
+/*
 var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -78,7 +78,7 @@ var config = [
         modoAtual: 0
     }
 ];
-
+*/
 /*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################
