@@ -130,6 +130,7 @@
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
+            console.log('\x1b[32m%s\x1b[0m', '' + message.nick + ' Entrou.'); 
 
             // Notifica via Telegram
             if(core.config[0]["telegram"]['telegram_join'] == "true") { telegram.notify(bot, nick, core.config[0]["telegram"], "join"); }
