@@ -9,11 +9,9 @@
   "author": "Bruno",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.6.2",
     "irc": "^0.5.2",
     "irc-channels": "^3.6.2",
     "irc-connect": "^2.2.0",
-    "node-telegram-bot-api": "^0.66.0",
-    "xmlhttprequest": "^1.8.0"
+    "node-telegram-bot-api": "^0.66.0"
   }
 }

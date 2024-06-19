@@ -116,7 +116,7 @@
             console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
 
             // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_active']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+            if(core.config[0]["telegram"]['telegram_leave']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
         });
 
         // Escuta por utilizadores que saiem do canal
@@ -124,7 +124,7 @@
             console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
 
             // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_active']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+            if(core.config[0]["telegram"]['telegram_leave']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
         });
 
         // Escuta por utilizadores que entrem no canal
@@ -135,7 +135,7 @@
             comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
 
             // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_active']) { telegram.notify(bot, nick, core.config[0]["telegram"], "join"); }
+            if(core.config[0]["telegram"]['telegram_join']) { telegram.notify(bot, nick, core.config[0]["telegram"], "join"); }
 
         });
 
@@ -337,7 +337,46 @@
                 break; 
                 case "denunciar":
                     core.denunciar(query, fromNick, client, core.config[0]["global_channel"]);
+                break; 
+
+                // ########################################################################################
+                // Eventos do Telegram
+                // ########################################################################################
+
+                case "teleg_join":
+                    if(core.isAdmin(fromNick))
+                    {
+                        client.say(fromNick, "Modo Anterior: "+core.config[0]["telegram"]['telegram_join']);
+                        switch (query) {
+                            case "true":
+                                core.telegramChange("telegram_join_yes", query);
+                            break;
+                            case "false":
+                                core.telegramChange("telegram_join_false", query);
+                            break;
+                            default:
+                            break;
+                        }            
+                        client.say(fromNick, "Modo Atual: "+core.config[0]["telegram"]['telegram_join']);
+                    }
                 break;   
+                case "teleg_leave":
+                    if(core.isAdmin(fromNick))
+                        {
+                            client.say(fromNick, "Modo Anterior: "+core.config[0]["telegram"]['telegram_leave']);
+                            switch (query) {
+                                case "true":
+                                    core.telegramChange("telegram_leave_yes", query);
+                                break;
+                                case "false":
+                                    core.telegramChange("telegram_leave_false", query);
+                                break;
+                                default:
+                                break;
+                            }            
+                            client.say(fromNick, "Modo Atual: "+core.config[0]["telegram"]['telegram_leave']);
+                        }
+                break;  
                 default:
                 // Nada em Default
             }

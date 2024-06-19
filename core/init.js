@@ -28,7 +28,7 @@ var quizLimitRespostas = 20 // Limite de respostas do quiz
 var anuncioFrase = ""; // Frase anuncio
 
 // Config values
-
+/*
 var config = [
 {
     global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -50,8 +50,8 @@ var config = [
         },
         modoAtual: 0
 }];  
+*/
 
-/*
 var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -68,13 +68,14 @@ var config = [
             telegram_join: true,
             telegram_leave: true,
             telegram_users: [
-                "5854934549"
+                "5854934549",
+                "6993321048"
             ]
         },
         modoAtual: 0
     }
 ];
-*/
+
 /*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################
@@ -466,5 +467,30 @@ function changeTime(from, client, cmd, query)
         // Nada em Default
     }
 } 
+
+/* 
+    Função que muda o tempo das mensagens
+    ####################################################################
+*/
+function telegramChange(type, query)
+{
+    switch(type) {
+        case "telegram_join_yes":
+            config[0]['telegram']['telegram_join'] = true;
+        break; 
+        case "telegram_join_false":
+            config[0]['telegram']['telegram_join'] = false;
+        break; 
+        case "telegram_leave_yes":
+            config[0]['telegram']['telegram_leave'] = true;
+        break; 
+        case "telegram_leave_false":
+            config[0]['telegram']['telegram_leave'] = false;
+        break; 
+    default:
+        // Nada em Default
+    }
+} 
+
 // Faz o export dos modulos
-module.exports = {startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {telegramChange, startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
