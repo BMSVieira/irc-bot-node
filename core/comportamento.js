@@ -3,6 +3,7 @@
 var protected = require('../db/protected');
 var forbiddenWords = require('../db/palavrasProibidas');
 var nicksProibidos = require('../db/nicksProibidos');
+var telegram = require('../core/telegram');
 var avisosCaps = [];
 
 /*
@@ -83,7 +84,7 @@ function separateString(str) {
     Dando um nick, verifica se o nick contém palavras proibidas
     ##############################################################################
 */
-function checkKick(nick, client, channel)
+function checkKick(nick, client, channel, bot = null, telegram_configs)
 {
     // ==========================================================================
 
@@ -104,7 +105,11 @@ function checkKick(nick, client, channel)
     // Se retornar true um ou outro, kicka.
     if(containsForbiddenWord || constainsMeioNick)
     {
-        client.send('kick', channel, nick, "Nick com conteúdo sexual ou palavra não permitida. Mude de nick ou de sala!");
+        var reason = "Nick com conteúdo sexual ou palavra não permitida. Mude de nick ou de sala!";
+        client.send('kick', channel, nick, reason);
+
+        if(telegram_configs.telegram_kick == "true")
+            telegram.notify(bot, nick, telegram_configs, "kick", reason);
     }
 }
 
@@ -166,12 +171,16 @@ function verificaCaps(str, from, client, channel) {
     Verifica se o nick da pessoa que se juntou, é menor do que 3 letras
     ###########################################################################
 */
-function verificaNick(from, client, channel) {
+function verificaNick(from, client, channel, bot = null, telegram_configs) {
 
     var cumprimentoNick = from.length;
     if(cumprimentoNick < 3)
     {
-        client.send('kick', channel, from, "Nick demasiado curto, escolhe outro mais longo por favor.");
+        var reason = "Nick demasiado curto, escolhe outro mais longo por favor.";
+        client.send('kick', channel, from, reason);
+
+        if(telegram_configs.telegram_kick == "true")
+            telegram.notify(bot, from, telegram_configs, "kick", reason);
     }
 }
 

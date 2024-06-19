@@ -28,7 +28,7 @@ var quizLimitRespostas = 20 // Limite de respostas do quiz
 var anuncioFrase = ""; // Frase anuncio
 
 // Config values
-/*
+
 var config = [
 {
     global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -41,17 +41,19 @@ var config = [
     global_channel: "#hey",
         telegram: {
             telegram_token: "7448920077:AAF2tXjg9FUPiaqgqM_Thw-sg3pZs7F8yHE",
-            telegram_active: true,
-            telegram_join: true,
-            telegram_leave: true,
+            telegram_active: "true",
+            telegram_join: "true",
+            telegram_leave: "true",
+            telegram_kick: "true",
             telegram_users: [
-                "5854934549"
+                "5854934549",
+                "6993321048"
             ]
         },
         modoAtual: 0
 }];  
-*/
 
+/*
 var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -67,6 +69,7 @@ var config = [
             telegram_active: true,
             telegram_join: true,
             telegram_leave: true,
+            telegram_kick: "true",
             telegram_users: [
                 "5854934549",
                 "6993321048"
@@ -75,7 +78,7 @@ var config = [
         modoAtual: 0
     }
 ];
-
+*/
 /*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################
@@ -475,17 +478,14 @@ function changeTime(from, client, cmd, query)
 function telegramChange(type, query)
 {
     switch(type) {
-        case "telegram_join_yes":
-            config[0]['telegram']['telegram_join'] = true;
+        case "telegram_join":
+            config[0]['telegram']['telegram_join'] = query;
         break; 
-        case "telegram_join_false":
-            config[0]['telegram']['telegram_join'] = false;
+        case "telegram_leave":
+            config[0]['telegram']['telegram_leave'] = query;
         break; 
-        case "telegram_leave_yes":
-            config[0]['telegram']['telegram_leave'] = true;
-        break; 
-        case "telegram_leave_false":
-            config[0]['telegram']['telegram_leave'] = false;
+        case "telegram_kick":
+            config[0]['telegram']['telegram_kick'] = query;
         break; 
     default:
         // Nada em Default

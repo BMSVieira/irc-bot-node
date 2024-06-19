@@ -13,23 +13,30 @@ function sendTmessage(bot, telegram_config, message)
         bot.sendMessage(userId, message);
     });
 }
-
+/* 
+    Verifica se é Owner
+    ####################################################################
+*/
+function isAdmin(id)
+{
+  if(telegram_owners.includes(id)) { return true; } else {  return false; }
+}
 /*
     Função para fazer a notificação via telegram
     ##############################################################################
 */
-function notify(bot, nick, telegram_config, notifycationType) {
+function notify(bot, nick, telegram_config, notifycationType, reason = "") {
   
     // Verifica qual o tipo de notificação.
     switch (notifycationType) {
         case "join":
-                sendTmessage(bot, telegram_config, "User Entrou: "+nick);
+                sendTmessage(bot, telegram_config, "✅ Entrou: "+nick);
         break;
         case "leave":
-                sendTmessage(bot, telegram_config, "User Saiu: "+nick);
+                sendTmessage(bot, telegram_config, "⚠️ Saiu: "+nick);
         break; 
         case "kick":
-                sendTmessage(bot, telegram_config, "User Kick: "+nick);
+                sendTmessage(bot, telegram_config, "🚫 Kickado: "+nick+ " ("+reason+")");
         break;
         case "message":
                 
@@ -39,6 +46,5 @@ function notify(bot, nick, telegram_config, notifycationType) {
     }
 }
 
-
 // Faz o export dos modulos
-module.exports = {notify};
+module.exports = {notify, isAdmin};

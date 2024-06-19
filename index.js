@@ -10,6 +10,7 @@
         // var radio = require("./core/radio");
         var comportamento = require("./core/comportamento");
         var ajuda = require("./core/ajuda");
+        var owners = require('./db/owners');
 
         // Verifica se o telegram está ativo
         if(core.config[0]["telegram"]['telegram_active'])
@@ -116,7 +117,7 @@
             console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
 
             // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_leave']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+            if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
         });
 
         // Escuta por utilizadores que saiem do canal
@@ -124,19 +125,18 @@
             console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
 
             // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_leave']) { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+            if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
         });
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
 
-            // Verifica os nicks
-            comportamento.verificaNick(nick, client, core.config[0]["global_channel"]);
-            comportamento.checkKick(nick, client, core.config[0]["global_channel"]);
-
             // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_join']) { telegram.notify(bot, nick, core.config[0]["telegram"], "join"); }
+            if(core.config[0]["telegram"]['telegram_join'] == "true") { telegram.notify(bot, nick, core.config[0]["telegram"], "join"); }
 
+            // Verifica os nicks
+            comportamento.verificaNick(nick, client, core.config[0]["global_channel"], bot, core.config[0]["telegram"]);
+            comportamento.checkKick(nick, client, core.config[0]["global_channel"], bot, core.config[0]["telegram"]);
         });
 
         // Escuta por erros
@@ -313,6 +313,7 @@
                     {
                         // Kicka um nick
                         client.send('kick', core.config[0]["global_channel"], query, "");
+                        if(core.config[0]["telegram"]['telegram_kick'] == "true") { telegram.notify(bot, query, core.config[0]["telegram"], "kick", "Kickado do canal"); }
                     }
                 break; 
                 case "leave":
@@ -347,62 +348,49 @@
                     if(core.isAdmin(fromNick))
                     {
                         client.say(fromNick, "Modo Anterior: "+core.config[0]["telegram"]['telegram_join']);
-                        switch (query) {
-                            case "true":
-                                core.telegramChange("telegram_join_yes", query);
-                            break;
-                            case "false":
-                                core.telegramChange("telegram_join_false", query);
-                            break;
-                            default:
-                            break;
-                        }            
+                        core.telegramChange("telegram_join", query);
                         client.say(fromNick, "Modo Atual: "+core.config[0]["telegram"]['telegram_join']);
                     }
                 break;   
                 case "teleg_leave":
                     if(core.isAdmin(fromNick))
-                        {
-                            client.say(fromNick, "Modo Anterior: "+core.config[0]["telegram"]['telegram_leave']);
-                            switch (query) {
-                                case "true":
-                                    core.telegramChange("telegram_leave_yes", query);
-                                break;
-                                case "false":
-                                    core.telegramChange("telegram_leave_false", query);
-                                break;
-                                default:
-                                break;
-                            }            
-                            client.say(fromNick, "Modo Atual: "+core.config[0]["telegram"]['telegram_leave']);
-                        }
+                    {
+                        client.say(fromNick, "Modo Anterior: "+core.config[0]["telegram"]['telegram_leave']);
+                        core.telegramChange("telegram_leave", query);
+                        client.say(fromNick, "Modo Atual: "+core.config[0]["telegram"]['telegram_leave']);
+                    }
+                break; 
+                case "teleg_kick":
+                    if(core.isAdmin(fromNick))
+                    {
+                        client.say(fromNick, "Modo Anterior: "+core.config[0]["telegram"]['telegram_kick']);
+                        core.telegramChange("telegram_kick", query);
+                        client.say(fromNick, "Modo Atual: "+core.config[0]["telegram"]['telegram_kick']);
+                    }
                 break;  
+                case "teleg_configs":
+                    if(core.isAdmin(fromNick))
+                    {
+                        client.say(fromNick, "Notificações ao entrar: "+core.config[0]["telegram"]['telegram_join']);
+                        client.say(fromNick, "Notificações ao sair: "+core.config[0]["telegram"]['telegram_leave']);
+                        client.say(fromNick, "Notificações ao kickar: "+core.config[0]["telegram"]['telegram_kick']);
+                    }
+                break;   
                 default:
                 // Nada em Default
             }
         });
 
     // ########################################################################################
-    // Eventos do Telegram
+    // Escuta por mensagens do telegram.
     // ########################################################################################
 
-/* 
-        // Matches "/echo [whatever]"
         bot.onText(/\/echo (.+)/, (msg, match) => {
-            console.log(msg);
-        // 'msg' is the received Message from Telegram
-        // 'match' is the result of executing the regexp above on the text content
-        // of the message
-
-        const chatId = msg.chat.id;
-        const resp = match[1]; // the captured "whatever"
-
-        // send back the matched "whatever" to the chat
-        bot.sendMessage(chatId, resp);
+            const chatId = msg.chat.id;
+            const resp = match[1];
+            bot.sendMessage(chatId, resp);
         });
 
-        // Listen for any kind of message. There are different kinds of
-        // messages.
         bot.on('message', (msg) => {
         const chatId = msg.chat.id;
 
@@ -415,10 +403,13 @@
             // Tratar a string para ir buscar o resto do comando depois de >
             var query = smsNick.substring(smsNick.indexOf('>') + 1);
             query = query.substring(1); // Remove espaço entre o comando e o inicio da query
-
-        // send a message to the chat acknowledging receipt of their message
-        bot.sendMessage(chatId, "Comando: "+ smsCmd);
-        bot.sendMessage("5854934549", "query: "+ query);
+            
+            if(telegram.isAdmin(String(fromNick)))
+            {
+                console.log("Mensagem Enviada: "+msg.text);
+                client.emit('pm', owners[0], msg.text);
+            }
+          
         });
 
-*/
+
