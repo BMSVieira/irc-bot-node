@@ -184,5 +184,41 @@ function verificaNick(from, client, channel, bot = null, telegram_configs) {
     }
 }
 
+/*
+    Verifica os clones
+    ###########################################################################
+*/
+function checkClones(data) {
+
+    // Group by host
+    const groupedByHost = data.reduce((acc, item) => {
+        if (!acc[item.host]) {
+        acc[item.host] = [];
+        }
+        acc[item.host].push(item);
+        return acc;
+    }, {});
+    
+    // Filter out hosts with only one user
+    const filteredHosts = Object.entries(groupedByHost)
+        .filter(([host, users]) => users.length > 1)
+        .reduce((acc, [host, users]) => {
+        acc[host] = users;
+        return acc;
+        }, {});
+    
+    // Check if there are any filtered hosts
+    if (Object.keys(filteredHosts).length === 0) {
+        client.say(from, "Não foram encontrados clones.");
+    } else {
+    // Print the nicks
+    for (const host in filteredHosts) {
+    const nicks = filteredHosts[host].map(user => user.nick).join(', ');
+    console.log(nicks);
+    }
+    }
+
+}
+
 // Faz o export dos modulos
-module.exports = { verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = {checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};

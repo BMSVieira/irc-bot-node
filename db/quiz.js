@@ -256,7 +256,159 @@ const quiz = [
     {
       pergunta: "Que artista pintou o teto da Capela Sistina em Roma?",
       resposta: "Michelangelo"
-    } 
+    },
+    {
+      pergunta: "O sushi é um prato original de qual país?",
+      resposta: "Japão"
+    },
+    {
+      pergunta: "Qual é o animal que aparece no logotipo da Ferrari?",
+      resposta: "Cavalo"
+    },
+    {
+      pergunta: "Qual é o nome da empresa de tecnologia que criou o iPhone?",
+      resposta: "Apple"
+    },
+    {
+      pergunta: "Qual é o nome do inventor do telefone?",
+      resposta: "Alexander Graham Bell"
+    },
+    {
+      pergunta: "O vinho é feito com qual fruta?",
+      resposta: "Uva"
+    },
+    {
+      pergunta: "Segundo a lenda, quantas vidas um gato teria?",
+      resposta: "7"
+    },
+    {
+      pergunta: "Quantos dias tem um ano bissexto?",
+      resposta: "366"
+    },
+    {
+      pergunta: "Qual é a cor da caixa-preta do avião?",
+      resposta: "Laranja"
+    },
+    {
+      pergunta: "Qual evento histórico aconteceu entre os anos de 1914 e 1918?",
+      resposta: "Primeira Guerra Mundial"
+    },
+    {
+      pergunta: "A queda do muro de Berlim, em 1989, marcou o fim de qual conflito?",
+      resposta: "Guerra Fria"
+    },
+    {
+      pergunta: "Qual país foi o pioneiro na Revolução Industrial?",
+      resposta: "Inglaterra"
+    },
+    {
+      pergunta: "Qual rei ou rainha ocupou por mais tempo o trono do Reino Unido?",
+      resposta: "Rainha Elizabeth II"
+    },
+    {
+      pergunta: "Em qual continente aconteceu a pandemia da chamada Peste Negra?",
+      resposta: "Europa"
+    },
+    {
+      pergunta: "Qual foi o famoso navio que naufragou em sua viagem inaugural, em 1912?",
+      resposta: "Titanic"
+    },
+    {
+      pergunta: "A qual país europeu a Rússia declarou guerra em 2022?",
+      resposta: "Ucrânia"
+    },
+    {
+      pergunta: "Quantos anos tem um século?",
+      resposta: "100"
+    },
+    {
+      pergunta: "Entre quais países ocorreu a Guerra Fria?",
+      resposta: "Estados Unidos e União Soviética"
+    },
+    {
+      pergunta: "Qual é século em que vivemos atualmente? (Resposta em numeração Romana)",
+      resposta: "XXI"
+    },
+    {
+      pergunta: "Quem veio para o Brasil no ano de 1808?",
+      resposta: "Família Real Portuguesa"
+    },
+    {
+      pergunta: "Qual é o planeta mais próximo do Sol?",
+      resposta: "Mercúrio"
+    },
+    {
+      pergunta: "Qual é o animal mais alto do mundo?",
+      resposta: "Girafa"
+    },
+    {
+      pergunta: "Qual é a única parte do corpo humano que continua do mesmo tamanho desde o nascimento?",
+      resposta: "Olhos"
+    },
+    {
+      pergunta: "Como é chamado o filhote do sapo?",
+      resposta: "Girino"
+    },
+    {
+      pergunta: "Qual é o nome do satélite natural da Terra?",
+      resposta: "Lua"
+    },
+    {
+      pergunta: "Os morcegos pertencem a qual classe animal?",
+      resposta: "Mamíferos"
+    },
+    {
+      pergunta: "Qual é o nome da galáxia onde a Terra se encontra?",
+      resposta: "Via Láctea"
+    },
+    {
+      pergunta: "Qual animal se transforma em borboleta?",
+      resposta: "Lagarta"
+    },
+    {
+      pergunta: "Como é chamada a água em estado sólido?",
+      resposta: "Gelo"
+    },
+    {
+      pergunta: "Qual é a moeda oficial da Espanha?",
+      resposta: "Euro"
+    },
+    {
+      pergunta: "Qual é o continente que conta com o maior número de países?",
+      resposta: "Africa"
+    },
+    {
+      pergunta: "Qual país é conhecido como o 'mais fechado do mundo'?",
+      resposta: "Coreia do Norte"
+    },
+    {
+      pergunta: "Qual é o país mais populoso do mundo?",
+      resposta: "China"
+    },
+    {
+      pergunta: "Qual é o monumento mais famoso de Paris?",
+      resposta: "Torre Eiffel"
+    },
+    {
+      pergunta: "No filme “Procurando Nemo”, qual é a espécie de peixe do Nemo?",
+      resposta: "Peixe-palhaço"
+    },
+    {
+      pergunta: "Qual é o nome do instrumento musical de cordas tocado com um arco?",
+      resposta: "Violino"
+    },
+    {
+      pergunta: "Quantos anéis compõem o símbolo dos Jogos Olímpicos?",
+      resposta: "5"
+    },
+    {
+      pergunta: "Quantos quilômetros são percorridos em uma maratona?",
+      resposta: "42"
+    },
+    {
+      pergunta: "Qual é a cor das famosas cabines telefônicas de Londres?",
+      resposta: "Vermelho"
+    }
 ];
 
 module.exports = quiz

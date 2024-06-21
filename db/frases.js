@@ -345,6 +345,63 @@ const frases = [
     },
     {
       frase: "{nick}, acalma essas letras! Estás num ponto sem retorno. Ficaste xexé, com tanto gugu-dadá!"
+    },
+    {
+      frase: "{nick}, eu só preciso de duas coisas para conviver contigo: um calmante e terapia!"
+    },
+    {
+      frase: "{nick}, tu conheces o novo restaurante? O 'Karma'? Lá não precisas de menu, tu comes o que mereces!"
+    },
+    {
+      frase: "{nick}, o dinheiro não traz felicidade, mas pelo menos ajuda a pagar a terapia!"
+    },
+    {
+      frase: "{nick}, se a tua vida se tornar uma barra, que seja de chocolate!"
+    },
+    {
+      frase: "{nick}, eu tenho tanto para te dizer, mas sem uma taça de tinto não consigo!"
+    },
+    {
+      frase: "{nick}, se tu caíres: eu estarei aqui! (já dizia o chão)"
+    },
+    {
+      frase: "{nick}, a esperança é a última a morrer. Já a minha paciência é a primeira!"
+    },
+    {
+      frase: "{nick}, repete comigo: Espelho meu, espelho meu, porque as pessoas se preocupam mais com a minha vida, do que eu?"
+    },
+    {
+      frase: "{nick}, não atires a toalha ao chão, porque depois vais ter de a apanhar!"
+    },
+    {
+      frase: "{nick}, precisas de formatar a tua vida! Tanto erro só pode ser vírus!"
+    },
+    {
+      frase: "{nick}, geralmente, aqueles que falam muito: pouco sabem! E aqueles que sabem muito: pouco falam!"
+    },
+    {
+      frase: "{nick}, os homens comuns erram, enquanto que os grandes homens confessam que erraram!"
+    },
+    {
+      frase: "{nick}, cuidado com as voltas que dás às palavras. Hoje proferes, amanhã sentes os seus efeitos."
+    },
+    {
+      frase: "{nick}, se vens aqui como amigo: entra já, que a sala é tua! Se não vens, também te digo: é melhor ficares na rua!"
+    },
+    {
+      frase: "{nick}, diz-me com quem teclas, dir-te-ei quem és!"
+    },
+    {
+      frase: "{nick}, cultiva o bem, que o resto vem!"
+    },
+    {
+      frase: "{nick}, mais vale uma boa moita, que várias assim-assim!"
+    },
+    {
+      frase: "{nick}, pelas teclas, morre um nick."
+    },
+    {
+      frase: "{nick}, nem tudo o que parece é! (geralmente é muito pior)"
     }
 ];
 

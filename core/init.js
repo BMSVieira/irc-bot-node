@@ -28,7 +28,7 @@ var quizLimitRespostas = 20 // Limite de respostas do quiz
 var anuncioFrase = ""; // Frase anuncio
 
 // Config values
-/*
+
 var config = [
 {
     global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -42,9 +42,9 @@ var config = [
         telegram: {
             telegram_token: "7448920077:AAF2tXjg9FUPiaqgqM_Thw-sg3pZs7F8yHE",
             telegram_active: "true",
-            telegram_join: "true",
-            telegram_leave: "true",
-            telegram_kick: "true",
+            telegram_join: "false",
+            telegram_leave: "false",
+            telegram_kick: "false",
             telegram_users: [
                 "5854934549",
                 "6993321048"
@@ -52,8 +52,8 @@ var config = [
         },
         modoAtual: 0
 }];  
-*/
 
+/*
 var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -78,7 +78,7 @@ var config = [
         modoAtual: 0
     }
 ];
-
+*/
 /*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################

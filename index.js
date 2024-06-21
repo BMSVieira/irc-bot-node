@@ -11,6 +11,7 @@
         var comportamento = require("./core/comportamento");
         var ajuda = require("./core/ajuda");
         var owners = require('./db/owners');
+        var infoClones = [];
 
         // Verifica se o telegram está ativo
         if(core.config[0]["telegram"]['telegram_active'])
@@ -107,6 +108,27 @@
     // Obter mensagens totais
     // ########################################################################################
         
+        client.addListener('names', function (channel, nicks, mim) {
+console.log(mim);
+            infoClones = []; // Reseta o Array
+            for (let key in nicks) {
+                if (nicks.hasOwnProperty(key)) {
+                    client.send('whois', key);
+                }
+            }
+
+            setTimeout(() => {
+                comportamento.checkClones(infoClones);
+            }, "90000");
+            
+        });
+
+        // Escuta pelo comando Whois
+        client.addListener('whois', function (info) {
+            infoClones.push(info);  
+        });
+
+
         // Escuta por Utilizadores que entrem com status para dar a mensagem de boas vindas
         client.addListener('+mode', function (channel, by, mode, argument, message) {
             if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"]) { core.nickJoinedChannel(client, argument); }    
@@ -332,6 +354,14 @@
                         comportamento.atualizaMeioNick(client);
                         comportamento.atualizaPalavrasProibidas(client);
                         client.say(fromNick, "Parametros Atualizados.");
+                    }
+                break; 
+                case "clones":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        console.log("#############################");
+                        client.send('names',core.config[0]["global_channel"], "mim");
                     }
                 break; 
                 case "regras":

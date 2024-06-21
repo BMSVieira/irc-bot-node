@@ -78,6 +78,12 @@ const frasesNicksStatus = [
     },
     {
       frase: "{nick}, vieste acrescentar um nick na lista de users da sala Portugal! Um aplauso para ti."
+    },
+    {
+      frase: "{nick}, sente-te em casa. Mas, lembra-te que não estás!"
+    },
+    {
+      frase: "{nick}, cuidado com o cão! (E com o gato e com o periquito, que também são tramados!)"
     }
 ];
 
