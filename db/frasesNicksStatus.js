@@ -47,7 +47,37 @@ const frasesNicksStatus = [
       frase: "Entra e senta, {nick}. Faz que estás em casa. Não é a tua casa. Não quero graffities nas paredes. "
     },
     {
-      frase: "Hello, salut, willkommen, bienvenido, olá, (linguagem gestual) benvenuto e aloha {nick}. Que alegria ver-te por aqui."
+      frase: "Hello, salut, willkommen, bienvenido, olá, (língua gestual) benvenuto e aloha {nick}. Que alegria ver-te por aqui."
+    },
+    {
+      frase: "{nick}, bem-vindo ao mundo encantado da sala Portugal! Onde há reis, princesas, dragões, Heróis de banda desenhada. Pulos, saltos e muitos trambolhões. "
+    },
+    {
+      frase: "{nick}, dá-me um beijinho. Dá-me um abraço. Dá-me carinho. E vais ver que eu não te kicko."
+    },
+    {
+      frase: "{nick}, eu sei, eu sei: és o lindo nick, com quem eu quero teclar! Já corri outras salas, mas não encontro outra igual, como a Portugal, onde queira ficar!"
+    },
+    {
+      frase: "{nick}, Bom dia! Boa tarde! Boa noite! Feliz aniversário! Boas férias! Bom Carnaval! Boa Páscoa! Feliz Natal! E um bom ano novo!"
+    },
+    {
+      frase: "{nick}, ainda bem que chegaste! Espero que tenhas trazido boa disposição (e umas cervejas e uns acepipes)! "
+    },
+    {
+      frase: "{nick}, que alegria ver-te entrar! Puxa uma cadeira e senta[e]-te em casa!"
+    },
+    {
+      frase: "{nick}, sorri! Aqui é proibido entrar de mau humor!"
+    },
+    {
+      frase: "{nick}, que emoção te ver! Até brilhas, Dás-me um autógrafo?"
+    },
+    {
+      frase: "{nick}, bem-vindo! Que honra ter-te aqui."
+    },
+    {
+      frase: "{nick}, vieste acrescentar um nick na lista de users da sala Portugal! Um aplauso para ti."
     }
 ];
 
