@@ -188,7 +188,7 @@ function verificaNick(from, client, channel, bot = null, telegram_configs) {
     Verifica os clones
     ###########################################################################
 */
-function checkClones(data) {
+function checkClones(data, fromNick, client, cloneTime) {
 
     // Group by host
     const groupedByHost = data.reduce((acc, item) => {
@@ -209,15 +209,15 @@ function checkClones(data) {
     
     // Check if there are any filtered hosts
     if (Object.keys(filteredHosts).length === 0) {
-        client.say(from, "Não foram encontrados clones.");
+        client.say(fromNick, "Analisados "+data.length+" users. Não foram encontrados clones.");
     } else {
-    // Print the nicks
-    for (const host in filteredHosts) {
-    const nicks = filteredHosts[host].map(user => user.nick).join(', ');
-    console.log(nicks);
+        // Print the nicks
+        client.say(fromNick, "Analisados "+data.length+" users, clones encontrados:");
+        for (const host in filteredHosts) {
+            const nicks = filteredHosts[host].map(user => user.nick).join(', ');
+            client.say(fromNick, nicks);
+        }
     }
-    }
-
 }
 
 // Faz o export dos modulos

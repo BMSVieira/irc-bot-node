@@ -5,13 +5,23 @@
         var irc = require('irc');
         var os = require('os');
         var core = require("./core/init");
+        const fs = require('fs');
+        const path = require('path');
+
+        const filePath = path.join(__dirname, 'data', 'clones.json');
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
 
         // Modulos
         // var radio = require("./core/radio");
         var comportamento = require("./core/comportamento");
         var ajuda = require("./core/ajuda");
         var owners = require('./db/owners');
+
+        // Variaveis
         var infoClones = [];
+        var fromClones = 0;
+        var flagClones = 1;
+        var cloneTime = 25000;
 
         // Verifica se o telegram está ativo
         if(core.config[0]["telegram"]['telegram_active'])
@@ -109,23 +119,69 @@
     // ########################################################################################
         
         client.addListener('names', function (channel, nicks, mim) {
-console.log(mim);
-            infoClones = []; // Reseta o Array
-            for (let key in nicks) {
-                if (nicks.hasOwnProperty(key)) {
-                    client.send('whois', key);
-                }
-            }
 
-            setTimeout(() => {
-                comportamento.checkClones(infoClones);
-            }, "90000");
+            if(flagClones == 1)
+            {
+                infoClones = [];
+                let keys = Object.keys(nicks);
+                let index = 0;
             
+                function processUsers() {
+                    for (let i = 0; i < 2; i++) {
+                        if (index < keys.length) {
+                            let key = keys[index];
+                            if (nicks.hasOwnProperty(key)) {
+                                client.send('whois', key);
+                            }
+                            index++;
+                        } else {
+                            clearInterval(intervalClones);
+                            console.log("acabou");
+                            break;
+                        }
+                    }
+                }
+                let intervalClones = setInterval(processUsers, 25000);
+                processUsers();
+            }
         });
 
         // Escuta pelo comando Whois
-        client.addListener('whois', function (info) {
-            infoClones.push(info);  
+        client.addListener('whois', function(info) {
+            // Read the JSON file
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err && err.code !== 'ENOENT') {
+                    console.error('Error reading the file:', err);
+                    return;
+                }
+        
+                let infoClones = [];
+        
+                // If the file exists and has data, parse it
+                if (data) {
+                    try {
+                        infoClones = JSON.parse(data);
+                    } catch (parseErr) {
+                        console.error('Error parsing the JSON data:', parseErr);
+                        return;
+                    }
+                }
+        
+                // Add the new info to the array
+                infoClones.push(info);
+        
+                // Convert the updated array back to JSON
+                const updatedData = JSON.stringify(infoClones, null, 2);
+        
+                // Write the updated JSON back to the file
+                fs.writeFile(filePath, updatedData, 'utf8', (writeErr) => {
+                    if (writeErr) {
+                        console.error('Error writing to the file:', writeErr);
+                        return;
+                    }
+                    console.log('Data successfully updated');
+                });
+            });
         });
 
 
@@ -316,7 +372,16 @@ console.log(mim);
                         // Muda o limite do quiz
                         core.changeTime(fromNick, client, "setShoutTime", query);
                     }
-                break;       
+                break;     
+                case "setCloneTime":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Muda o limite da pesquisa
+                        client.say(fromNick, "Tempo atual: "+cloneTime);
+                        cloneTime = query;
+                        client.say(fromNick, "Tempo atual: "+cloneTime);
+                    }
+                break;  
                 case "disconnect":
                     if(core.isAdmin(fromNick))
                     {
@@ -359,9 +424,17 @@ console.log(mim);
                 case "clones":
                     if(core.isAdmin(fromNick))
                     {
-                        // Atualiza os parametros de kick
-                        console.log("#############################");
-                        client.send('names',core.config[0]["global_channel"], "mim");
+                        // Verifica se já se encontra a fazer uma verificação
+                        if(flagClones == 0)
+                        {
+                            client.say(fromNick, "A procurar, tempo atual: "+cloneTime);
+                            client.send('names',core.config[0]["global_channel"]);
+                            fromClones = fromNick;
+                            flagClones = 1;
+                        } else {
+                            client.say(fromNick, "O sistema já está a fazer uma verificação, aguarde até terminar.");
+                        }
+
                     }
                 break; 
                 case "regras":

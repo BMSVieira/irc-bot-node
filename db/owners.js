@@ -5,7 +5,7 @@ const owners = [
     "Devyl",
     "Bitaites",
     "bitaites",
-    "EsQ"
+    "PannaCotta"
 ];
 
 module.exports = owners

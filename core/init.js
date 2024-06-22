@@ -22,13 +22,13 @@ var fila = [];
 var denuncias = [];
 
 var shoutTime = 300000; // 80 Segundos
-var anuncioTime = 60000; // 10 minutos
+var anuncioTime = 60000; // 1 minutos
 var quizTime = 25000; // 25 Segundos
 var quizLimitRespostas = 20 // Limite de respostas do quiz
 var anuncioFrase = ""; // Frase anuncio
 
 // Config values
-
+/*
 var config = [
 {
     global_irc: "irc.ptnet.org", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
@@ -52,15 +52,15 @@ var config = [
         },
         modoAtual: 0
 }];  
+*/
 
-/*
 var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
         global_port: 6697,
-        global_nick: "EpiC",
+        global_nick: "Groot",
         global_password: "asuz12345",
-        global_isRegistered: true,
+        global_isRegistered: false,
         global_userName: "Portugal",
         global_realName: "Portugal",
         global_channel: "#Portugal",
@@ -75,10 +75,10 @@ var config = [
                 "6993321048"
             ]
         },
-        modoAtual: 0
+        modoAtual: 2
     }
 ];
-*/
+
 /*
     Trata a string para ir buscar apenas uma parte dela
     ####################################################################
