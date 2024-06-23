@@ -1,9 +1,11 @@
 // Obter Config Files
+const fs = require('fs');
 var owners = require('../db/owners');
 var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
 var autores = require('../db/autores');
+var mysql = require('mysql');
 
 // ** Variaveis Globais
 var interval_shout;
@@ -20,6 +22,7 @@ var quizBlockedQuestion = 0;
 var quizVencedor = {};
 var fila = [];
 var denuncias = [];
+var db = require('../core/database');
 
 var shoutTime = 300000; // 80 Segundos
 var anuncioTime = 60000; // 1 minutos
@@ -58,9 +61,9 @@ var config = [
     {
         global_irc: "irc.brazink.net", // irc.brazink.net | irc.ptnet.org | irc.freenode.net | irc.libera.chat | irc.ptirc.org
         global_port: 6697,
-        global_nick: "Groot",
+        global_nick: "EpiC",
         global_password: "asuz12345",
-        global_isRegistered: false,
+        global_isRegistered: true,
         global_userName: "Portugal",
         global_realName: "Portugal",
         global_channel: "#Portugal",
@@ -75,7 +78,7 @@ var config = [
                 "6993321048"
             ]
         },
-        modoAtual: 2
+        modoAtual: 0
     }
 ];
 
@@ -492,5 +495,27 @@ function telegramChange(type, query)
     }
 } 
 
+/*
+    Limpa ficheiros
+    ###########################################################################
+*/
+function truncateTable(table) {
+    var con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+    var sqlquery = "TRUNCATE TABLE "+table;
+
+    con.connect(function(err) { if (err) throw err;
+        con.query(sqlquery, function (err, result, fields) { 
+            if (err) throw err;
+            console.log('\x1b[36m%s\x1b[0m', 'Registos limpos.');
+         });
+    });
+}
+
 // Faz o export dos modulos
-module.exports = {telegramChange, startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {truncateTable, telegramChange, startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };

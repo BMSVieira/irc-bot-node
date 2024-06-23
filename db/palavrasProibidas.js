@@ -13,7 +13,7 @@ const forbiddenWords = [
     "Mduro", "Metedor", "pissaralho", "Tetas", "Madurinho", "Madurinha", "psp", 
     "virgem", "coqueiro", "Curios", "inversao", "nuquarto", "leite", "leitinho", 
     "gnr", "xenofoba", "xenofobo", "hquer", "Madurito", "tgirl", "Domme", 
-    "Lover", "Lovers", "Rola", "Fantasy", "xxx", "piladura", "Rabuda"
+    "Lover", "Lovers", "Rola", "Fantasy", "xxx", "piladura", "Rabuda", "Nudismo"
 ];
 
 module.exports = forbiddenWords

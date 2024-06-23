@@ -12,6 +12,7 @@
     "irc": "^0.5.2",
     "irc-channels": "^3.6.2",
     "irc-connect": "^2.2.0",
+    "mysql": "^2.18.1",
     "node-telegram-bot-api": "^0.66.0"
   }
 }

@@ -1,9 +1,14 @@
 
 // Config Variables
+const fs = require('fs');
+var mysql = require('mysql');
+
 var protected = require('../db/protected');
 var forbiddenWords = require('../db/palavrasProibidas');
 var nicksProibidos = require('../db/nicksProibidos');
 var telegram = require('../core/telegram');
+var db = require('../core/database');
+
 var avisosCaps = [];
 
 /*
@@ -152,6 +157,7 @@ function verificaCaps(str, from, client, channel) {
                 {
                     client.send('kick', channel, from, "Kickado por uso excessivo de Capslock");
                     avisosCaps = removerNome(from);
+                    removeWhoisData(nick, client);
                 } else {
                     client.say(from, "[Mensagem Automática] Cuidado com o uso excessivo de Capslock.");
                     avisosCaps.push(from);
@@ -178,6 +184,7 @@ function verificaNick(from, client, channel, bot = null, telegram_configs) {
     {
         var reason = "Nick demasiado curto, escolhe outro mais longo por favor.";
         client.send('kick', channel, from, reason);
+        removeWhoisData(from, client);
 
         if(telegram_configs.telegram_kick == "true")
             telegram.notify(bot, from, telegram_configs, "kick", reason);
@@ -220,5 +227,92 @@ function checkClones(data, fromNick, client, cloneTime) {
     }
 }
 
+/*
+    Adiciona WHOIS ao log de clones
+    ###########################################################################
+*/
+
+function addWhoisData(nick, host, realname, server, servinfo) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+    const sqlDeleteQuery = "DELETE FROM clones WHERE nick = ?";
+    const sqlInsertQuery = "INSERT INTO clones (nick, host, realname, server, servinfo, time) VALUES (?, ?, ?, ?, ?, NOW())";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return;
+        }
+
+        con.query(sqlDeleteQuery, [nick], function(err, result) {
+            if (err) {
+                console.error('Erro ao executar query de eliminar:', err);
+                con.end();
+                return;
+            }
+
+            con.query(sqlInsertQuery, [nick, host, realname, server, servinfo], function(err, result) {
+                if (err) {
+                    console.error('Erro ao executar query de inserir:', err);
+                } else {
+                    console.log('\x1b[36m%s\x1b[0m', 'WHOIS: ' + nick + ' adicionado.');
+                }
+                con.end();
+            });
+        });
+    });
+}
+
+/*
+    Remove WHOIS do log de clones
+    ###########################################################################
+*/
+function removeWhoisData(nick, client = '', fpath = './data/clones.json') {
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+    
+    const sqlSelectQuery = "SELECT COUNT(*) AS count FROM clones WHERE nick = ?";
+    const sqlDeleteQuery = "DELETE FROM clones WHERE nick = ?";
+    
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return;
+        }
+        
+        con.query(sqlSelectQuery, [nick], function (err, result, fields) {
+            if (err) {
+                console.error('Erro ao executar query de select:', err);
+                con.end();
+                return;
+            }
+            
+            // Check if the nick exists
+            if (result[0].count > 0) {
+                con.query(sqlDeleteQuery, [nick], function (err, result) {
+                    if (err) {
+                        console.error('Erro ao executar query de eliminar:', err);
+                    } else {
+                        console.log('\x1b[36m%s\x1b[0m', 'WHOIS: ' + nick + ' removido.');
+                    }
+                    con.end();
+                });
+            } else {
+                console.log('\x1b[36m%s\x1b[0m', 'WHOIS: ' + nick + ' not found.');
+                con.end();
+            }
+        });
+    });
+}
 // Faz o export dos modulos
-module.exports = {checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = {removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};

@@ -3,25 +3,20 @@
         // ****************************************************************
 
         var irc = require('irc');
-        var os = require('os');
-        var core = require("./core/init");
         const fs = require('fs');
         const path = require('path');
 
-        const filePath = path.join(__dirname, 'data', 'clones.json');
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+        const filePathClones = path.join(__dirname, 'data', 'clones.json');
+        fs.mkdirSync(path.dirname(filePathClones), { recursive: true });
 
         // Modulos
-        // var radio = require("./core/radio");
+        var core = require("./core/init");
         var comportamento = require("./core/comportamento");
         var ajuda = require("./core/ajuda");
         var owners = require('./db/owners');
 
         // Variaveis
         var infoClones = [];
-        var fromClones = 0;
-        var flagClones = 1;
-        var cloneTime = 25000;
 
         // Verifica se o telegram está ativo
         if(core.config[0]["telegram"]['telegram_active'])
@@ -118,16 +113,16 @@
     // Obter mensagens totais
     // ########################################################################################
         
-        client.addListener('names', function (channel, nicks, mim) {
-
-            if(flagClones == 1)
-            {
+        client.addListener('names', function (channel, nicks) {
                 infoClones = [];
                 let keys = Object.keys(nicks);
                 let index = 0;
+
+                // Limpa o ficheiro
+                core.truncateTable("clones");
             
                 function processUsers() {
-                    for (let i = 0; i < 2; i++) {
+                    for (let i = 0; i < 3; i++) {
                         if (index < keys.length) {
                             let key = keys[index];
                             if (nicks.hasOwnProperty(key)) {
@@ -136,78 +131,26 @@
                             index++;
                         } else {
                             clearInterval(intervalClones);
-                            console.log("acabou");
+                            console.log('\x1b[36m%s\x1b[0m', "Terminou a lista de nicks.");
                             break;
                         }
                     }
                 }
-                let intervalClones = setInterval(processUsers, 25000);
+                let intervalClones = setInterval(processUsers, 30000);
                 processUsers();
-            }
         });
 
         // Escuta pelo comando Whois
         client.addListener('whois', function(info) {
-            // Read the JSON file
-            fs.readFile(filePath, 'utf8', (err, data) => {
-                if (err && err.code !== 'ENOENT') {
-                    console.error('Error reading the file:', err);
-                    return;
-                }
-        
-                let infoClones = [];
-        
-                // If the file exists and has data, parse it
-                if (data) {
-                    try {
-                        infoClones = JSON.parse(data);
-                    } catch (parseErr) {
-                        console.error('Error parsing the JSON data:', parseErr);
-                        return;
-                    }
-                }
-        
-                // Add the new info to the array
-                infoClones.push(info);
-        
-                // Convert the updated array back to JSON
-                const updatedData = JSON.stringify(infoClones, null, 2);
-        
-                // Write the updated JSON back to the file
-                fs.writeFile(filePath, updatedData, 'utf8', (writeErr) => {
-                    if (writeErr) {
-                        console.error('Error writing to the file:', writeErr);
-                        return;
-                    }
-                    console.log('Data successfully updated');
-                });
-            });
-        });
-
-
-        // Escuta por Utilizadores que entrem com status para dar a mensagem de boas vindas
-        client.addListener('+mode', function (channel, by, mode, argument, message) {
-            if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"]) { core.nickJoinedChannel(client, argument); }    
-        });
-
-        // Escuta por utilizadores que desligam o browser
-        client.addListener('quit', function (channel, nick, reason, message) {
-            console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
-
-            // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
-        });
-
-        // Escuta por utilizadores que saiem do canal
-        client.addListener('part', function (channel, nick, reason, message) {
-            console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
-
-            // Notifica via Telegram
-            if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+           comportamento.addWhoisData(info.nick, info.host, info.realname, info.server, info.serverinfo);
         });
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
+            
+            // Regista que este user entrou.
+            client.send('whois', nick);
+
             console.log('\x1b[32m%s\x1b[0m', '' + message.nick + ' Entrou.'); 
 
             // Notifica via Telegram
@@ -216,7 +159,40 @@
             // Verifica os nicks
             comportamento.verificaNick(nick, client, core.config[0]["global_channel"], bot, core.config[0]["telegram"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"], bot, core.config[0]["telegram"]);
+
         });
+
+        // Escuta por utilizadores que levam kick
+        client.addListener('kick', (channel, nick, by, reason, message) => {
+            console.log('\x1b[35m%s\x1b[0m', '' + nick + ' foi kickado. ('+reason+')');
+            comportamento.removeWhoisData(nick, client);
+        });
+
+        // Escuta por Utilizadores que entrem com status para dar a mensagem de boas vindas
+        client.addListener('+mode', function (channel, by, mode, argument, message) {
+            if(core.config[0]["modoAtual"] == 0 && argument != core.config[0]["global_nick"]) { core.nickJoinedChannel(client, argument); }    
+        });
+
+        // Escuta por utilizadores que desligam o browser
+        client.addListener('quit', function (channel, nick, reason, message) {
+            
+            console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
+            comportamento.removeWhoisData(message.nick, client);
+
+            // Notifica via Telegram
+            if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+        });
+
+        // Escuta por utilizadores que saiem do canal
+        client.addListener('part', function (channel, nick, reason, message) {
+            
+            console.log('\x1b[35m%s\x1b[0m', '' + message.nick + ' saiu. ('+reason+')'); 
+            comportamento.removeWhoisData(message.nick, client);
+
+            // Notifica via Telegram
+            if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
+        });
+
 
         // Escuta por erros
         client.addListener('error', function (message) {
@@ -419,22 +395,6 @@
                         comportamento.atualizaMeioNick(client);
                         comportamento.atualizaPalavrasProibidas(client);
                         client.say(fromNick, "Parametros Atualizados.");
-                    }
-                break; 
-                case "clones":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Verifica se já se encontra a fazer uma verificação
-                        if(flagClones == 0)
-                        {
-                            client.say(fromNick, "A procurar, tempo atual: "+cloneTime);
-                            client.send('names',core.config[0]["global_channel"]);
-                            fromClones = fromNick;
-                            flagClones = 1;
-                        } else {
-                            client.say(fromNick, "O sistema já está a fazer uma verificação, aguarde até terminar.");
-                        }
-
                     }
                 break; 
                 case "regras":
