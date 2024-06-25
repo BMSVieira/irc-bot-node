@@ -6,7 +6,6 @@ var mysql = require('mysql');
 var protected = require('../db/protected');
 var forbiddenWords = require('../db/palavrasProibidas');
 var nicksProibidos = require('../db/nicksProibidos');
-var telegram = require('../core/telegram');
 var db = require('../core/database');
 
 var avisosCaps = [];
@@ -39,7 +38,7 @@ function verificaNumerosNick(nick, client, channel) {
     } else {
       return false; 
     }
-  }
+}
 
 /*
     Verifica por palavras proibidas no meio dos nicks
@@ -112,9 +111,6 @@ function checkKick(nick, client, channel, bot = null, telegram_configs)
     {
         var reason = "Nick com conteúdo sexual ou palavra não permitida. Mude de nick ou de sala!";
         client.send('kick', channel, nick, reason);
-
-        if(telegram_configs.telegram_kick == "true")
-            telegram.notify(bot, nick, telegram_configs, "kick", reason);
     }
 }
 
@@ -170,7 +166,7 @@ function verificaCaps(str, from, client, channel) {
             }
         }
         return false;
-    } else { console.log("Nick Protegido."); }
+    } else { }
 }
 
 /*
@@ -178,16 +174,24 @@ function verificaCaps(str, from, client, channel) {
     ###########################################################################
 */
 function verificaNick(from, client, channel, bot = null, telegram_configs) {
-
     var cumprimentoNick = from.length;
-    if(cumprimentoNick < 3)
-    {
-        var reason = "Nick demasiado curto, escolhe outro mais longo por favor.";
+    var reason;
+
+    // Verifica se o nick é menor do que 3
+    if (cumprimentoNick < 3) {
+        reason = "Nick demasiado curto, escolhe outro mais longo por favor.";
         client.send('kick', channel, from, reason);
         removeWhoisData(from, client);
 
-        if(telegram_configs.telegram_kick == "true")
-            telegram.notify(bot, from, telegram_configs, "kick", reason);
+        return; // Deixa a função ao fim de kickar
+    }
+
+    // Verifica se é composto pela mesma letra
+    var sameLetterPattern = /^([a-zA-Z])\1*$/;
+    if (sameLetterPattern.test(from)) {
+        reason = "Nick não pode ser composto pela mesma letra repetida.";
+        client.send('kick', channel, from, reason);
+        removeWhoisData(from, client);
     }
 }
 
@@ -225,6 +229,48 @@ function checkClones(data, fromNick, client, cloneTime) {
             client.say(fromNick, nicks);
         }
     }
+}
+
+/*
+    Adiciona WHOIS ao log de clones
+    ###########################################################################
+*/
+
+function checkCloneSala(nick, host, realname, server, servinfo, channel, client) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+    
+    const sqlCheckclone = `SELECT * FROM clones WHERE host = ? AND nick NOT IN ('AsuZ', 'EpiC', 'Rafael', 'Julinha', ?)`;
+    
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return;
+        }
+    
+        con.query(sqlCheckclone, [host, nick], function(err, result) {
+            if (err) {
+                console.error('Erro ao executar query:', err);
+                con.end();
+                return;
+            }
+    
+            if (result.length > 0) {
+                console.log(true);
+                result.forEach(row => {
+                    client.send('kick', channel, row.nick, "Kickado por estar com mais de 1 nick em sala.");
+                    console.log(row.nick+" - "+host);
+                });
+            } else { }
+    
+            con.end();
+        });
+    });
 }
 
 /*
@@ -315,4 +361,4 @@ function removeWhoisData(nick, client = '', fpath = './data/clones.json') {
     });
 }
 // Faz o export dos modulos
-module.exports = {removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = {checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};

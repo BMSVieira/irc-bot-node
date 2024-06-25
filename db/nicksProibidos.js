@@ -10,15 +10,8 @@ const nicksProibidos = [
     "curiosa", "cuck", "cuckold", "pzudo", "Mduro", "kerMULHER", "kerHOMEM", 
     "dotado", "psp", "HkM", "virgem", "Curios", "submisso", "submissa", 
     "nuquarto", "leite", "leitinho", "xenofoba", "xenofobo", "chifruda", 
-    "Madurito", "maridoker",
-    "maridoquer",
-    "fetiches",
-    "encontros",
-    "encontro",
-    "curioso",
-    "curiosa",
-    "cuck",
-    "cuckold",
-    "levei", "atrevido", "atrevida", "nudismo"
+    "Madurito", "maridoker", "maridoquer","fetiches","encontros","encontro",
+    "curioso","curiosa","cuck","cuckold", "levei", "atrevido", "atrevida","nudismo",
+    "pauzao", "xxx", "sex", "sexo", "safadao", "safadona", "cock", "forcock"
 ];
 module.exports = nicksProibidos

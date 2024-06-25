@@ -44,8 +44,8 @@
         localAddress: "",
         debug: false,
         showErrors: true,
-        autoRejoin: false,
-        autoConnect: false,
+        autoRejoin: true,
+        autoConnect: true,
         secure: true,
         selfSigned: true,
         certExpired: true,
@@ -142,15 +142,14 @@
 
         // Escuta pelo comando Whois
         client.addListener('whois', function(info) {
-           comportamento.addWhoisData(info.nick, info.host, info.realname, info.server, info.serverinfo);
+            comportamento.checkCloneSala(info.nick, info.host, info.realname, info.server, info.serverinfo, core.config[0]["global_channel"], client);
+            comportamento.addWhoisData(info.nick, info.host, info.realname, info.server, info.serverinfo);   
         });
 
         // Escuta por utilizadores que entrem no canal
         client.addListener('join', function (channel, nick, message) {
-            
             // Regista que este user entrou.
             client.send('whois', nick);
-
             console.log('\x1b[32m%s\x1b[0m', '' + message.nick + ' Entrou.'); 
 
             // Notifica via Telegram
@@ -159,13 +158,16 @@
             // Verifica os nicks
             comportamento.verificaNick(nick, client, core.config[0]["global_channel"], bot, core.config[0]["telegram"]);
             comportamento.checkKick(nick, client, core.config[0]["global_channel"], bot, core.config[0]["telegram"]);
-
         });
 
         // Escuta por utilizadores que levam kick
         client.addListener('kick', (channel, nick, by, reason, message) => {
+            
             console.log('\x1b[35m%s\x1b[0m', '' + nick + ' foi kickado. ('+reason+')');
             comportamento.removeWhoisData(nick, client);
+
+            if(core.config[0]["telegram"]['telegram_kick'] == "true")
+                telegram.notify(bot, nick, core.config[0]["telegram"], "kick", reason);
         });
 
         // Escuta por Utilizadores que entrem com status para dar a mensagem de boas vindas
@@ -221,7 +223,7 @@
               }
 
                 // Verifica se a mensagem tem mais de 5 caracteres Caps juntos.
-                console.log(from + '(' + to + ') : ' + message);
+                // console.log(from + '(' + to + ') : ' + message);
 
                 // Funções & Modulos
                 comportamento.verificaCaps(message, from, client, core.config[0]["global_channel"]);
@@ -377,7 +379,6 @@
                     {
                         // Kicka um nick
                         client.send('kick', core.config[0]["global_channel"], query, "");
-                        if(core.config[0]["telegram"]['telegram_kick'] == "true") { telegram.notify(bot, query, core.config[0]["telegram"], "kick", "Kickado do canal"); }
                     }
                 break; 
                 case "leave":
