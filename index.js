@@ -90,6 +90,9 @@
                     core.fila.shift();
                 }
             }, 2000);
+
+            // Atualiza palavras
+            comportamento.syncDb(client);
         
         });
   
@@ -126,7 +129,7 @@
                         if (index < keys.length) {
                             let key = keys[index];
                             if (nicks.hasOwnProperty(key)) {
-                                client.send('whois', key);
+                               client.send('whois', key);
                             }
                             index++;
                         } else {
@@ -141,9 +144,19 @@
         });
 
         // Escuta pelo comando Whois
-        client.addListener('whois', function(info) {
-            comportamento.checkCloneSala(info.nick, info.host, info.realname, info.server, info.serverinfo, core.config[0]["global_channel"], client);
-            comportamento.addWhoisData(info.nick, info.host, info.realname, info.server, info.serverinfo);   
+       client.addListener('whois', function(info) {
+
+                if ( info.nick !== null && info.nick !== '' &&  info.host !== null && info.host !== '' &&
+                    info.realname !== null && info.realname !== '' && info.server !== null && info.server !== '' && info.serverinfo !== null && info.serverinfo !== ''
+                ) {
+
+                    comportamento.checkCloneSala(info.nick, info.host, info.realname, info.server, info.serverinfo, core.config[0]["global_channel"], client);
+                    comportamento.addWhoisData(info.nick, info.host, info.realname, info.server, info.serverinfo);   
+            
+                } else {
+                    console.warning("Some whois information is missing, null, or empty:", info);
+                }
+
         });
 
         // Escuta por utilizadores que entrem no canal
@@ -404,7 +417,13 @@
                 case "denunciar":
                     core.denunciar(query, fromNick, client, core.config[0]["global_channel"]);
                 break; 
-
+                case "sync":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        comportamento.syncDb(client);
+                    }
+                break; 
                 // ########################################################################################
                 // Eventos do Telegram
                 // ########################################################################################

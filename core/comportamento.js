@@ -2,13 +2,12 @@
 // Config Variables
 const fs = require('fs');
 var mysql = require('mysql');
-
 var protected = require('../db/protected');
-var forbiddenWords = require('../db/palavrasProibidas');
-var nicksProibidos = require('../db/nicksProibidos');
 var db = require('../core/database');
 
 var avisosCaps = [];
+var forbiddenWords = [];
+var nicksProibidos = [];
 
 /*
     Remove todos os caracteres especiais do nick, retorna em lowercase e limpo
@@ -360,5 +359,108 @@ function removeWhoisData(nick, client = '', fpath = './data/clones.json') {
         });
     });
 }
+
+/*
+    Sincroniza meias palavras
+    ###########################################################################
+*/
+function syncDbMeiasPalavras(client, callback) {
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+    const sqlSelectQueryMeiasPalavras = "SELECT * FROM bot_meiaspalavras WHERE isactive = 1";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return callback(err);
+        }
+
+        con.query(sqlSelectQueryMeiasPalavras, function (err, resultMeiasPalavras, fields) {
+            if (err) {
+                console.error('Erro ao executar query de select em bot_meiaspalavras:', err);
+                con.end();
+                return callback(err);
+            }
+
+            nicksProibidos = [];
+            for (const row of resultMeiasPalavras) {
+                nicksProibidos.push(row.palavra);
+            }
+            
+            console.log('\x1b[33m%s\x1b[0m', 'Meias Palavras - Sincronizado.');
+            con.end();
+            callback(null, nicksProibidos);
+        });
+    });
+}
+
+/*
+    Sincroniza palavras proibidas
+    ###########################################################################
+*/
+function syncDbPalavrasProibidas(client, callback) {
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+    const sqlSelectQueryPalavrasProibidas = "SELECT * FROM bot_palavrasproibidas WHERE isactive = 1";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return callback(err);
+        }
+
+        con.query(sqlSelectQueryPalavrasProibidas, function (err, resultPalavrasProibidas, fields) {
+            if (err) {
+                console.error('Erro ao executar query de select em bot_palavrasproibidas:', err);
+                con.end();
+                return callback(err);
+            }
+
+            forbiddenWords = [];
+            for (const row of resultPalavrasProibidas) {
+                forbiddenWords.push(row.palavra);
+            }
+
+            console.log('\x1b[33m%s\x1b[0m', 'Palavras Proibidas - Sincronizado.');
+            con.end();
+            callback(null, forbiddenWords);
+        });
+    });
+}
+
+/*
+    Init sincronizacao
+    ###########################################################################
+*/
+function syncDb(client) {
+    syncDbMeiasPalavras(client, function(err, nicksProibidos) {
+        if (err) {
+            console.error('Erro ao sincronizar Meias Palavras:', err);
+            return;
+        }
+
+        syncDbPalavrasProibidas(client, function(err, forbiddenWords) {
+            if (err) {
+                console.error('Erro ao sincronizar Palavras Proibidas:', err);
+                return;
+            }
+
+            // Both synchronizations are complete, proceed with any further logic
+            console.log('Sincronizações completas:', { nicksProibidos, forbiddenWords });
+        });
+    });
+}
+
 // Faz o export dos modulos
-module.exports = {checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = {syncDb, checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+
