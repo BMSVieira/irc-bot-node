@@ -262,7 +262,7 @@ function checkCloneSala(nick, host, realname, server, servinfo, channel, client)
             if (result.length > 0) {
                 console.log(true);
                 result.forEach(row => {
-                    client.send('kick', channel, row.nick, "Kickado por estar com mais de 1 nick em sala.");
+                    client.send('kick', channel, row.nick, "Kickado porque o IP está a ser usado em mais do que uma conexão.");
                     console.log(row.nick+" - "+host);
                 });
             } else { }
@@ -439,6 +439,58 @@ function syncDbPalavrasProibidas(client, callback) {
 }
 
 /*
+    Adiciona meia palavra
+    ###########################################################################
+*/
+function addMeiaPalavra(client, callback, query) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+    const sqlCheckQuery = "SELECT COUNT(*) AS count FROM bot_meiaspalavras WHERE palavra = ?";
+    const sqlInsertQuery = "INSERT INTO bot_meiaspalavras (palavra, isactive) VALUES (?, 1)";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return callback(err);
+        }
+
+        // verifica se a palavra já existe.
+        con.query(sqlCheckQuery, [query], function (err, result) {
+            if (err) {
+                console.error('Erro ao executar query de check em bot_meiaspalavras:', err);
+                con.end();
+                return callback(err);
+            }
+
+            // Se não, insere.
+            if (result[0].count === 0) {
+                con.query(sqlInsertQuery, [query], function (err, result) {
+                    if (err) {
+                        console.error('Erro ao executar query de insert em bot_meiaspalavras:', err);
+                        con.end();
+                        return callback(err);
+                    }
+
+                    console.log('\x1b[33m%s\x1b[0m', 'Palavra adicionada.');
+                    con.end();
+                    callback(null, 'Palavra adicionada');
+                });
+            } else {
+                console.log('\x1b[33m%s\x1b[0m', 'Palavra já existe.');
+                con.end();
+                callback(null, 'Palavra já existe');
+            }
+        });
+    });
+}
+
+/*
     Init sincronizacao
     ###########################################################################
 */
@@ -462,5 +514,5 @@ function syncDb(client) {
 }
 
 // Faz o export dos modulos
-module.exports = {syncDb, checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = {addMeiaPalavra, syncDb, checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
 

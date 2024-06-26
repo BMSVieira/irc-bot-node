@@ -422,6 +422,14 @@
                     {
                         // Atualiza os parametros de kick
                         comportamento.syncDb(client);
+                        client.say(fromNick, "Sincronização completa.");
+                    }
+                break; 
+                case "addmeiapalavra":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        comportamento.addMeiaPalavra(client);
                     }
                 break; 
                 // ########################################################################################
