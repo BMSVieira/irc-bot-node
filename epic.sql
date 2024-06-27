@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 27-Jun-2024 às 02:50
+-- Tempo de geração: 27-Jun-2024 às 21:40
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.2.12
 
@@ -234,7 +234,9 @@ INSERT INTO `bot_palavrasproibidas` (`id`, `palavra`, `isactive`) VALUES
 (125, 'proc', 1),
 (126, 'falo', 1),
 (127, 'casadas', 1),
-(128, 'noiva', 1);
+(128, 'noiva', 1),
+(0, 'marido', 1),
+(0, 'nudista ', 1);
 
 -- --------------------------------------------------------
 
@@ -256,21 +258,107 @@ CREATE TABLE `clones` (
 -- Extraindo dados da tabela `clones`
 --
 
+INSERT INTO `clones` (`id`, `nick`, `host`, `realname`, `server`, `servinfo`, `time`) VALUES
+(3, 'Lobo_da_Lua', 'Brazink.9pdkef.dsl.telepac.pt', 'IRC * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:43:08'),
+(4, 'Log', 'localhost', '6iLog 1.2 - IRC Log', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:43:10'),
+(5, 'Global', 'services.brazink.net', 'Global Noticer', 'services.brazink.net', 'Services for Brazink IRC', '2024-06-27 18:43:11'),
+(8, 'SolitaryMan', 'Brazink.rh1.mcf.129.217.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:43:35'),
+(13, 'Vampirao', 'Brazink.jc3.gdf.63.148.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:44:05'),
+(15, 'Pedroo', 'Brazink.bim.g3n.150.169.IP', 'Web2 * Está em São Paulo - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:44:35'),
+(16, 'coimbra22', 'Brazink.os15fc.dsl.telepac.pt', 'Web2 * Está em Distrito de Coimbra - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:44:35'),
+(17, 'Bom_Amigo', 'Brazink.o990jj.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:44:35'),
+(22, 'powerPT', 'Brazink.fkr4s4.rev.vodafone.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:45:05'),
+(29, 'sugartiina', 'Brazink.apeuo7.dsl.telepac.pt', 'Web2 * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:45:35'),
+(33, 'Hsimplesnorte', 'Brazink.gmk.664.137.193.IP', 'Web2 * Está em Aveiro - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:46:05'),
+(55, 'Haydee', 'Brazink.1jc61p.dsl.telepac.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:49:35'),
+(60, 'homem1958', 'Brazink.13k7bh.dsl.telepac.pt', 'Web2 * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:50:05'),
+(66, 'Unica', 'Brazink.3q2u6a.rev.vodafone.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:50:35'),
+(71, 'Catiaa', 'Brazink.2tt.k7v.182.168.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:51:05'),
+(72, 'UmBichoDe2Metros', 'Brazink.3sf656.dsl.telepac.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:51:35'),
+(73, 'moi_meme', 'Brazink.1hp.ogi.230.161.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:51:35'),
+(81, 'xico', 'Brazink.8ek.h2n.230.161.IP', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:52:05'),
+(88, 'stEFFen', 'Brazink.4rdgan.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:53:17'),
+(97, 'GordoFeioCareca', 'Brazink.c7t.h60.240.83.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:54:35'),
+(98, 'paulo-54', 'Brazink.99q2js.rev.vodafone.pt', 'Web1 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:54:35'),
+(99, 'gramp', 'Brazink.7l5ebn.rev.vodafone.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:55:05'),
+(100, 'Sonhador', 'Brazink.7oc1sd.dsl.telepac.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:55:05'),
+(109, 'Slowdive', 'Brazink.gc3sup.dsl.telepac.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:56:35'),
+(110, 'Empresario', 'Brazink.tuim81.dsl.telepac.pt', 'Web1 * Está em Aveiro - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:56:35'),
+(112, 'Desconhecido', 'Brazink.1cllv8.abo.wanadoo.fr', 'Web2 * Está em  - Francia', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:57:04'),
+(115, '_Miguel_Porto', 'Brazink.qrae7s.rev.vodafone.pt', 'Web1 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:57:05'),
+(122, 'EpiC', 'Brazink.h29okb.rev.vodafone.pt', 'IRC * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:58:06'),
+(130, 'ViDAETERNA_', 'Brazink.v73.r16.205.186.IP', 'Web2 * Está em Rio de Janeiro - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 18:58:36'),
+(137, 'Conde', 'Brazink.rig7tm.rev.vodafone.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:00:09'),
+(144, 'Method', 'Brazink.9i9h32.cpe.netcabo.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:01:27'),
+(173, 'carlinhos69', 'Brazink.6a59c2.veloxzone.com.br', 'Web2 * Está em Bahia - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:10:44'),
+(176, 'normal', 'Brazink.e5ekmn.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:11:34'),
+(184, 'MorenoComBarba', 'Brazink.aja.01g.189.37.IP', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:15:23'),
+(206, '_joana', 'Brazink.rnu4tb.cpe.netcabo.pt', 'Web1 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:24:43'),
+(223, 'AdmiravelMundoNovo', 'Brazink.m00828.dsl.telepac.pt', 'Web2 * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:31:53'),
+(227, 'RadioPortugal', 'Brazink.13rkjv.brazink.com', 'Powered by www.brazink.com', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:35:05'),
+(242, 'BenQ', 'Brazink.i9c1u1.rev.vodafone.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:42:50'),
+(252, 'RuiLisboa', 'Brazink.4sp74m.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:44:14'),
+(254, 'simpaticoo', 'Brazink.hqt.f2k.69.148.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:45:11'),
+(259, 'carolinav', 'Brazink.idfigf.cpe.netcabo.pt', 'Web2 * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:47:02'),
+(264, 'Jorge_SunSet', 'Brazink.i7reae.rev.vodafone.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:48:51'),
+(279, 'EscuteirinhaMadeirense', 'Brazink.cmbtgv.ptr83.nosmadeira.net', 'Web2 * Está em Região Autônoma da Madeira - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:54:28'),
+(283, 'Tina', 'Brazink.mqrlsb.netvisao.pt', 'Web2 * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:54:56'),
+(288, 'hcasdominho', 'Brazink.kv2m9u.dsl.telepac.pt', 'Web1 * Está em Distrito de Braga - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:56:40'),
+(293, 'p92', 'Brazink.02uscp.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 19:57:55'),
+(299, 'Jjay', 'Brazink.j18vlk.dsl.telepac.pt', 'Web2 * Está em Distrito de Braga - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:00:27'),
+(300, 'NMC', 'Brazink.cdbhu7.ptr84.nosmadeira.net', 'Web2 * Está em Região Autônoma da Madeira - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:00:30'),
+(302, 'Margarita', 'Brazink.jrkt7q.cpe.netcabo.pt', 'Web1 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:00:49'),
+(314, 'Menina_40', 'Brazink.rb7e2r.dsl.telepac.pt', 'Web2 * Está em Distrito de Santarém - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:04:27'),
+(315, 'Vina58', 'Brazink.981lof.dsl.telepac.pt', 'Web2 * Está em Distrito da Guarda - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:04:43'),
+(316, 'sandro78', 'Brazink.c80.8me.250.92.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:04:50'),
+(318, 'nuno_', 'Brazink.l76t7b.cpe.netcabo.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:05:20'),
+(319, 'MessyMind', 'Brazink.po6r1g.rev.vodafone.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:05:23'),
+(321, 'BrunoVLMed33', 'Brazink.cc6.574.32.177.IP', 'Web2 * Está em São Paulo - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:05:54'),
+(328, 'Rita', 'Brazink.q34.jqt.230.161.IP', 'Web1 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:07:52'),
+(329, 'NunoR', 'Brazink.li1quu.rev.vodafone.pt', 'Web1 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:07:54'),
+(333, 'bigboyxunga', 'Brazink.5ltj2b.netvisao.pt', 'Web2 * Está em Distrito de Faro - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:09:27'),
+(338, 'Anaa', 'Brazink.ca8lrd.dsl.telepac.pt', 'Web2 * Está em Distrito de Coimbra - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:11:18'),
+(341, 'salome', 'Brazink.nbi.vp3.214.89.IP', 'Web2 * Está em  - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:12:29'),
+(343, 'Antonella', 'Brazink.beh.vpj.225.200.IP', 'Web2 * Está em Santa Catarina - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:13:14'),
+(346, 'Vadio', 'Brazink.og7.1v0.210.88.IP', 'Web2 * Está em Setúbal - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:13:54'),
+(347, 'fernanda52', 'Brazink.u46.2b0.226.84.IP', 'Web2 * Está em Zug - Suiza', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:14:01'),
+(348, 'Adelia', 'Brazink.9jc.m9k.17.201.IP', 'Web2 * Está em Rio de Janeiro - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:14:01'),
+(352, 'Moreno_Leiria', 'Brazink.lnlg20.rev.vodafone.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:15:28'),
+(356, 'Tugao', 'Brazink.81d4rl.rev.vodafone.pt', 'Web1 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:16:53'),
+(366, 'Clonado', 'Brazink.e2q4f7.rev.vodafone.pt', 'App * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:19:44'),
+(367, 'olhar', 'Brazink.5vn5gc.dsl.telepac.pt', 'Web2 * Está em Distrito de Coimbra - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:19:52'),
+(368, 'Joao_Prt', 'Brazink.c2bo7t.net.novis.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:20:15'),
+(374, 'thiago77', 'Brazink.oc5.d4v.189.45.IP', 'Web2 * Está em Ceará - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:22:22'),
+(375, 'BadBadMary', 'Brazink.0u0hc4.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:22:40'),
+(377, 'rapaz24', 'Brazink.nbap8c.dsl.telepac.pt', 'Web2 * Está em Distrito de Castelo Branco - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:23:06'),
+(378, 'Alquimia', 'Brazink.6d1.m64.189.37.IP', 'Web1 * Está em Leiria - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:23:17'),
+(380, 'Trifolium', 'Brazink.aa0.v7h.214.89.IP', 'Web2 * Está em  - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:23:45'),
+(385, 'Tictac', 'Brazink.q68.k26.250.92.IP', 'Web2 * Está em  - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:25:42'),
+(389, 'MARCO', 'Brazink.df5dt5.rev.vodafone.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:26:39'),
+(391, 'John_Carter', 'Brazink.rlr09f.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:26:52'),
+(394, 'ios', 'Brazink.kl1.m6i.214.89.IP', 'Web1 * Está em Leiria - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:28:06'),
+(398, 'lyra', 'Brazink.p6qvnb.rev.vodafone.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:29:17'),
+(400, 'Daniela', 'Brazink.vk4cv8.dsl.telepac.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:29:48'),
+(401, 'RapazVst', 'Brazink.c9r.h8i.191.179.IP', 'Web2 * Está em Amazonas - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:31:06'),
+(402, 'anosa', 'Brazink.cdo.7sv.102.93.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:31:15'),
+(406, 'Ela', 'Brazink.uvg.m0q.124.177.IP', 'Web1 * Está em Bahia - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:33:08'),
+(407, 'Filme', 'Brazink.uio.h9d.28.104.IP', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:33:36'),
+(409, 'tiago27', 'Brazink.18frt7.cpe.netcabo.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:33:57'),
+(413, 'susy', 'Brazink.d1t91f.netvisao.pt', 'Web2 * Está em Aveiro - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:35:00'),
+(414, 'ricardo_38', 'Brazink.nokdko.cpe.netcabo.pt', 'Web2 * Está em Lisboa - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:35:24'),
+(415, 'agroAzores', 'Brazink.ghc.a3n.29.78.IP', 'Web2 * Está em Açores - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:35:25'),
+(416, 'MalumaTuFoiExpulso', 'Brazink.iktkmb.dsl.telepac.pt', 'Web2 * Está em Distrito de Évora - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:35:28'),
+(418, 'i732', 'Brazink.si7.5ms.196.87.IP', 'App * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:36:31'),
+(419, 'Mariaana', 'Brazink.c5odgg.dsl.telepac.pt', 'Web2 * Está em Distrito do Porto - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:36:35'),
+(420, 'Ligia48', 'Brazink.gvd.09b.192.177.IP', 'Web1 * Está em Rio de Janeiro - Brasil', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:36:51'),
+(421, 'Marco_q', 'Brazink.3ms.1al.251.188.IP', 'Web2 * Está em Viseu - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:38:36'),
+(422, '_Strauss_', 'Brazink.qmhml7.dsl.telepac.pt', 'Web1 * Está em Aveiro - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:38:38'),
+(423, 'filipe27', 'Brazink.kcavi7.cpe.netcabo.pt', 'Web2 * Está em  - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:38:51'),
+(424, '_Luazinha_', 'Brazink.d0t.1na.190.213.IP', 'Web2 * Está em Região Autônoma da Madeira - Portugal', 'irc.brazink.net', 'Brazink Network', '2024-06-27 20:39:08');
+
 --
 -- Índices para tabelas despejadas
 --
-
---
--- Índices para tabela `bot_meiaspalavras`
---
-ALTER TABLE `bot_meiaspalavras`
-  ADD PRIMARY KEY (`id`);
-
---
--- Índices para tabela `bot_palavrasproibidas`
---
-ALTER TABLE `bot_palavrasproibidas`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `clones`
@@ -283,22 +371,10 @@ ALTER TABLE `clones`
 --
 
 --
--- AUTO_INCREMENT de tabela `bot_meiaspalavras`
---
-ALTER TABLE `bot_meiaspalavras`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
-
---
--- AUTO_INCREMENT de tabela `bot_palavrasproibidas`
---
-ALTER TABLE `bot_palavrasproibidas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
-
---
 -- AUTO_INCREMENT de tabela `clones`
 --
 ALTER TABLE `clones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=430;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
