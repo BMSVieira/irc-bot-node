@@ -31,26 +31,49 @@ Abrir o PV do Bot:
 **** Parar o Quiz **** 
 <stopquiz>
 
+**** Altera o limite do quiz (nr de perguntas) **** 
+<setQuizLimit> 20 
+
 **** Enviar mensagens pelo bot ****
 <say> {Mensagem para enviar}
-
-**** Começar o Shout **** 
-<startshout>
-
-**** Parar o Shout **** 
-<stopshout>
-
-**** Modificar o modo do bot ***
-<setmode> 0/2/3
 
 **** Desligar o bot do servidor ****
 <disconnect>
 
-**** Modificar o nome do bot ****
-<rename> {Novo Nick}
+**** Anunciar em loop ****
+<startanuncios> {Mensagem do anuncio}
 
-**** Modificar a quantidade de respostas do quiz ****
-<setQuizLimit> 15000 (1000 = 1 Segundo)
+**** Parar o anuncio ****
+<stopanuncios>
 
-**** Modificar tempo de resposta do Shout ****
-<setShoutTime> 15000 (1000 = 1 Segundo)
+**** Kickar nick ****
+<kick> {Nick}
+
+**** Desliga-se do servidor ****
+<disconnect>
+
+**** Saí da sala portugal ****
+<leave> #Portugal
+
+**** Lista as regras ****
+<regras>
+
+**** Adiciona meia palavra ****
+<addmeiapalavra> {Palavra}
+
+**** Remove meia palavra ****
+<delmeiapalavra> {Palavra}
+
+**** Adiciona nick probibido ****
+<addnickproibido> {Palavra}
+
+**** Remove nick proibido ****
+<delnickproibido> {Palavra}
+
+**** Atualiza os parametros de kick ****
+<sync>
+
+**** Denuncia um nick ****
+<denunciar> {nick}
+
+

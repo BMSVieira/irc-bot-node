@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26-Jun-2024 às 03:36
+-- Tempo de geração: 27-Jun-2024 às 02:50
 -- Versão do servidor: 10.4.32-MariaDB
 -- versão do PHP: 8.2.12
 
@@ -100,7 +100,6 @@ INSERT INTO `bot_meiaspalavras` (`id`, `palavra`, `isactive`) VALUES
 (69, 'xenofobo', 1),
 (76, 'chifruda', 1),
 (77, 'Madurito', 1),
-(78, 'tgirl', 1),
 (79, 'virg', 1),
 (80, 'queroela', 1),
 (81, 'tabus', 1),
@@ -228,7 +227,14 @@ INSERT INTO `bot_palavrasproibidas` (`id`, `palavra`, `isactive`) VALUES
 (113, 'fodoSuaEspos', 1),
 (114, 'Militar', 1),
 (115, 'leiteiro', 1),
-(116, 'sarabi', 1);
+(116, 'sarabi', 1),
+(122, 'sub', 1),
+(123, 'procuro', 1),
+(124, 'sedutor', 1),
+(125, 'proc', 1),
+(126, 'falo', 1),
+(127, 'casadas', 1),
+(128, 'noiva', 1);
 
 -- --------------------------------------------------------
 
@@ -280,19 +286,19 @@ ALTER TABLE `clones`
 -- AUTO_INCREMENT de tabela `bot_meiaspalavras`
 --
 ALTER TABLE `bot_meiaspalavras`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT de tabela `bot_palavrasproibidas`
 --
 ALTER TABLE `bot_palavrasproibidas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT de tabela `clones`
 --
 ALTER TABLE `clones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=430;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -442,7 +442,7 @@ function syncDbPalavrasProibidas(client, callback) {
     Adiciona meia palavra
     ###########################################################################
 */
-function addMeiaPalavra(client, callback, query) {
+function addMeiaPalavra(client, query, fromNick) {
 
     const con = mysql.createConnection({ 
         host: db.dbconfig[0]['host'],
@@ -451,13 +451,13 @@ function addMeiaPalavra(client, callback, query) {
         database: db.dbconfig[0]['database']
     });
 
+
     const sqlCheckQuery = "SELECT COUNT(*) AS count FROM bot_meiaspalavras WHERE palavra = ?";
     const sqlInsertQuery = "INSERT INTO bot_meiaspalavras (palavra, isactive) VALUES (?, 1)";
 
     con.connect(function(err) {
         if (err) {
             console.error('Erro ao conectar a BD:', err);
-            return callback(err);
         }
 
         // verifica se a palavra já existe.
@@ -465,26 +465,164 @@ function addMeiaPalavra(client, callback, query) {
             if (err) {
                 console.error('Erro ao executar query de check em bot_meiaspalavras:', err);
                 con.end();
-                return callback(err);
             }
 
             // Se não, insere.
-            if (result[0].count === 0) {
+            if (result[0].count == 0) {
                 con.query(sqlInsertQuery, [query], function (err, result) {
                     if (err) {
                         console.error('Erro ao executar query de insert em bot_meiaspalavras:', err);
                         con.end();
-                        return callback(err);
                     }
-
-                    console.log('\x1b[33m%s\x1b[0m', 'Palavra adicionada.');
+                    client.say(fromNick, "🟢 Palavra ( "+query+" ) Adicionada.");
                     con.end();
-                    callback(null, 'Palavra adicionada');
+                   
                 });
             } else {
-                console.log('\x1b[33m%s\x1b[0m', 'Palavra já existe.');
+                client.say(fromNick, "🟡 Palavra já existe.");
                 con.end();
-                callback(null, 'Palavra já existe');
+            }
+        });
+    });
+}
+
+/*
+    Adiciona nick proibido
+    ###########################################################################
+*/
+function addNickProibido(client, query, fromNick) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+
+    const sqlCheckQuery = "SELECT COUNT(*) AS count FROM bot_palavrasproibidas WHERE palavra = ?";
+    const sqlInsertQuery = "INSERT INTO bot_palavrasproibidas (palavra, isactive) VALUES (?, 1)";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+        }
+
+        // verifica se a palavra já existe.
+        con.query(sqlCheckQuery, [query], function (err, result) {
+            if (err) {
+                console.error('Erro ao executar query de check em bot_palavrasproibidas:', err);
+                con.end();
+            }
+            // Se não, insere.
+            if (result[0].count == 0) {
+                con.query(sqlInsertQuery, [query], function (err, result) {
+                    if (err) {
+                        console.error('Erro ao executar query de insert em bot_palavrasproibidas:', err);
+                        con.end();
+                    }
+                    console.log("ola2");
+                    client.say(fromNick, "🟢 Palavra ( "+query+" ) Adicionada.");
+                    con.end();
+                   
+                });
+            } else {
+                client.say(fromNick, "🟡 Palavra já existe.");
+                con.end();
+            }
+        });
+    });
+}
+
+/*
+    remove nick proibido
+    ###########################################################################
+*/
+function delNickProibido(client, query, fromNick) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+
+    const sqlCheckQuery = "SELECT COUNT(*) AS count FROM bot_palavrasproibidas WHERE palavra = ?";
+    const sqlDeleteQuery = "DELETE FROM bot_palavrasproibidas WHERE palavra = ?";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+        }
+
+        // verifica se a palavra já existe.
+        con.query(sqlCheckQuery, [query], function (err, result) {
+            if (err) {
+                console.error('Erro ao executar query de check em bot_palavrasproibidas:', err);
+                con.end();
+            }
+            // Se não, insere.
+            if (result[0].count > 0) {
+                con.query(sqlDeleteQuery, [query], function (err, result) {
+                    if (err) {
+                        console.error('Erro ao executar query de delete em bot_palavrasproibidas:', err);
+                        con.end();
+                    }
+                    client.say(fromNick, "🟢 Palavra ( "+query+" ) removida.");
+                    con.end();
+                   
+                });
+            } else {
+                client.say(fromNick, "🟡 Palavra não existe.");
+                con.end();
+            }
+        });
+    });
+}
+
+/*
+    remove meia palavra
+    ###########################################################################
+*/
+function delMeiaPalavra(client, query, fromNick) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+
+    const sqlCheckQuery = "SELECT COUNT(*) AS count FROM bot_meiaspalavras WHERE palavra = ?";
+    const sqlDeleteQuery = "DELETE FROM bot_meiaspalavras WHERE palavra = ?";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+        }
+
+        // verifica se a palavra já existe.
+        con.query(sqlCheckQuery, [query], function (err, result) {
+            if (err) {
+                console.error('Erro ao executar query de check em bot_meiaspalavras:', err);
+                con.end();
+            }
+            // Se não, insere.
+            if (result[0].count > 0) {
+                con.query(sqlDeleteQuery, [query], function (err, result) {
+                    if (err) {
+                        console.error('Erro ao executar query de delete em bot_meiaspalavras:', err);
+                        con.end();
+                    }
+                    client.say(fromNick, "🟢 Palavra ( "+query+" ) removida.");
+                    con.end();
+                   
+                });
+            } else {
+                client.say(fromNick, "🟡 Palavra não existe.");
+                con.end();
             }
         });
     });
@@ -514,5 +652,5 @@ function syncDb(client) {
 }
 
 // Faz o export dos modulos
-module.exports = {addMeiaPalavra, syncDb, checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
+module.exports = {delMeiaPalavra, delNickProibido, addNickProibido, addMeiaPalavra, syncDb, checkCloneSala, removeWhoisData, addWhoisData, checkClones, verificaNumerosNick, checkMeioNome, verificaNick, verificaCaps, checkKick};
 

@@ -91,6 +91,9 @@
                 }
             }, 2000);
 
+            // Limpa consola todos os minutos
+            setInterval(function(){ console.clear(); }, 60000);
+
             // Atualiza palavras
             comportamento.syncDb(client);
         
@@ -429,9 +432,30 @@
                     if(core.isAdmin(fromNick))
                     {
                         // Atualiza os parametros de kick
-                        comportamento.addMeiaPalavra(client);
+                        comportamento.addMeiaPalavra(client, query, fromNick);
                     }
                 break; 
+                case "addnickproibido":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        comportamento.addNickProibido(client, query, fromNick);
+                    }
+                break; 
+                case "delnickproibido":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        comportamento.delNickProibido(client, query, fromNick);
+                    }
+                break; 
+                case "delmeiapalavra":
+                    if(core.isAdmin(fromNick))
+                    {
+                        // Atualiza os parametros de kick
+                        comportamento.delMeiaPalavra(client, query, fromNick);
+                    }
+                break;                                   
                 // ########################################################################################
                 // Eventos do Telegram
                 // ########################################################################################
