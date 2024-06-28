@@ -1,9 +1,9 @@
 
 // Config Variables
-const fs = require('fs');
 var mysql = require('mysql');
 var protected = require('../db/protected');
 var db = require('../core/database');
+var log = require('../core/logs');
 
 var avisosCaps = [];
 var forbiddenWords = [];
@@ -110,6 +110,9 @@ function checkKick(nick, client, channel, bot = null, telegram_configs)
     {
         var reason = "Nick com conteúdo sexual ou palavra não permitida. Mude de nick ou de sala!";
         client.send('kick', channel, nick, reason);
+
+        // Save log
+        log.log("prohibited", nick+" - "+reason);
     }
 }
 
@@ -150,9 +153,14 @@ function verificaCaps(str, from, client, channel) {
 
                 if(contarNotificacoes(avisosCaps, from) > 2)
                 {
-                    client.send('kick', channel, from, "Kickado por uso excessivo de Capslock");
+                    var reason = "Kickado por uso excessivo de Capslock";
+                    client.send('kick', channel, from, reason);
                     avisosCaps = removerNome(from);
                     removeWhoisData(nick, client);
+
+                    // Save log
+                    log.log("capslock", from+" - "+reason);
+
                 } else {
                     client.say(from, "[Mensagem Automática] Cuidado com o uso excessivo de Capslock.");
                     avisosCaps.push(from);
@@ -182,6 +190,9 @@ function verificaNick(from, client, channel, bot = null, telegram_configs) {
         client.send('kick', channel, from, reason);
         removeWhoisData(from, client);
 
+        // Save log
+        log.log("invalid", from+" - "+reason);
+
         return; // Deixa a função ao fim de kickar
     }
 
@@ -191,6 +202,10 @@ function verificaNick(from, client, channel, bot = null, telegram_configs) {
         reason = "Nick não pode ser composto pela mesma letra repetida.";
         client.send('kick', channel, from, reason);
         removeWhoisData(from, client);
+
+        // Save log
+        log.log("invalid", from+" - "+reason);
+
     }
 }
 
@@ -264,6 +279,11 @@ function checkCloneSala(nick, host, realname, server, servinfo, channel, client)
                 result.forEach(row => {
                     client.send('kick', channel, row.nick, "Kickado porque o IP está a ser usado em mais do que uma conexão.");
                     console.log(row.nick+" - "+host);
+
+                    // Save log
+                    var log_desc = "User: "+nick+" ("+host+") entrou. | User: "+row.nick+" ("+row.host+") kickado.";
+                    log.log("multicon", log_desc);
+
                 });
             } else { }
     
