@@ -197,16 +197,17 @@ function verificaNick(from, client, channel, bot = null, telegram_configs) {
     }
 
     // Verifica se é composto pela mesma letra
-    var sameLetterPattern = /^([a-zA-Z])\1*$/;
-    if (sameLetterPattern.test(from)) {
+    var repeatedLetterPattern = /([a-zA-Z])\1{3,}/;
+    if (repeatedLetterPattern.test(from)) {
+
         reason = "Nick não pode ser composto pela mesma letra repetida.";
         client.send('kick', channel, from, reason);
         removeWhoisData(from, client);
 
         // Save log
         log.log("invalid", from+" - "+reason);
-
     }
+
 }
 
 /*
@@ -653,7 +654,7 @@ function delMeiaPalavra(client, query, fromNick) {
     ###########################################################################
 */
 function syncDb(client) {
-    syncDbMeiasPalavras(client, function(err, nicksProibidos) {
+        syncDbMeiasPalavras(client, function(err, nicksProibidos) {
         if (err) {
             console.error('Erro ao sincronizar Meias Palavras:', err);
             return;

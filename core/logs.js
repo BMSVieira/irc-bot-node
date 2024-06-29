@@ -31,8 +31,38 @@ function log(log_type, description) {
         });
       
     });
+}
 
+/*
+    Fz o log de todos os que entram.
+    ##############################################################################
+*/
+function log_entrada(nick, host, realname, server, servinfo) {
+
+    const con = mysql.createConnection({ 
+        host: db.dbconfig[0]['host'],
+        user: db.dbconfig[0]['user'],
+        password: db.dbconfig[0]['password'],
+        database: db.dbconfig[0]['database']
+    });
+
+    const sqlInsertQuery = "INSERT INTO bot_entradas (nick, host, date) VALUES (?, ?, NOW())";
+
+    con.connect(function(err) {
+        if (err) {
+            console.error('Erro ao conectar a BD:', err);
+            return;
+        }
+        con.query(sqlInsertQuery, [nick, host], function(err, result) {
+            if (err) {
+                console.error('Erro ao executar query de insert:', err);
+            } else {
+            }
+            con.end();
+        });
+      
+    });
 }
 
 // Faz o export dos modulos
-module.exports = {log};
+module.exports = {log, log_entrada};

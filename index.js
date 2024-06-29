@@ -2,18 +2,14 @@
         // IRC BOT
         // ****************************************************************
 
+        // Requires
         var irc = require('irc');
-        const fs = require('fs');
-        const path = require('path');
-
-        const filePathClones = path.join(__dirname, 'data', 'clones.json');
-        fs.mkdirSync(path.dirname(filePathClones), { recursive: true });
 
         // Modulos
         var core = require("./core/init");
         var comportamento = require("./core/comportamento");
-        var ajuda = require("./core/ajuda");
         var owners = require('./db/owners');
+        var log = require('./core/logs');
 
         // Variaveis
         var infoClones = [];
@@ -155,7 +151,8 @@
 
                     comportamento.checkCloneSala(info.nick, info.host, info.realname, info.server, info.serverinfo, core.config[0]["global_channel"], client);
                     comportamento.addWhoisData(info.nick, info.host, info.realname, info.server, info.serverinfo);   
-            
+                    log.log_entrada(info.nick, info.host, info.realname, info.server, info.serverinfo);   
+                
                 } else {
                     console.warning("Some whois information is missing, null, or empty:", info);
                 }
@@ -251,7 +248,7 @@
                 {
                   switch (matches[1].toLowerCase()) {
                     case 'regras':
-                        ajuda.regrasSala(fromNick, client);
+                       
                     break;
                     default:
                     // Nada em default
@@ -305,15 +302,6 @@
                         core.unbindAll(); 
                     }
                 break;
-                case "startshout":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Inicia o Shout
-                        client.say(fromNick, "Shout a iniciar.");
-                        core.unbindAll();
-                        core.startShout(client);       
-                    }
-                break;
                 case "startanuncios":
                         if(core.isAdmin(fromNick))
                         {
@@ -336,60 +324,13 @@
                         core.unbindAll();
                     }                    
                 break;
-                case "stopshout":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Cancela o Shout
-                        client.say(fromNick, "Shout parado.");
-                        core.unbindAll(); 
-                    }
-                break;
-                case "setmode":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Cancela o Shout
-                        client.say(fromNick, "Modo Anterior: "+core.config[0]["modoAtual"]);
-                        core.config[0]["modoAtual"] = query;
-                        client.say(fromNick, "Modo Atual: "+core.config[0]["modoAtual"]);
-                    }
-                break;
                 case "setQuizLimit":
                     if(core.isAdmin(fromNick))
                     {
                         // Muda o limite do quiz
                         core.changeTime(fromNick, client, "setQuizLimit", query);
                     }
-                break; 
-                case "setShoutTime":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Muda o limite do quiz
-                        core.changeTime(fromNick, client, "setShoutTime", query);
-                    }
-                break;     
-                case "setCloneTime":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Muda o limite da pesquisa
-                        client.say(fromNick, "Tempo atual: "+cloneTime);
-                        cloneTime = query;
-                        client.say(fromNick, "Tempo atual: "+cloneTime);
-                    }
-                break;  
-                case "disconnect":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Desliga-se do servidor.
-                        client.disconnect();
-                    }
-                break; 
-                case "rename":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Modifica o nome do bot
-                        client.send('nick', query);
-                    }
-                break;  
+                break;    
                 case "kick":
                     if(core.isAdmin(fromNick))
                     {
@@ -404,18 +345,6 @@
                         client.send('part', "#"+query);
                         client.say(fromNick, "Desconectou-se de: #"+query);
                     }
-                break; 
-                case "atualiza":
-                    if(core.isAdmin(fromNick))
-                    {
-                        // Atualiza os parametros de kick
-                        comportamento.atualizaMeioNick(client);
-                        comportamento.atualizaPalavrasProibidas(client);
-                        client.say(fromNick, "Parametros Atualizados.");
-                    }
-                break; 
-                case "regras":
-                    ajuda.regrasSala(fromNick, client);
                 break; 
                 case "denunciar":
                     core.denunciar(query, fromNick, client, core.config[0]["global_channel"]);
@@ -455,7 +384,8 @@
                         // Atualiza os parametros de kick
                         comportamento.delMeiaPalavra(client, query, fromNick);
                     }
-                break;                                   
+                break;    
+
                 // ########################################################################################
                 // Eventos do Telegram
                 // ########################################################################################

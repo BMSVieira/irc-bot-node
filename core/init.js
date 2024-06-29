@@ -4,15 +4,12 @@ var owners = require('../db/owners');
 var quiz = require('../db/quiz');
 var frasesNicksStatus = require('../db/frasesNicksStatus');
 var frases = require('../db/frases');
-var autores = require('../db/autores');
 var mysql = require('mysql');
 
 // ** Variaveis Globais
 var interval_shout;
 var interval_quiz;
 var interval_anuncio;
-var ultimoShout;
-var ultimoAnnuncio;
 var ultimaFraseNicksStatus;
 var ultimaResposta;
 var quizPergunta = 0;
@@ -24,7 +21,6 @@ var fila = [];
 var denuncias = [];
 var db = require('../core/database');
 
-var shoutTime = 300000; // 80 Segundos
 var anuncioTime = 60000; // 1 minutos
 var quizTime = 25000; // 25 Segundos
 var quizLimitRespostas = 20 // Limite de respostas do quiz
@@ -393,38 +389,6 @@ function nickJoinedChannel(client, nick)
     }, 2000);
 }  
 /* 
-    Inicia o Shout
-    ####################################################################
-*/
-function startShout(client, axios)
-{
-    interval_shout = setInterval(function () {
-
-        var randomAutor = randomizeBetween(0,autores.length-1);
-        var randomFrase = randomizeBetween(0,9);
-        var autor = autores[randomAutor].autor;
-
-        const url = "https://pensador-api.vercel.app/?term=" + autor + "&max=10";
-
-        axios.get(url)
-          .then(response => {
-            try {
-              const json = response.data;
-              filaDeMensagens(json.frases[randomFrase].texto);
-            } catch (error) {
-              console.error(error.message);
-            }
-          })
-          .catch(error => {
-            console.error(error.message);
-          });
-
-    }, shoutTime);
-
-    // Altera o modo do bot para "Shout"
-    config[0]["modoAtual"] = 0; 
-} 
-/* 
     Inicia o Anuncios
     ####################################################################
 */
@@ -518,4 +482,4 @@ function truncateTable(table) {
 }
 
 // Faz o export dos modulos
-module.exports = {truncateTable, telegramChange, startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta, startShout };
+module.exports = {truncateTable, telegramChange, startAnuncios, denunciar, hasStatus, randomizeBetween, getSubstring, filaDeMensagens, fila, nickJoinedChannel, changeTime, config, unbindAll, isAdmin, anunciaVencedorQuiz, startQuiz, CheckRespostaQuiz, startResposta };
