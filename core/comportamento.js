@@ -134,7 +134,7 @@ function removerNome(nomeParaRemover) {
 
 function verificaCaps(str, from, client, channel) {
 
-    if(!protected.includes(from))
+    if(!protected.protected.includes(from))
     {
         let uppercaseCount = 0;
         for (let i = 0; i < str.length; i++) {

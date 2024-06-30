@@ -133,7 +133,7 @@ function unbindAll()
 */
 function isAdmin(nick)
 {
-  if(owners.includes(nick)) { return true; } else {  return false; }
+  if(owners.ownersBot.includes(nick)) { return true; } else {  return false; }
 }
 
 /* 

@@ -1,6 +1,6 @@
 
 // Config Variables
-var telegram_owners = require('../db/telegram_owners');
+var owners = require('../db/owners');
 
 /*
     Envia mensagem para todos os utilizadores
@@ -19,7 +19,7 @@ function sendTmessage(bot, telegram_config, message)
 */
 function isAdmin(id)
 {
-  if(telegram_owners.includes(id)) { return true; } else {  return false; }
+  if(owners.ownersTelegram.includes(id)) { return true; } else {  return false; }
 }
 /*
     Função para fazer a notificação via telegram

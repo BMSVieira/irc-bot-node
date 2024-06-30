@@ -453,7 +453,7 @@
             if(telegram.isAdmin(String(fromNick)))
             {
                 console.log("Mensagem Enviada: "+msg.text);
-                client.emit('pm', owners[0], msg.text);
+                client.emit('pm', owners.ownersBot[0], msg.text);
             }
           
         });

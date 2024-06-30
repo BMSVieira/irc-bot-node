@@ -4,10 +4,20 @@ const protected = [
     "RadioPortugal",
     "Log",
     "AsuZ",
-    "Monte",
+    "EpiC",
     "Global",
     "Rafael",
-    "Julinho"
+    "Julinha"
 ];
 
-module.exports = protected
+const logProtected = [
+    "RadioPortugal",
+    "Log",
+    "AsuZ",
+    "EpiC",
+    "PannaCotta",
+    "Global"
+];
+
+
+module.exports = {protected, logProtected}

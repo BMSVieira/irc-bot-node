@@ -1,6 +1,6 @@
 
 // Owners do Bot 
-const owners = [
+const ownersBot = [
     "AsuZ",
     "Devyl",
     "Bitaites",
@@ -8,4 +8,10 @@ const owners = [
     "PannaCotta"
 ];
 
-module.exports = owners
+// Owners do Telegram
+const ownersTelegram = [
+    "5854934549",
+    "6993321048"
+];
+
+module.exports = {ownersBot, ownersTelegram}
