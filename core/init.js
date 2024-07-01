@@ -65,7 +65,7 @@ var config = [
         global_channel: "#Portugal",
         telegram: {
             telegram_token: "7448920077:AAF2tXjg9FUPiaqgqM_Thw-sg3pZs7F8yHE",
-            telegram_active: "true",
+            telegram_active: "false",
             telegram_join: "false",
             telegram_leave: "false",
             telegram_kick: "true",
