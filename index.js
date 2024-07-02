@@ -145,8 +145,8 @@
         // Escuta pelo comando Whois
        client.addListener('whois', function(info) {
 
-                if ( info.nick !== null && info.nick !== '' &&  info.host !== null && info.host !== '' &&
-                    info.realname !== null && info.realname !== '' && info.server !== null && info.server !== '' && info.serverinfo !== null && info.serverinfo !== ''
+                if ( info.nick != 'null' && info.nick != '' &&  info.host != 'null' && info.host != '' &&
+                    info.realname != 'null' && info.realname != '' && info.server != 'null' && info.server != '' && info.serverinfo != 'null' && info.serverinfo != ''
                 ) {
 
                     comportamento.checkCloneSala(info.nick, info.host, info.realname, info.server, info.serverinfo, core.config[0]["global_channel"], client);
