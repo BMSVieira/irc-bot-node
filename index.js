@@ -15,7 +15,7 @@
         var infoClones = [];
 
         // Verifica se o telegram está ativo
-        if(core.config[0]["telegram"]['telegram_active'])
+        if(core.config[0]["telegram"]['telegram_active'] == "true")
         {
             var telegramBot = require('node-telegram-bot-api');
             var telegram = require("./core/telegram");
@@ -59,9 +59,9 @@
     client.connect();
 
     // Fez conexão ao Telegram
-    if(core.config[0]["telegram"]['telegram_active'])
+    if(core.config[0]["telegram"]['telegram_active'] == "true")
     {
-        var bot = new telegramBot(core.config[0]["telegram"]['telegram_token'], {polling: true});
+        var bot = new telegramBot(core.config[0]["telegram"]['telegram_token'], {polling: true, filepath:false});
     }
 
     // ########################################################################################
@@ -207,7 +207,6 @@
             // Notifica via Telegram
             if(core.config[0]["telegram"]['telegram_leave'] == "true") { telegram.notify(bot, message.nick, core.config[0]["telegram"], "leave"); }
         });
-
 
         // Escuta por erros
         client.addListener('error', function (message) {
@@ -431,6 +430,8 @@
     // Escuta por mensagens do telegram.
     // ########################################################################################
 
+    if(core.config[0]["telegram"]['telegram_active'] == "true")
+    { 
         bot.onText(/\/echo (.+)/, (msg, match) => {
             const chatId = msg.chat.id;
             const resp = match[1];
@@ -455,7 +456,20 @@
                 console.log("Mensagem Enviada: "+msg.text);
                 client.emit('pm', owners.ownersBot[0], msg.text);
             }
-          
+
+            if(smsNick == 'ping')
+            {
+                bot.sendMessage(chatId, "Pong - "+core.config[0]["global_nick"]);
+            }
+
         });
 
+        bot.on('polling_error', (error) => {
+            console.log("Erro de Polling:"+ error.code);  // => 'EFATAL'
+        });
+
+        bot.on('webhook_error', (error) => {
+            console.log("Erro de Webhook:"+error.code);  // => 'EPARSE'
+        });
+    }
 

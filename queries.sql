@@ -25,7 +25,7 @@ SELECT * FROM bot_logs WHERE description LIKE '%Brazink.c2g.hvu.250.188.IP%'
 SELECT * FROM bot_logs WHERE log_type = 'prohibited' ORDER BY id_log DESC;
 
 -- Total de kicks por tipo
-SELECT COUNT(id_log), log_type FROM bot_logs WHERE DATE > '2024-06-30 00:00:00' AND DATE < '2024-06-30 23:59:59' GROUP BY log_type
+SELECT COUNT(id_log), log_type FROM bot_logs WHERE DATE > '2024-07-01 00:00:00' AND DATE < '2024-07-01 23:59:59' GROUP BY log_type
 
 
 -- ################################################################################################################
@@ -83,13 +83,16 @@ SELECT COUNT(id_log), log_type FROM bot_logs WHERE DATE > '2024-06-30 00:00:00' 
 -- Alfazema			- Brazink.lfbpk6.rev.vodafone.pt
 -- Goraz                        - Brazink.k2irmr.dsl.telepac.pt
 -- proibido_tentar              - Brazink.b3rrv4.rev.vodafone.pt
+-- Clandestina                  - Brazink.vo46nh.rev.vodafone.pt | Brazink.4bs.sel.63.148.IP | Brazink.ff22ff.rev.vodafone.pt | Brazink.iva.64u.69.148.IP | Brazink.r4o.rrf.29.78.IP
+ 
+-- Unica                        - Brazink.3q2u6a.rev.vodafone.pt
  
 -- Total de nicks que entram
 SELECT COUNT(id_entrada) AS nr, nick , HOST FROM bot_entradas GROUP BY HOST ORDER BY nr DESC
 
-SELECT * FROM bot_entradas WHERE HOST IN('Brazink.b3rrv4.rev.vodafone.pt');
+SELECT * FROM bot_entradas WHERE HOST IN('Brazink.ca0.vpj.225.200.IP');
 
-SELECT * FROM bot_entradas WHERE nick = 'proibido_tentar'
+SELECT * FROM bot_entradas WHERE nick = 'Antonella'
 
 SELECT * FROM bot_entradas ORDER BY id_entrada DESC
 
